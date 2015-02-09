@@ -1,0 +1,2 @@
+configurations.create("default")
+artifacts.add("default", file('json-20141113.jar'))
