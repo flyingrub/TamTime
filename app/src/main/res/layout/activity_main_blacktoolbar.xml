@@ -26,7 +26,7 @@
     <fragment
         android:id="@+id/fragment_drawer"
         android:layout_marginTop="@dimen/abc_action_bar_default_height_material"
-        android:name="flying.grub.tamtime.NavigationDrawerFragment"
+        android:name="flying.grub.tamtime.Fragment.NavigationDrawerFragment"
         android:layout_width="@dimen/navigation_drawer_width"
         android:layout_height="match_parent"
         android:layout_gravity="start"

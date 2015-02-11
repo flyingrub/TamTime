@@ -26,5 +26,5 @@ dependencies {
     compile 'com.android.support:support-v13:21.0.2'
     compile 'com.android.support:recyclerview-v7:21.0.2'
     compile 'com.android.support:cardview-v7:21.0.2'
-    compile project(':json-20141113')
+    compile 'dev.dworks.libs:volleyplus:+'
 }

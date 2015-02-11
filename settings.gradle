@@ -1,1 +1,1 @@
-include ':app', ':json-20141113', ':volley'
+include ':app', ':volley'
