@@ -9,11 +9,11 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 
+import flying.grub.tamtime.Data.DataParser;
 import flying.grub.tamtime.Fragment.AllLinesFragment;
+import flying.grub.tamtime.Fragment.InfoLineFragment;
 import flying.grub.tamtime.Fragment.NavigationDrawerFragment;
 import flying.grub.tamtime.Navigation.NavigationDrawerCallbacks;
-import flying.grub.tamtime.SlidingTab.SlidingTabsBasicFragment;
-
 
 public class MainActivity extends ActionBarActivity implements NavigationDrawerCallbacks {
 
@@ -44,7 +44,6 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
     public void onResume(){
         super.onResume();  // Always call the superclass method first
         dataParser.getAll();
-        dataParser.getTime();
     }
 
     @Override
@@ -62,17 +61,20 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
 
                 fragment = new AllLinesFragment();
                 transaction.replace(R.id.container, fragment);
+                transaction.addToBackStack("");
                 transaction.commit();
                 break;
             case 1:
                 android.support.v4.app.FragmentTransaction t = getSupportFragmentManager().beginTransaction();
-                SlidingTabsBasicFragment test = new SlidingTabsBasicFragment();
+                InfoLineFragment test = new InfoLineFragment().newInstance(1);;
                 t.replace(R.id.container, test);
+                transaction.addToBackStack("");
                 t.commit();
                 break;
             case 2:
                 fragment = new AllLinesFragment();
                 transaction.replace(R.id.container, fragment);
+                transaction.addToBackStack("");
                 transaction.commit();
                 break;
         }

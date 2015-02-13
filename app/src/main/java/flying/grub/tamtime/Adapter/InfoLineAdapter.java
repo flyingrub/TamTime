@@ -1,20 +1,22 @@
 package flying.grub.tamtime.Adapter;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import flying.grub.tamtime.DataParser;
+import flying.grub.tamtime.MainActivity;
 import flying.grub.tamtime.R;
 
 /**
  * Created by fly on 10/02/15.
  */
 public class InfoLineAdapter extends RecyclerView.Adapter<InfoLineAdapter.ViewHolder> {
-    private DataParser dataParser;
+    public int lineId;
+    public int routeId;
     public OnItemClickListener mItemClickListener;
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -56,8 +58,9 @@ public class InfoLineAdapter extends RecyclerView.Adapter<InfoLineAdapter.ViewHo
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public InfoLineAdapter(DataParser d) {
-        dataParser = d;
+    public InfoLineAdapter(int mLineId, int mRouteId) {
+        this.lineId = mLineId;
+        this.routeId = mRouteId;
     }
 
     // Create new views (invoked by the layout manager)
@@ -66,7 +69,7 @@ public class InfoLineAdapter extends RecyclerView.Adapter<InfoLineAdapter.ViewHo
                                                          int viewType) {
         // create a new view
         View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.info_line, parent, false);
+                .inflate(R.layout.info_line_item, parent, false);
         // set the view's size, margins, paddings and layout parameters
         ViewHolder vh = new ViewHolder(v);
         return vh;
@@ -77,7 +80,8 @@ public class InfoLineAdapter extends RecyclerView.Adapter<InfoLineAdapter.ViewHo
     public void onBindViewHolder(ViewHolder holder, final int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-        holder.mStop.setText("Arret");
+        Log.d("lol", MainActivity.getData().getLine(lineId).getRoute(routeId).getStopArrayList().get(position).getName());
+        holder.mStop.setText(MainActivity.getData().getLine(lineId).getRoute(routeId).getStopArrayList().get(position).getName());
         holder.tps1.setText("tps1");
         holder.tps2.setText("tps2");
         holder.tps3.setText("tps3");
@@ -86,7 +90,7 @@ public class InfoLineAdapter extends RecyclerView.Adapter<InfoLineAdapter.ViewHo
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
-        return 5;
+        return MainActivity.getData().getLine(lineId).getRoute(routeId).getStopArrayList().size();
     }
 
 }

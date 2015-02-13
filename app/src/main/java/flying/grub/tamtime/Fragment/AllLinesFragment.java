@@ -1,8 +1,9 @@
 package flying.grub.tamtime.Fragment;
 
+import android.app.Activity;
 import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,6 +20,7 @@ import flying.grub.tamtime.R;
  */
 public class AllLinesFragment extends Fragment {
 
+    private FragmentActivity myContext;
     private RecyclerView mRecyclerView;
     private AllLinesAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
@@ -26,7 +28,7 @@ public class AllLinesFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_main, container, false);
+        View view = inflater.inflate(R.layout.recycler_view, container, false);
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.my_recycler_view);
 
@@ -66,11 +68,17 @@ public class AllLinesFragment extends Fragment {
 
     }
 
+    @Override
+    public void onAttach(Activity activity) {
+        myContext=(FragmentActivity) activity;
+        super.onAttach(activity);
+    }
+
     public void selectitem(int i){
-        Fragment newFragment;
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        newFragment = InfoLineFragment.newInstance(i);
-        transaction.replace(R.id.container, newFragment);
-        transaction.commit();
+        android.support.v4.app.FragmentTransaction t = myContext.getSupportFragmentManager().beginTransaction();
+        InfoLineFragment test = new InfoLineFragment().newInstance(i);
+        t.replace(R.id.container, test);
+        t.addToBackStack("");
+        t.commit();
     }
 }

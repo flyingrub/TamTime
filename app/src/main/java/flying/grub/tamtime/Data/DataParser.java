@@ -1,4 +1,4 @@
-package flying.grub.tamtime;
+package flying.grub.tamtime.Data;
 
 import android.os.StrictMode;
 import android.util.Log;
@@ -13,47 +13,42 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
+import flying.grub.tamtime.MainActivity;
+
 /**
  * Created by fly on 09/02/15.
  */
 public class DataParser {
 
-    MainActivity mainActivity;
+    private static final String all = "http://www.tam-direct.com/webservice/data.php?pattern=getAll";
 
-    static final String all = "http://www.tam-direct.com/webservice/data.php?pattern=getAll";
-    static final String time = "http://www.tam-direct.com/webservice/data.php?pattern=getDetails";
-
-    JSONObject allInfo;
-    JSONObject timeInfo;
+    private JSONObject allInfo;
+    private ArrayList<Lines> linesArrayList;
+    private Boolean asData;
 
     public DataParser() {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-
+        linesArrayList = new ArrayList<>();
         StrictMode.setThreadPolicy(policy);
+        asData = false;
     }
 
-    public void httpRequest(String url, final boolean all){
+    public void httpRequest(String url){
         RequestQueue mRequestQueue = Volley.newRequestQueue(MainActivity.getAppContext());
-        Log.d("Data", "Request" + all);
+        Log.d("Data", "Request");
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                if(all){
-                    setAll(response);
-                }else{
-                    setTime(response);
-                }
+                setAll(response);
 
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.d("Data", "Erreur" + error);
-                if(all){
-                    setAll("{erreur}");
-                }else{
-                    setTime("{erreur}");
-                }
+                setAll("{erreur}");
             }
         });
 
@@ -62,33 +57,28 @@ public class DataParser {
 
     public void setAll(String all) {
         try {
-            Log.d("Data", "SetAll");
             allInfo = new JSONObject(all);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
 
-    public void setTime(String time){
-        try {
-            Log.d("Data", "SetTime");
-            timeInfo = new JSONObject(time);
+            for(int i = 0; i< 1; i++) {
+                linesArrayList.add(new Lines(allInfo.getJSONArray("lines").getJSONObject(i)));
+            }
+
+            asData = true;
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
 
     public void getAll(){
-        httpRequest(all, true);
+        httpRequest(all);
     }
 
 
-    public void getTime(){
-        httpRequest(time, false);
-    }
-
-    public void getStop(int Line){
-
+    public Lines getLine(int i){
+        if (asData){
+            return linesArrayList.get(i);
+        }
+        return null;
     }
 
 

@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.LinearLayout;
 
 import flying.grub.tamtime.R;
 
@@ -17,8 +18,9 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
 
     @Override
     public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
-        int left = parent.getPaddingLeft();
-        int right = parent.getWidth() - parent.getPaddingRight();
+        LinearLayout l = (LinearLayout) parent.findViewById(R.id.element);
+        int left = l.getPaddingLeft();
+        int right = parent.getWidth() - l.getPaddingRight();
 
         int childCount = parent.getChildCount();
         for (int i = 0; i < childCount; i++) {

@@ -16,8 +16,6 @@ package flying.grub.tamtime.SlidingTab;
  */
 
 import android.content.Context;
-import android.graphics.Typeface;
-import android.os.Build;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
@@ -27,6 +25,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.HorizontalScrollView;
 import android.widget.TextView;
+
+import flying.grub.tamtime.R;
 
 /**
  * To be used with ViewPager to provide a tab indicator component which give constant feedback as to
@@ -97,6 +97,7 @@ public class SlidingTabLayout extends HorizontalScrollView {
         mTitleOffset = (int) (TITLE_OFFSET_DIPS * getResources().getDisplayMetrics().density);
 
         mTabStrip = new SlidingTabStrip(context);
+        mTabStrip.setBackgroundColor(getResources().getColor(R.color.myPrimaryColor));
         addView(mTabStrip, LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
     }
 
@@ -167,29 +168,25 @@ public class SlidingTabLayout extends HorizontalScrollView {
      * Create a default view to be used for tabs. This is called if a custom tab view is not set via
      * {@link #setCustomTabView(int, int)}.
      */
-    protected TextView createDefaultTabView(Context context) {
+    protected TextView createDefaultTabView(Context context, int i) {
         TextView textView = new TextView(context);
         textView.setGravity(Gravity.CENTER);
         textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, TAB_VIEW_TEXT_SIZE_SP);
-        textView.setTypeface(Typeface.DEFAULT_BOLD);
+        textView.setId(i);
+        textView.setTextColor(getResources().getColor(R.color.textDark));
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            // If we're running on Honeycomb or newer, then we can use the Theme's
-            // selectableItemBackground to ensure that the View has a pressed state
-            TypedValue outValue = new TypedValue();
-            getContext().getTheme().resolveAttribute(android.R.attr.selectableItemBackground,
-                    outValue, true);
-            textView.setBackgroundResource(outValue.resourceId);
-        }
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-            // If we're running on ICS or newer, enable all-caps to match the Action Bar tab style
-            textView.setAllCaps(true);
-        }
+        TypedValue outValue = new TypedValue();
+        getContext().getTheme().resolveAttribute(android.R.attr.selectableItemBackground,
+            outValue, true);
+        textView.setBackgroundResource(outValue.resourceId);
 
         int padding = (int) (TAB_VIEW_PADDING_DIPS * getResources().getDisplayMetrics().density);
         textView.setPadding(padding, padding, padding, padding);
+        textView.setAllCaps(true);
 
+        if(i==0){
+            textView.setTextColor(getResources().getColor(R.color.myTextPrimaryColor));
+        }
         return textView;
     }
 
@@ -209,7 +206,7 @@ public class SlidingTabLayout extends HorizontalScrollView {
             }
 
             if (tabView == null) {
-                tabView = createDefaultTabView(getContext());
+                tabView = createDefaultTabView(getContext(), i);
             }
 
             if (tabTitleView == null && TextView.class.isInstance(tabView)) {
@@ -294,6 +291,12 @@ public class SlidingTabLayout extends HorizontalScrollView {
             if (mViewPagerPageChangeListener != null) {
                 mViewPagerPageChangeListener.onPageSelected(position);
             }
+            for (int i = 0; i < mTabStrip.getChildCount(); i++) {
+                TextView txtView = (TextView) mTabStrip.getChildAt(i).findViewById(i);
+                txtView.setTextColor(getResources().getColor(R.color.textDark));
+            }
+            TextView t = (TextView) mTabStrip.getChildAt(position).findViewById(position);
+            t.setTextColor(getResources().getColor(R.color.myTextPrimaryColor));
         }
 
     }
