@@ -37,7 +37,6 @@ public class DataParser {
 
     public void httpRequest(String url){
         RequestQueue mRequestQueue = Volley.newRequestQueue(MainActivity.getAppContext());
-        Log.d("Data", "Request");
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -50,6 +49,7 @@ public class DataParser {
                 Log.d("Data", "Erreur" + error);
             }
         });
+        stringRequest.setShouldCache(false);
 
         mRequestQueue.add(stringRequest);
     }
@@ -65,6 +65,7 @@ public class DataParser {
             }
 
             asData = true;
+            //InfoLineActivity.hideSwipeProgress();
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -96,7 +97,10 @@ public class DataParser {
 
             for (int i=0; i < aller.length() ;i++){
                 stopId =  Integer.parseInt(aller.getJSONArray(i).get(4).toString());
-                getStop(stopId).addTime(Integer.parseInt(aller.getJSONArray(i).get(5).toString()));
+                if (getStop(stopId) != null){
+                    getStop(stopId).addTime(Integer.parseInt(aller.getJSONArray(i).get(5).toString()));
+                }
+
             }
             for (int i=0; i < retour.length() ;i++){
                 stopId =  Integer.parseInt(retour.getJSONArray(i).get(4).toString());

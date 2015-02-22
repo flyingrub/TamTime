@@ -40,7 +40,7 @@ public class Stop {
             if (min >= 60){
                 int hour = min /60;
                 min = min % 60;
-                time = hour + " h" + min + " min";
+                time = hour + " h " + min + " min";
             }else if (min < 0 ){
                 time = "A quai";
             }else if (min == 0 ){
