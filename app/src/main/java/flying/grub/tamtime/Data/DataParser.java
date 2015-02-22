@@ -93,14 +93,15 @@ public class DataParser {
         try {
             JSONArray aller = allInfo.getJSONObject("details").getJSONArray("aller");
             JSONArray retour = allInfo.getJSONObject("details").getJSONArray("retour");
+
             for (int i=0; i < aller.length() ;i++){
                 stopId =  Integer.parseInt(aller.getJSONArray(i).get(4).toString());
                 getStop(stopId).addTime(Integer.parseInt(aller.getJSONArray(i).get(5).toString()));
             }
-            for (int i=0; i < aller.length() ;i++){
+            for (int i=0; i < retour.length() ;i++){
                 stopId =  Integer.parseInt(retour.getJSONArray(i).get(4).toString());
                 if (getStop(stopId) != null){
-                    getStop(stopId).addTime(Integer.parseInt(aller.getJSONArray(i).get(5).toString()));
+                    getStop(stopId).addTime(Integer.parseInt(retour.getJSONArray(i).get(5).toString()));
                 }
             }
         } catch (JSONException e) {

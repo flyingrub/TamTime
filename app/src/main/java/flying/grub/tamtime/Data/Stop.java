@@ -35,19 +35,23 @@ public class Stop {
 
     public String getTimes(int i){
         String time;
-        int min = (times.get(i)/60);
-        if (min >= 60){
-            int hour = min /60;
-            min = min % 60;
-            time = hour + " h" + min + " min";
-        }else if (min < 0 ){
-            time = "A quai";
-        }else if (min == 0 ){
-            time = "Proche";
-        }else{
-            time = min + " min";
+        try {
+            int min = (times.get(i) / 60);
+            if (min >= 60){
+                int hour = min /60;
+                min = min % 60;
+                time = hour + " h" + min + " min";
+            }else if (min < 0 ){
+                time = "A quai";
+            }else if (min == 0 ){
+                time = "Proche";
+            }else{
+                time = min + " min";
+            }
+            return time;
+        }catch (IndexOutOfBoundsException e){
+            return "-";
         }
-        return time;
     }
 
     public void addLine(Line line){
