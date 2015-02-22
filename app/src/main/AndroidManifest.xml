@@ -19,6 +19,13 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".InfoLineActivity"
+            android:label="@string/app_name" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
 
     </application>
 

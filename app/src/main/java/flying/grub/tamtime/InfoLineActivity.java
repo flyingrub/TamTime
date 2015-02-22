@@ -1,52 +1,51 @@
-package flying.grub.tamtime.Fragment;
+package flying.grub.tamtime;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.ViewGroup;
 
 import flying.grub.tamtime.Adapter.DividerItemDecoration;
 import flying.grub.tamtime.Adapter.InfoLineAdapter;
-import flying.grub.tamtime.MainActivity;
-import flying.grub.tamtime.R;
 import flying.grub.tamtime.SlidingTab.SlidingTabLayout;
 
 
-public class InfoLineFragment extends Fragment {
-
-    public static InfoLineFragment newInstance(int line) {
-        InfoLineFragment fragmentDemo = new InfoLineFragment();
-        Bundle args = new Bundle();
-        args.putInt("line", line);
-        fragmentDemo.setArguments(args);
-        return fragmentDemo;
-    }
+public class InfoLineActivity extends ActionBarActivity {
 
     private SlidingTabLayout mSlidingTabLayout;
-
+    private Toolbar mToolbar;
     private ViewPager mViewPager;
     private int lineId;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        this.lineId = getArguments().getInt("line", 1);
-        return inflater.inflate(R.layout.info_line_with_tab, container, false);
-    }
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.info_line_with_tab);
 
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        mViewPager = (ViewPager) view.findViewById(R.id.viewpager);
+        Bundle bundle = getIntent().getExtras();
+        lineId = bundle.getInt("id");
+
+        mToolbar = (Toolbar) findViewById(R.id.toolbar_actionbar);
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
+        getSupportActionBar().setTitle("Ligne " + MainActivity.getData().getLine(lineId).getLineId());
+
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+
+
+        mViewPager = (ViewPager) findViewById(R.id.viewpager);
         mViewPager.setAdapter(new InfoLinePageAdapter());
 
         mSlidingTabLayout = new SlidingTabLayout(MainActivity.getAppContext());
-        mSlidingTabLayout = (SlidingTabLayout) view.findViewById(R.id.sliding_tabs);
+        mSlidingTabLayout = (SlidingTabLayout) findViewById(R.id.sliding_tabs);
         mSlidingTabLayout.setSelectedIndicatorColors(getResources().getColor(R.color.myTextPrimaryColor));
         mSlidingTabLayout.setDividerColors(getResources().getColor(R.color.myPrimaryColor));
         mSlidingTabLayout.setViewPager(mViewPager);
@@ -78,7 +77,7 @@ public class InfoLineFragment extends Fragment {
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
             // Inflate a new layout from our resources
-            View view = getActivity().getLayoutInflater().inflate(R.layout.recycler_view,
+            View view = getLayoutInflater().inflate(R.layout.recycler_view,
                     container, false);
             // Add the newly created View to the ViewPager
             container.addView(view);
@@ -89,11 +88,11 @@ public class InfoLineFragment extends Fragment {
             // in content do not change the layout size of the RecyclerView
             mRecyclerView.setHasFixedSize(true);
 
-            mLayoutManager = new LinearLayoutManager(getActivity());
+            mLayoutManager = new LinearLayoutManager(getApplicationContext());
             mRecyclerView.setLayoutManager(mLayoutManager);
             mRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
-            RecyclerView.ItemDecoration itemDecoration = new DividerItemDecoration(getActivity());
+            RecyclerView.ItemDecoration itemDecoration = new DividerItemDecoration(getApplicationContext());
             mRecyclerView.addItemDecoration(itemDecoration);
             // specify an adapter (see also next example)
 

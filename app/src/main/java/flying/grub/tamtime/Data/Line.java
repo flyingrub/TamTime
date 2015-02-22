@@ -6,32 +6,35 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import flying.grub.tamtime.MainActivity;
+
 /**
  * Created by fly on 12/02/15.
  */
-public class Lines {
+public class Line {
     int lineId;
     ArrayList<Route> routeArrayList;
     ArrayList<Stop> stopArrayList;
 
-    public Lines(JSONObject line){
+    public Line(JSONObject line){
         registerStop(line);
-        JSONArray routes;
+        JSONArray routesJson;
         JSONObject routeJson;
         Route route;
         this.routeArrayList = new ArrayList<>();
+
         try {
             this.lineId = line.getInt("route_number");
-            routes = line.getJSONArray("routes");
-            routeJson = routes.getJSONObject(1);
+            routesJson = line.getJSONArray("routes");
+            routeJson = routesJson.getJSONObject(0);
             route = new Route(routeJson, lineId);
-            for (int i = 0; i < routes.length(); i++) {
-                if (getRoute(routes.getJSONObject(i).getString("direction")) == null){
-                    routeJson = routes.getJSONObject(i);
+            for (int i = 0; i < routesJson.length(); i++) {
+                routeJson = routesJson.getJSONObject(i);
+                if (getRoute(routesJson.getJSONObject(i).getString("direction")) == null){
                     route = new Route(routeJson, lineId);
                     this.routeArrayList.add(route);
                 }
-                route.addStep(getStop(routeJson.getInt("stop_id")));
+                route.addStep(MainActivity.getData().getStop(routeJson.getInt("stop_id")));
 
             }
         } catch (JSONException e) {
@@ -41,24 +44,23 @@ public class Lines {
 
     private void registerStop(JSONObject line){
         JSONArray stops;
+        Stop stop;
         this.stopArrayList = new ArrayList<>();
         try {
             stops = line.getJSONArray("stops");
             for (int i = 0; i < stops.length(); i++) {
-                this.stopArrayList.add(new Stop(stops.getJSONObject(i)));
+                if (MainActivity.getData().getStop(stops.getJSONObject(i).getInt("stop_id")) == null){
+                    stop = new Stop(stops.getJSONObject(i));
+                }else{
+                    stop = MainActivity.getData().getStop(stops.getJSONObject(i).getInt("stop_id"));
+                }
+                stop.addLine(this);
+                this.stopArrayList.add(stop);
+                MainActivity.getData().addStop(stop);
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
-    }
-
-    public Stop getStop(int id){
-        for (int i = 0; i< stopArrayList.size(); i++){
-            if (stopArrayList.get(i).getId() == id ){
-                return stopArrayList.get(i);
-            }
-        }
-        return null;
     }
 
     public Route getRoute(String direction){
@@ -78,5 +80,7 @@ public class Lines {
         return routeArrayList.size();
     }
 
-
+    public int getLineId(){
+        return lineId;
+    }
 }

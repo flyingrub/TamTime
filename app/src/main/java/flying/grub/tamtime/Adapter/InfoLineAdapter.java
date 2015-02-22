@@ -1,13 +1,13 @@
 package flying.grub.tamtime.Adapter;
 
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import flying.grub.tamtime.Data.Stop;
 import flying.grub.tamtime.MainActivity;
 import flying.grub.tamtime.R;
 
@@ -80,11 +80,11 @@ public class InfoLineAdapter extends RecyclerView.Adapter<InfoLineAdapter.ViewHo
     public void onBindViewHolder(ViewHolder holder, final int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-        Log.d("lol", MainActivity.getData().getLine(lineId).getRoute(routeId).getStopArrayList().get(position).getName());
-        holder.mStop.setText(MainActivity.getData().getLine(lineId).getRoute(routeId).getStopArrayList().get(position).getName());
-        holder.tps1.setText("tps1");
-        holder.tps2.setText("tps2");
-        holder.tps3.setText("tps3");
+        Stop s = MainActivity.getData().getLine(lineId).getRoute(routeId).getStopArrayList().get(position);
+        holder.mStop.setText(s.getName());
+        holder.tps1.setText(s.getTimes(1));
+        holder.tps2.setText(s.getTimes(2));
+        holder.tps3.setText(s.getTimes(3));
     }
 
     // Return the size of your dataset (invoked by the layout manager)

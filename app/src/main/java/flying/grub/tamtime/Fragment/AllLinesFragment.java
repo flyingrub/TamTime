@@ -2,6 +2,7 @@ package flying.grub.tamtime.Fragment;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -13,6 +14,7 @@ import android.view.ViewGroup;
 
 import flying.grub.tamtime.Adapter.AllLinesAdapter;
 import flying.grub.tamtime.Adapter.DividerItemDecoration;
+import flying.grub.tamtime.InfoLineActivity;
 import flying.grub.tamtime.R;
 
 /**
@@ -75,10 +77,10 @@ public class AllLinesFragment extends Fragment {
     }
 
     public void selectitem(int i){
-        android.support.v4.app.FragmentTransaction t = myContext.getSupportFragmentManager().beginTransaction();
-        InfoLineFragment test = new InfoLineFragment().newInstance(i);
-        t.replace(R.id.container, test);
-        t.addToBackStack("");
-        t.commit();
+        Intent intent = new Intent(getActivity(), InfoLineActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putInt("id", i);
+        intent.putExtras(bundle);
+        startActivity(intent);
     }
 }

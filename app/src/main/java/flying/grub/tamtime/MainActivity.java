@@ -3,6 +3,7 @@ package flying.grub.tamtime;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
@@ -11,7 +12,6 @@ import android.view.Menu;
 
 import flying.grub.tamtime.Data.DataParser;
 import flying.grub.tamtime.Fragment.AllLinesFragment;
-import flying.grub.tamtime.Fragment.InfoLineFragment;
 import flying.grub.tamtime.Fragment.NavigationDrawerFragment;
 import flying.grub.tamtime.Navigation.NavigationDrawerCallbacks;
 
@@ -65,11 +65,11 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
                 transaction.commit();
                 break;
             case 1:
-                android.support.v4.app.FragmentTransaction t = getSupportFragmentManager().beginTransaction();
-                InfoLineFragment test = new InfoLineFragment().newInstance(1);;
-                t.replace(R.id.container, test);
-                transaction.addToBackStack("");
-                t.commit();
+                Intent intent = new Intent(this, InfoLineActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putInt("id", 1);
+                intent.putExtras(bundle);
+                startActivity(intent);
                 break;
             case 2:
                 fragment = new AllLinesFragment();
