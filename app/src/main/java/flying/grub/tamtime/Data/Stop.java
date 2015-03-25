@@ -4,6 +4,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * Created by fly on 12/02/15.
@@ -60,5 +61,6 @@ public class Stop {
 
     public void addTime(int aTimes){
         times.add(aTimes);
+        Collections.sort(times);
     }
 }

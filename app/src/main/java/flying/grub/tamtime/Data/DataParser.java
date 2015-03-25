@@ -36,6 +36,7 @@ public class DataParser {
     }
 
     public void httpRequest(String url){
+        asData = false;
         RequestQueue mRequestQueue = Volley.newRequestQueue(MainActivity.getAppContext());
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
@@ -63,30 +64,10 @@ public class DataParser {
                 if (i == 16) { i++;} // skip the L18
                 linesArrayList.add(new Line(allInfo.getJSONArray("lines").getJSONObject(i)));
             }
-
-            asData = true;
-            //InfoLineActivity.hideSwipeProgress();
         } catch (JSONException e) {
             e.printStackTrace();
         }
         setTimes();
-    }
-
-    public void addStop(Stop s){
-        stopArrayList.add(s);
-    }
-
-    public Stop getStop(int id){
-        for (int i = 0; i< stopArrayList.size(); i++){
-            if (stopArrayList.get(i).getId() == id ){
-                return stopArrayList.get(i);
-            }
-        }
-        return null;
-    }
-
-    public void getAll(){
-        httpRequest(all);
     }
 
     public void setTimes(){
@@ -111,14 +92,32 @@ public class DataParser {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        asData = true;
+    }
 
+    public void addStop(Stop s){
+        stopArrayList.add(s);
+    }
+
+    public Stop getStop(int id){
+        for (int i = 0; i< stopArrayList.size(); i++){
+            if (stopArrayList.get(i).getId() == id ){
+                return stopArrayList.get(i);
+            }
+        }
+        return null;
+    }
+
+    public void getAll(){
+        httpRequest(all);
     }
 
     public Line getLine(int i){
-        if (asData){
-            return linesArrayList.get(i);
-        }
-        return null;
+        return linesArrayList.get(i);
+    }
+
+    public boolean asData(){
+        return asData;
     }
 
 

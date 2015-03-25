@@ -58,7 +58,6 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
         Fragment fragment;
         switch (position) {
             case 0:
-
                 fragment = new AllLinesFragment();
                 transaction.replace(R.id.container, fragment);
                 transaction.addToBackStack("");

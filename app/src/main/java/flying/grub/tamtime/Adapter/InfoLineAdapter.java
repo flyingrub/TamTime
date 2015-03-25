@@ -19,34 +19,8 @@ public class InfoLineAdapter extends RecyclerView.Adapter<InfoLineAdapter.ViewHo
     public int routeId;
     public OnItemClickListener mItemClickListener;
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-
-        public TextView mStop;
-        public TextView tps1;
-        public TextView tps2;
-        public TextView tps3;
-        public LinearLayout linearLayout;
-
-
-        public ViewHolder(View v) {
-            super(v);
-            mStop = (TextView) itemView.findViewById(R.id.title);
-            tps1 = (TextView) itemView.findViewById(R.id.tps1);
-            tps2 = (TextView) itemView.findViewById(R.id.tps2);
-            tps3 = (TextView) itemView.findViewById(R.id.tps3);
-            linearLayout = (LinearLayout) itemView.findViewById(R.id.element);
-            v.setOnClickListener(this);
-
-
-        }
-
-        @Override
-        public void onClick(View v) {
-            if (mItemClickListener != null) {
-                mItemClickListener.onItemClick(v, getPosition());
-            }
-        }
-
+    public void refresh(){
+        notifyDataSetChanged();
     }
 
     public interface OnItemClickListener {
@@ -91,6 +65,34 @@ public class InfoLineAdapter extends RecyclerView.Adapter<InfoLineAdapter.ViewHo
     @Override
     public int getItemCount() {
         return MainActivity.getData().getLine(lineId).getRoute(routeId).getStopArrayList().size();
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+
+        public TextView mStop;
+        public TextView tps1;
+        public TextView tps2;
+        public TextView tps3;
+        public LinearLayout linearLayout;
+
+
+        public ViewHolder(View v) {
+            super(v);
+            mStop = (TextView) itemView.findViewById(R.id.title);
+            tps1 = (TextView) itemView.findViewById(R.id.tps1);
+            tps2 = (TextView) itemView.findViewById(R.id.tps2);
+            tps3 = (TextView) itemView.findViewById(R.id.tps3);
+            linearLayout = (LinearLayout) itemView.findViewById(R.id.element);
+            v.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            if (mItemClickListener != null) {
+                mItemClickListener.onItemClick(v, getPosition());
+            }
+        }
+
     }
 
 }
