@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
 import flying.grub.tamtime.Adapter.InfoLineAdapter;
@@ -14,16 +15,13 @@ import flying.grub.tamtime.Fragment.InfoLineRoute;
 import flying.grub.tamtime.SlidingTab.SlidingTabLayout;
 
 
-public class InfoLineActivity extends ActionBarActivity {
+public class InfoLineActivity extends AppCompatActivity {
 
-    private InfoLineAdapter mAdapter;
-    private SwipeRefreshLayout refreshLayout;
     private SlidingTabLayout mSlidingTabLayout;
     private Toolbar mToolbar;
     private ViewPager mViewPager;
 
     private int linePosition;
-    private boolean isfirstime = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +41,7 @@ public class InfoLineActivity extends ActionBarActivity {
         mViewPager = (ViewPager) findViewById(R.id.viewpager);
         mViewPager.setAdapter(new InfoLinePageAdapter(getSupportFragmentManager()));
 
-        mSlidingTabLayout = new SlidingTabLayout(MainActivity.getAppContext());
+        mSlidingTabLayout = new SlidingTabLayout(getApplicationContext());
         mSlidingTabLayout = (SlidingTabLayout) findViewById(R.id.sliding_tabs);
         mSlidingTabLayout.setSelectedIndicatorColors(getResources().getColor(R.color.myTextPrimaryColor));
         mSlidingTabLayout.setDividerColors(getResources().getColor(R.color.myPrimaryColor));

@@ -6,7 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 
@@ -15,7 +15,7 @@ import flying.grub.tamtime.Fragment.AllLinesFragment;
 import flying.grub.tamtime.Fragment.NavigationDrawerFragment;
 import flying.grub.tamtime.Navigation.NavigationDrawerCallbacks;
 
-public class MainActivity extends ActionBarActivity implements NavigationDrawerCallbacks {
+public class MainActivity extends AppCompatActivity implements NavigationDrawerCallbacks {
 
     private Toolbar mToolbar;
     private NavigationDrawerFragment mNavigationDrawerFragment;

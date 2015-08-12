@@ -8,6 +8,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,7 +34,7 @@ public class InfoLineRoute extends Fragment {
     private int routePosition;
     private boolean isfirstime = true;
 
-
+    private static final String TAG = InfoLineRoute.class.getSimpleName();
 
     /**
      * Create a new instance of CountingFragment, providing "num"
@@ -47,7 +48,7 @@ public class InfoLineRoute extends Fragment {
         args.putInt("linePosition", linePosition);
         args.putInt("routePosition", routePosition);
         f.setArguments(args);
-
+        Log.d(TAG, "lyo");
         return f;
     }
 
@@ -59,6 +60,7 @@ public class InfoLineRoute extends Fragment {
         super.onCreate(savedInstanceState);
         linePosition = getArguments().getInt("linePosition");
         routePosition = getArguments().getInt("routePosition");
+        Log.d(TAG, "yo");
     }
 
     /**
