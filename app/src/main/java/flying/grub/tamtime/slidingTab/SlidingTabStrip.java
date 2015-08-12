@@ -1,4 +1,4 @@
-package flying.grub.tamtime.SlidingTab;
+package flying.grub.tamtime.slidingTab;
 /*
  * Copyright (C) 2013 The Android Open Source Project
  *
@@ -20,6 +20,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.View;
@@ -123,7 +124,9 @@ public class SlidingTabStrip extends LinearLayout {
 
         // Thick colored underline below the current selection
         if (childCount > 0) {
+
             View selectedTitle = getChildAt(mSelectedPosition);
+
             int left = selectedTitle.getLeft();
             int right = selectedTitle.getRight();
             int color = tabColorizer.getIndicatorColor(mSelectedPosition);

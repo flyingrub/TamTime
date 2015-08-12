@@ -1,4 +1,4 @@
-package flying.grub.tamtime.Adapter;
+package flying.grub.tamtime.adapter;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -7,8 +7,8 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import flying.grub.tamtime.Data.Stop;
-import flying.grub.tamtime.MainActivity;
+import flying.grub.tamtime.data.Stop;
+import flying.grub.tamtime.activity.MainActivity;
 import flying.grub.tamtime.R;
 
 /**

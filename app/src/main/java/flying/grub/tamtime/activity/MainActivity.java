@@ -1,7 +1,6 @@
-package flying.grub.tamtime;
+package flying.grub.tamtime.activity;
 
 import android.support.v4.app.Fragment;
-import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,11 +9,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 
-import flying.grub.tamtime.Data.DataParser;
-import flying.grub.tamtime.Data.WaitForData;
-import flying.grub.tamtime.Fragment.AllLinesFragment;
-import flying.grub.tamtime.Fragment.NavigationDrawerFragment;
-import flying.grub.tamtime.Navigation.NavigationDrawerCallbacks;
+import flying.grub.tamtime.data.DataParser;
+import flying.grub.tamtime.fragment.AllLinesFragment;
+import flying.grub.tamtime.fragment.NavigationDrawerFragment;
+import flying.grub.tamtime.navigation.NavigationDrawerCallbacks;
+import flying.grub.tamtime.R;
 
 public class MainActivity extends AppCompatActivity implements NavigationDrawerCallbacks {
 

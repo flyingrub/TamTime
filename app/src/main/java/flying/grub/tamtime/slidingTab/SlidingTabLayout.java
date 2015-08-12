@@ -1,4 +1,4 @@
-package flying.grub.tamtime.SlidingTab;
+package flying.grub.tamtime.slidingTab;
 /*
  * Copyright (C) 2013 The Android Open Source Project
  *
@@ -16,6 +16,7 @@ package flying.grub.tamtime.SlidingTab;
  */
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
@@ -213,6 +214,7 @@ public class SlidingTabLayout extends HorizontalScrollView {
             }
 
             tabTitleView.setText(adapter.getPageTitle(i));
+            tabTitleView.setTextColor(getResources().getColor(R.color.myTextPrimaryColor));
             tabView.setOnClickListener(tabClickListener);
 
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
@@ -221,6 +223,7 @@ public class SlidingTabLayout extends HorizontalScrollView {
 
             if (i == mViewPager.getCurrentItem()) {
                 tabView.setSelected(true);
+                ((TextView) tabView).setTypeface(null, Typeface.BOLD);
             }
 
             mTabStrip.addView(tabView);
@@ -295,7 +298,13 @@ public class SlidingTabLayout extends HorizontalScrollView {
                 scrollToTab(position, 0);
             }
             for (int i = 0; i < mTabStrip.getChildCount(); i++) {
-                mTabStrip.getChildAt(i).setSelected(position == i);
+                View tabView = mTabStrip.getChildAt(i);
+                tabView.setSelected(position == i);
+                ((TextView) tabView).setTypeface(null, Typeface.NORMAL);
+                if (position == i) {
+                    ((TextView) tabView).setTypeface(null, Typeface.BOLD);
+                }
+
             }
             if (mViewPagerPageChangeListener != null) {
                 mViewPagerPageChangeListener.onPageSelected(position);

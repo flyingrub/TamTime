@@ -1,4 +1,4 @@
-package flying.grub.tamtime.Data;
+package flying.grub.tamtime.data;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -6,7 +6,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import flying.grub.tamtime.MainActivity;
+import flying.grub.tamtime.activity.MainActivity;
 
 /**
  * Created by fly on 12/02/15.

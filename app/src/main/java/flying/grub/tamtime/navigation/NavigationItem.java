@@ -1,4 +1,4 @@
-package flying.grub.tamtime.Navigation;
+package flying.grub.tamtime.navigation;
 
 import android.graphics.drawable.Drawable;
 

@@ -1,4 +1,4 @@
-package flying.grub.tamtime.Fragment;
+package flying.grub.tamtime.fragment;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -19,9 +19,9 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.List;
 
-import flying.grub.tamtime.Adapter.NavigationDrawerAdapter;
-import flying.grub.tamtime.Navigation.NavigationDrawerCallbacks;
-import flying.grub.tamtime.Navigation.NavigationItem;
+import flying.grub.tamtime.adapter.NavigationDrawerAdapter;
+import flying.grub.tamtime.navigation.NavigationDrawerCallbacks;
+import flying.grub.tamtime.navigation.NavigationItem;
 import flying.grub.tamtime.R;
 
 /**

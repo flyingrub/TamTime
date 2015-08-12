@@ -1,4 +1,4 @@
-package flying.grub.tamtime.Data;
+package flying.grub.tamtime.data;
 
 import org.json.JSONException;
 import org.json.JSONObject;

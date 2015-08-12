@@ -1,24 +1,22 @@
-package flying.grub.tamtime.Fragment;
+package flying.grub.tamtime.fragment;
 
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.gc.materialdesign.views.ProgressBarCircularIndeterminate;
 
-import flying.grub.tamtime.Adapter.DividerItemDecoration;
-import flying.grub.tamtime.Adapter.InfoLineAdapter;
-import flying.grub.tamtime.Data.WaitForData;
-import flying.grub.tamtime.MainActivity;
+import flying.grub.tamtime.adapter.DividerItemDecoration;
+import flying.grub.tamtime.adapter.InfoLineAdapter;
+import flying.grub.tamtime.data.WaitForData;
+import flying.grub.tamtime.activity.MainActivity;
 import flying.grub.tamtime.R;
 
 /**

@@ -1,4 +1,4 @@
-package flying.grub.tamtime.Adapter;
+package flying.grub.tamtime.adapter;
 
 import android.content.Context;
 import android.graphics.Canvas;

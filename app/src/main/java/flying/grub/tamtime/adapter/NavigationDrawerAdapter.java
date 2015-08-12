@@ -1,4 +1,4 @@
-package flying.grub.tamtime.Adapter;
+package flying.grub.tamtime.adapter;
 
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
@@ -10,8 +10,8 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import flying.grub.tamtime.Navigation.NavigationDrawerCallbacks;
-import flying.grub.tamtime.Navigation.NavigationItem;
+import flying.grub.tamtime.navigation.NavigationDrawerCallbacks;
+import flying.grub.tamtime.navigation.NavigationItem;
 import flying.grub.tamtime.R;
 
 /**

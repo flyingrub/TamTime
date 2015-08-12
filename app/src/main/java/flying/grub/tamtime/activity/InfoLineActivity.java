@@ -1,29 +1,24 @@
-package flying.grub.tamtime;
+package flying.grub.tamtime.activity;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
-import com.astuetz.PagerSlidingTabStrip;
-
-import flying.grub.tamtime.Adapter.InfoLineAdapter;
-import flying.grub.tamtime.Data.WaitForData;
-import flying.grub.tamtime.Fragment.AllLinesFragment;
-import flying.grub.tamtime.Fragment.InfoLineRoute;
-import flying.grub.tamtime.SlidingTab.SlidingTabLayout;
+import flying.grub.tamtime.data.WaitForData;
+import flying.grub.tamtime.fragment.InfoLineRoute;
+import flying.grub.tamtime.R;
+import flying.grub.tamtime.slidingTab.SlidingTabLayout;
 
 
 public class InfoLineActivity extends AppCompatActivity {
 
-    private SlidingTabLayout mSlidingTabLayout;
     private Toolbar toolbar;
     private ViewPager viewPager;
+    private SlidingTabLayout slidingTabLayout;
 
     private int linePosition;
 
@@ -50,9 +45,11 @@ public class InfoLineActivity extends AppCompatActivity {
             new WaitForData(asNewData());
         }
 
-        // Bind the tabs to the ViewPager
-        PagerSlidingTabStrip tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
-        tabs.setViewPager(viewPager);
+        slidingTabLayout = new SlidingTabLayout(getApplicationContext());
+        slidingTabLayout = (SlidingTabLayout) findViewById(R.id.sliding_tabs);
+        slidingTabLayout.setSelectedIndicatorColors(getResources().getColor(R.color.myTextPrimaryColor));
+        slidingTabLayout.setDividerColors(getResources().getColor(R.color.myPrimaryColor));
+        slidingTabLayout.setViewPager(viewPager);
     }
 
     private Runnable asNewData (){

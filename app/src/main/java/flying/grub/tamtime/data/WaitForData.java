@@ -1,10 +1,8 @@
-package flying.grub.tamtime.Data;
+package flying.grub.tamtime.data;
 
 import android.os.AsyncTask;
 
-import java.util.concurrent.Callable;
-
-import flying.grub.tamtime.MainActivity;
+import flying.grub.tamtime.activity.MainActivity;
 
 /**
  * Created by fly on 8/13/15.

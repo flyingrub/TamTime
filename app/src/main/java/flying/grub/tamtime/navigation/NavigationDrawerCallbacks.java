@@ -1,4 +1,4 @@
-package flying.grub.tamtime.Navigation;
+package flying.grub.tamtime.navigation;
 
 /**
  * Created by poliveira on 27/10/2014.

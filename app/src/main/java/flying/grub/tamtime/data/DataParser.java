@@ -1,4 +1,4 @@
-package flying.grub.tamtime.Data;
+package flying.grub.tamtime.data;
 
 import android.content.Context;
 import android.util.Log;
@@ -15,8 +15,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-
-import flying.grub.tamtime.MainActivity;
 
 
 /**
