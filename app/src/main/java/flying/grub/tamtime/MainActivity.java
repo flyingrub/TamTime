@@ -1,6 +1,6 @@
 package flying.grub.tamtime;
 
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
@@ -11,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 
 import flying.grub.tamtime.Data.DataParser;
+import flying.grub.tamtime.Data.WaitForData;
 import flying.grub.tamtime.Fragment.AllLinesFragment;
 import flying.grub.tamtime.Fragment.NavigationDrawerFragment;
 import flying.grub.tamtime.Navigation.NavigationDrawerCallbacks;
@@ -29,15 +30,13 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerC
         mToolbar = (Toolbar) findViewById(R.id.toolbar_actionbar);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        dataParser = new DataParser();
+        dataParser = new DataParser(getApplicationContext());
 
 
         MainActivity.context = getApplicationContext();
 
         mNavigationDrawerFragment = (NavigationDrawerFragment) getFragmentManager().findFragmentById(R.id.fragment_drawer);
         mNavigationDrawerFragment.setup(R.id.fragment_drawer, (DrawerLayout) findViewById(R.id.drawer), mToolbar);
-
-
     }
 
     @Override
@@ -54,7 +53,7 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerC
 
     @Override
     public void onNavigationDrawerItemSelected(int position) {
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        android.support.v4.app.FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         Fragment fragment;
         switch (position) {
             case 0:
@@ -85,10 +84,6 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerC
             mNavigationDrawerFragment.closeDrawer();
         else
             super.onBackPressed();
-    }
-
-    public static Context getAppContext() {
-        return MainActivity.context;
     }
 
     public static DataParser getData(){

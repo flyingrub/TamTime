@@ -10,7 +10,11 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
+import com.astuetz.PagerSlidingTabStrip;
+
 import flying.grub.tamtime.Adapter.InfoLineAdapter;
+import flying.grub.tamtime.Data.WaitForData;
+import flying.grub.tamtime.Fragment.AllLinesFragment;
 import flying.grub.tamtime.Fragment.InfoLineRoute;
 import flying.grub.tamtime.SlidingTab.SlidingTabLayout;
 
@@ -18,8 +22,8 @@ import flying.grub.tamtime.SlidingTab.SlidingTabLayout;
 public class InfoLineActivity extends AppCompatActivity {
 
     private SlidingTabLayout mSlidingTabLayout;
-    private Toolbar mToolbar;
-    private ViewPager mViewPager;
+    private Toolbar toolbar;
+    private ViewPager viewPager;
 
     private int linePosition;
 
@@ -31,21 +35,39 @@ public class InfoLineActivity extends AppCompatActivity {
         Bundle bundle = getIntent().getExtras();
         linePosition = bundle.getInt("id");
 
-        mToolbar = (Toolbar) findViewById(R.id.toolbar_actionbar);
-        setSupportActionBar(mToolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar_actionbar);
+        setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
-        mViewPager = (ViewPager) findViewById(R.id.viewpager);
-        mViewPager.setAdapter(new InfoLinePageAdapter(getSupportFragmentManager()));
+        viewPager = (ViewPager) findViewById(R.id.viewpager);
 
-        mSlidingTabLayout = new SlidingTabLayout(getApplicationContext());
-        mSlidingTabLayout = (SlidingTabLayout) findViewById(R.id.sliding_tabs);
-        mSlidingTabLayout.setSelectedIndicatorColors(getResources().getColor(R.color.myTextPrimaryColor));
-        mSlidingTabLayout.setDividerColors(getResources().getColor(R.color.myPrimaryColor));
-        mSlidingTabLayout.setViewPager(mViewPager);
+        if (MainActivity.getData().asData()) {
+            viewPager.setAdapter(new InfoLinePageAdapter(getSupportFragmentManager()));
+        } else {
+            new WaitForData(asNewData());
+        }
+
+        // Bind the tabs to the ViewPager
+        PagerSlidingTabStrip tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
+        tabs.setViewPager(viewPager);
+    }
+
+    private Runnable asNewData (){
+        return new Runnable(){
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        viewPager.setAdapter(new InfoLinePageAdapter(getSupportFragmentManager()));
+                    }
+                });
+            }
+        };
     }
 
     @Override
@@ -71,6 +93,7 @@ public class InfoLineActivity extends AppCompatActivity {
 
         @Override
         public Fragment getItem(int position) {
+            //return InfoLineRoute.newInstance(linePosition, position);
             return InfoLineRoute.newInstance(linePosition, position);
         }
     }

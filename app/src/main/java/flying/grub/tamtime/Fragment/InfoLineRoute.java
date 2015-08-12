@@ -17,6 +17,7 @@ import com.gc.materialdesign.views.ProgressBarCircularIndeterminate;
 
 import flying.grub.tamtime.Adapter.DividerItemDecoration;
 import flying.grub.tamtime.Adapter.InfoLineAdapter;
+import flying.grub.tamtime.Data.WaitForData;
 import flying.grub.tamtime.MainActivity;
 import flying.grub.tamtime.R;
 
@@ -25,10 +26,11 @@ import flying.grub.tamtime.R;
  */
 public class InfoLineRoute extends Fragment {
 
-    private RecyclerView mRecyclerView;
-    private RecyclerView.LayoutManager mLayoutManager;
-    private InfoLineAdapter mAdapter;
+    private RecyclerView recyclerView;
+    private RecyclerView.LayoutManager layoutManager;
+    private InfoLineAdapter adapter;
     private SwipeRefreshLayout refreshLayout;
+    private ProgressBarCircularIndeterminate circularIndeterminate;
 
     private int linePosition;
     private int routePosition;
@@ -41,14 +43,13 @@ public class InfoLineRoute extends Fragment {
      * as an argument.
      */
     public static Fragment newInstance(int linePosition, int routePosition) {
-        Fragment f = new Fragment();
+        InfoLineRoute f = new InfoLineRoute();
 
         // Supply num input as an argument.
         Bundle args = new Bundle();
         args.putInt("linePosition", linePosition);
         args.putInt("routePosition", routePosition);
         f.setArguments(args);
-        Log.d(TAG, "lyo");
         return f;
     }
 
@@ -60,7 +61,6 @@ public class InfoLineRoute extends Fragment {
         super.onCreate(savedInstanceState);
         linePosition = getArguments().getInt("linePosition");
         routePosition = getArguments().getInt("routePosition");
-        Log.d(TAG, "yo");
     }
 
     /**
@@ -74,28 +74,36 @@ public class InfoLineRoute extends Fragment {
                 container, false);
         container.addView(view);
 
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.my_recycler_view);
+        recyclerView = (RecyclerView) view.findViewById(R.id.my_recycler_view);
+        circularIndeterminate = (ProgressBarCircularIndeterminate) view.findViewById(R.id.progressBarCircularIndeterminate);
+        refreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.refresh_layout);
 
-        mRecyclerView.setHasFixedSize(true);
+        recyclerView.setHasFixedSize(true);
 
-        mLayoutManager = new LinearLayoutManager(MainActivity.getAppContext());
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        layoutManager = new LinearLayoutManager(getActivity());
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        RecyclerView.ItemDecoration itemDecoration = new DividerItemDecoration(MainActivity.getAppContext());
-        mRecyclerView.addItemDecoration(itemDecoration);
+        RecyclerView.ItemDecoration itemDecoration = new DividerItemDecoration(getActivity());
+        recyclerView.addItemDecoration(itemDecoration);
 
 
-        mAdapter = new InfoLineAdapter(linePosition, routePosition);
+        if (MainActivity.getData().asData()) {
+            adapter = new InfoLineAdapter(linePosition, routePosition);
+        } else {
+            new WaitForData(asNewDataAdapter());
+        }
 
-        mRecyclerView.setAdapter(mAdapter);
-        mAdapter.SetOnItemClickListener(new InfoLineAdapter.OnItemClickListener() {
+
+        recyclerView.setAdapter(adapter);
+        adapter.SetOnItemClickListener(new InfoLineAdapter.OnItemClickListener() {
 
             @Override
-            public void onItemClick(View v , int position) {
+            public void onItemClick(View v, int position) {
                 selectitem(position);
             }
         });
+        new WaitForData(asNewData()).execute();
 
         return view;
     }
@@ -104,27 +112,37 @@ public class InfoLineRoute extends Fragment {
 
     }
 
-    public void asNewData(){
-        if (isfirstime){
-            firstData();
-        }else{
-            refreshLayout.setRefreshing(false);
-            mAdapter.refresh();
-        }
+    private Runnable asNewDataAdapter (){
+        return new Runnable(){
+            @Override
+            public void run() {
+                adapter = new InfoLineAdapter(linePosition, routePosition);
+            }
+        };
+    }
+
+    private Runnable asNewData (){
+        return new Runnable(){
+            public void run(){
+                if (isfirstime){
+                    firstData();
+                }else{
+                    refreshLayout.setRefreshing(false);
+                    adapter.refresh();
+                }
+            }
+        };
     }
 
     public void firstData(){
         getActivity().setTitle("Ligne " + MainActivity.getData().getLine(linePosition).getLineId());
-        ProgressBarCircularIndeterminate progress = (ProgressBarCircularIndeterminate) getView().findViewById(R.id.progressBarCircularIndeterminate);
-        refreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.refresh_layout);
 
-        progress.setVisibility(View.GONE);
+        circularIndeterminate.setVisibility(View.GONE);
         refreshLayout.setVisibility(View.VISIBLE);
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                MainActivity.getData().getAll();
-                new WaitForData().execute();
+                new WaitForData(asNewData()).execute();
             }
         });
         refreshLayout.setColorSchemeResources(R.color.myPrimaryColor);
@@ -132,25 +150,4 @@ public class InfoLineRoute extends Fragment {
         isfirstime = false;
     }
 
-    class WaitForData extends AsyncTask<Void, Integer, String> {
-
-        @Override
-        protected String doInBackground(Void... unused) {
-            try {
-                while (!MainActivity.getData().asData()) {
-                    Thread.sleep(500);
-                }
-            } catch (InterruptedException t) {
-                // Gérer l'exception et terminer le traitement
-                return ("The sleep operation failed");
-            }
-            return ("return object when task is finished");
-        }
-
-        // Surcharge de la méthode onPostExecute (s'exécute dans la Thread de l'IHM)
-        @Override
-        protected void onPostExecute(String message) {
-            asNewData();
-        }
-    }
 }

@@ -11,4 +11,7 @@
     <string name="action_example">Example action</string>
 
     <string name="action_settings">Settings</string>
+
+    <string name="waiting_for_network">Waiting for Network… Retry in a few moment.</string>
+    <string name="new_data">It\'s OK now :).</string>
 </resources>

@@ -1,5 +1,6 @@
 package flying.grub.tamtime.Data;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.android.volley.Request;
@@ -29,15 +30,16 @@ public class DataParser {
     private ArrayList<Line> linesArrayList;
     private ArrayList<Stop> stopArrayList;
     private Boolean asData;
+    private Context context;
 
-    public DataParser() {
+    public DataParser(Context context) {
         stopArrayList = new ArrayList<>();
         asData = false;
+        this.context = context;
     }
 
     public void httpRequest(String url){
-        asData = false;
-        RequestQueue mRequestQueue = Volley.newRequestQueue(MainActivity.getAppContext());
+        RequestQueue mRequestQueue = Volley.newRequestQueue(context);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -56,6 +58,7 @@ public class DataParser {
     }
 
     public void setLines(String response) {
+        asData = false;
         linesArrayList = new ArrayList<>();
         try {
             allInfo = new JSONObject(response);
@@ -113,7 +116,11 @@ public class DataParser {
     }
 
     public Line getLine(int i){
-        return linesArrayList.get(i);
+        if (linesArrayList != null) {
+            return linesArrayList.get(i);
+        } else {
+            return null;
+        }
     }
 
     public boolean asData(){
