@@ -56,8 +56,7 @@ public class AllLinesFragment extends Fragment {
             }
             integer[i] = + count;
         }
-        int[] img = {R.drawable.l1, R.drawable.l2, R.drawable.l3, R.drawable.l4, R.drawable.l6, R.drawable.l7, R.drawable.l8, R.drawable.l9, R.drawable.l10,R.drawable.l11, R.drawable.l12, R.drawable.l13, R.drawable.l14, R.drawable.l15, R.drawable.l16, R.drawable.l17, R.drawable.l19};
-        mAdapter = new AllLinesAdapter(integer, img);
+        mAdapter = new AllLinesAdapter(integer);
         mRecyclerView.setAdapter(mAdapter);
         mAdapter.SetOnItemClickListener(new AllLinesAdapter.OnItemClickListener() {
 
@@ -83,6 +82,7 @@ public class AllLinesFragment extends Fragment {
             bundle.putInt("id", i);
             intent.putExtras(bundle);
             startActivity(intent);
+            //getActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         } else {
             Toast.makeText(getActivity(), getString(R.string.waiting_for_network), Toast.LENGTH_SHORT).show();
             new WaitForData(asNewData()).execute();

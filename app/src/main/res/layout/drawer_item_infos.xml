@@ -4,7 +4,7 @@
     android:layout_width="fill_parent"
     android:layout_height="60dp"
     android:clickable="true"
-    android:background="?android:selectableItemBackground"
+    android:background="@drawable/drawer_back"
     android:id="@+id/element"
     android:paddingLeft="20dp"
     android:paddingRight="20dp">

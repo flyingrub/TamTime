@@ -18,7 +18,7 @@ public class WaitForData extends AsyncTask<Void, Integer, String> {
     @Override
     protected String doInBackground(Void... unused) {
         try {
-            MainActivity.getData().getAll();
+            //MainActivity.getData().getAll();
             while (!MainActivity.getData().asData()) {
                 Thread.sleep(500);
             }

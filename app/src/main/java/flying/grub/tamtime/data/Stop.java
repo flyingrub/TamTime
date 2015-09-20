@@ -1,73 +1,39 @@
 package flying.grub.tamtime.data;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
-import java.util.Collections;
 
-/**
- * Created by fly on 12/02/15.
- */
+
 public class Stop {
-    private int id;
     private String name;
-    private ArrayList<Line> linesArrayList;
-    private ArrayList<Integer> times;
+    private ArrayList<Line> linesList;
 
-    public Stop(JSONObject stop){
-        times =  new ArrayList<>();
-        linesArrayList = new ArrayList<>();
-        try {
-            this.id = stop.getInt("stop_id");
-            this.name = stop.getString("name");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+    public Stop(String name, Line line){
+        this.linesList = new ArrayList<Line>();
+        this.name = name;
+        this.linesList.add(line);
     }
 
-    public int getId() {
-        return id;
-    }
-
+    // Get
     public String getName() {
         return name;
     }
 
-    public String getTimes(int i){
-        String time;
-        try {
-            int min = (times.get(i) / 60);
-            if (min >= 60){
-                int hour = min /60;
-                min = min % 60;
-                time = hour + " h " + min + " min";
-            }else if (min < 0 ){
-                time = "A quai";
-            }else if (min == 0 ){
-                time = "Proche";
-            }else{
-                time = min + " min";
-            }
-            return time;
-        }catch (IndexOutOfBoundsException e){
-            return "-";
-        }
+    public ArrayList<Line> getLines() {
+        return this.linesList;
     }
 
+    // Add
     public void addLine(Line line){
-        linesArrayList.add(line);
+        if (!this.linesList.contains(line)) this.linesList.add(line);
     }
 
-    public void addTime(int aTimes){
-        times.add(aTimes);
-        Collections.sort(times);
-    }
-
-    @Override
+    // Test & Bullshit
     public String toString() {
-        return "Stop{" +
-                "name='" + name + '\'' +
-                '}';
+        String res = this.name + "\n";
+        for (Line line : linesList) {
+            res += "--- " + line + "\n";
+        }
+        return res;
     }
+
 }

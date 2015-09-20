@@ -13,7 +13,9 @@
     <color name="accentColor">#00bcd4</color>
 
     <color name="drawerBackground">#fafafa</color>
+    <color name="drawerBackgroundSelected">#eeeeee</color>
     <color name="windowBackground">#fafafa</color>
+    <color name="windowBackgroundSelected">#e0e0e0</color>
     <color name="textClearColor">#fafafa</color>
     <color name="textDarkColor">#424242</color>
     <color name="textDarkSelected">#424242</color>

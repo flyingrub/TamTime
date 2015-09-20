@@ -10,33 +10,43 @@ import com.android.volley.error.VolleyError;
 import com.android.volley.request.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import java.net.URL;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
-
-/**
- * Created by fly on 09/02/15.
- */
 public class DataParser {
 
-    private static final String TAG = DataParser.class.getSimpleName();
-    private static final String all = "http://www.tam-direct.com/webservice/data.php?pattern=getAll";
+    private final String JSON_PLAN = "http://www.tam-direct.com/webservice/data.php?pattern=getAll";
+    private final String JSON_THEOTIME = "http://www.bl00m.science/TamTimeData/allLines.json";// "http://www.tam-direct.com/webservice/data.php?pattern=getAll";
+    private final String JSON_REALTIME = "http://www.tam-direct.com/webservice/data.php?pattern=getDetails";
+    private ArrayList<Line> linesList;
+    private ArrayList<Stop> stopList;
+    private ArrayList<StopTimes> stpTimesList;
 
-    private JSONObject allInfo;
-    private ArrayList<Line> linesArrayList;
-    private ArrayList<Stop> stopArrayList;
+    public Boolean asData() {
+        return asData;
+    }
+
     private Boolean asData;
     private Context context;
-
-    public static DataParser data;
+    private static DataParser data;
 
     private DataParser(Context context) {
-        stopArrayList = new ArrayList<>();
+        this.stopList = new ArrayList<>();
+        this.linesList = new ArrayList<>();
+        this.stpTimesList = new ArrayList<>();
         asData = false;
         this.context = context;
+        try {
+            setUp();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     public static DataParser getDataParser(Context context) {
@@ -47,107 +57,164 @@ public class DataParser {
         }
     }
 
-    public void httpRequest(String url){
-        RequestQueue mRequestQueue = Volley.newRequestQueue(context);
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                setLines(response);
-
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.d("Data", "Erreur" + error);
-            }
-        });
-        stringRequest.setShouldCache(false);
-
-        mRequestQueue.add(stringRequest);
+    // HTTP GET request
+    private JSONArray getPlanJson() throws Exception {
+        URL request = new URL(JSON_PLAN);
+        Scanner scanner = new Scanner(request.openStream());
+        String response = scanner.useDelimiter("\\Z").next();
+        JSONObject allData = new JSONObject(response);
+        scanner.close();
+        return allData.getJSONArray("lines");
     }
 
-    public void setLines(String response) {
-        asData = false;
-        linesArrayList = new ArrayList<>();
-        try {
-            allInfo = new JSONObject(response);
+    public JSONObject getRealTimesJson() throws Exception { // Real times
+        URL request = new URL(JSON_REALTIME);
+        Scanner scanner = new Scanner(request.openStream());
+        String response = scanner.useDelimiter("\\Z").next();
+        scanner.close();
+        return new JSONObject(response);
+    }
 
-            for(int i = 0; i< 17; i++) {
-                if (i == 16) { i++;} // skip the L18
-                linesArrayList.add(new Line(allInfo.getJSONArray("lines").getJSONObject(i)));
+	// Setup toutes les instance nécéssaire
+	public void setUp() throws JSONException {
+		this.linesList = new ArrayList<Line>();
+		this.stopList = new ArrayList<Stop>();
+
+		try {
+			JSONArray linesInfoJson = this.getPlanJson();
+			JSONObject jsonLine;
+			for (int i=0; i<linesInfoJson.length(); i++) { // Parcour du Json et construction des lignes
+				jsonLine = linesInfoJson.getJSONObject(i);
+				Line curntLine = new Line(jsonLine.getInt("route_number"));
+
+				JSONArray jsonRoutesList = jsonLine.getJSONArray("routes"); // On récupère le Json des routes
+
+				Route curntRoute = null;
+				Stop curntStop;
+				String directionRoute;
+				StopTimes stpTimes;
+				for (int j=0; j<jsonRoutesList.length(); j++) {
+					if (jsonRoutesList.getJSONObject(j).getInt("stop_order") == 1) { // Si c'est un Arret n°1 alors on crée une nouvelle Route
+					    // Maybe dangerous d'initialiser dans un if (si le json n'a pas de stop n°1 alors ça plantera grave)
+					    curntRoute = new Route(jsonRoutesList.getJSONObject(j).getString("direction"), curntLine);
+					    curntLine.addRoute(curntRoute); // Et on l'ajoute a la ligne
+					}
+
+					curntStop = this.getStopByName(jsonRoutesList.getJSONObject(j).getString("stop_name")); // On regarde si l'Arret est déjà setup
+
+					if (curntStop == null) { // Si non alors on le crée avec la ligne
+					    curntStop = new Stop(jsonRoutesList.getJSONObject(j).getString("stop_name"), curntLine);
+					    this.addStop(curntStop); // On le référence au Data
+					} else {
+				    	curntStop.addLine(curntLine); // Si oui alors on lui ajoute ljuste a ligne
+					}
+					 // On add le stop a route via StopTimes
+					stpTimes = new StopTimes(curntRoute, curntStop, jsonRoutesList.getJSONObject(j).getInt("stop_id"));
+					this.addStpTimes(stpTimes);
+					curntRoute.addStopTimes(stpTimes);
+				}
+				this.addLine(curntLine);
+			}
+		} catch (Exception e) {
+		e.printStackTrace();
+		}
+	}
+
+    public void setTimes() {
+        StopTimes stpTimes;
+        try {
+            JSONObject timesJson = getRealTimesJson(); // On récupère aller et retour
+            JSONArray aller = timesJson.getJSONArray("aller");
+            JSONArray retour = timesJson.getJSONArray("retour");
+
+            for (int i=0; i < aller.length(); i++) { // Pour tout aller
+                stpTimes = this.getSrlByStopId(aller.getJSONArray(i).getInt(4)); // On récupère le RouteLinkStop
+                if (stpTimes != null) { // Si il existe on lui ajoute le time
+                    stpTimes.addRealTime(Integer.parseInt(aller.getJSONArray(i).get(5).toString()));
+                }
             }
-        } catch (JSONException e) {
+
+            for (int i=0; i < retour.length(); i++) {
+                stpTimes = this.getSrlByStopId(retour.getJSONArray(i).getInt(4));
+                if (stpTimes != null) {
+                    stpTimes.addRealTime(Integer.parseInt(retour.getJSONArray(i).get(5).toString()));
+                }
+            }
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        setTimes();
     }
 
-    public void setTimes(){
-        int stopId;
-        try {
-            JSONArray aller = allInfo.getJSONObject("details").getJSONArray("aller");
-            JSONArray retour = allInfo.getJSONObject("details").getJSONArray("retour");
-
-            for (int i=0; i < aller.length() ;i++){
-                stopId =  Integer.parseInt(aller.getJSONArray(i).get(4).toString());
-                if (getStop(stopId) != null){
-                    getStop(stopId).addTime(Integer.parseInt(aller.getJSONArray(i).get(5).toString()));
-                }
-
-            }
-            for (int i=0; i < retour.length() ;i++){
-                stopId =  Integer.parseInt(retour.getJSONArray(i).get(4).toString());
-                if (getStop(stopId) != null){
-                    getStop(stopId).addTime(Integer.parseInt(retour.getJSONArray(i).get(5).toString()));
-                }
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        asData = true;
-    }
-
+    // Add
     public void addStop(Stop s){
-        stopArrayList.add(s);
+        this.stopList.add(s);
     }
 
-    public Stop getStop(int id){
-        for (int i = 0; i< stopArrayList.size(); i++){
-            if (stopArrayList.get(i).getId() == id ){
-                return stopArrayList.get(i);
-            }
+    public void addLine(Line l) {
+        this.linesList.add(l);
+    }
+
+    public void addStpTimes(StopTimes srl) {
+        this.stpTimesList.add(srl);
+    }
+
+    // Get
+    public Line getLine(int i){
+        if (linesList != null) return linesList.get(i);
+        return null;
+    }
+
+    public Stop getStopByName(String name) {
+        for (Stop stp : this.stopList) {
+            if (stp.getName().equals(name)) return stp;
         }
         return null;
     }
 
-    public ArrayList<Stop> getStopArrayList() {
-        return stopArrayList;
-    }
-
-    public void getAll(){
-        httpRequest(all);
-    }
-
-    public Line getLine(int i){
-        if (linesArrayList != null) {
-            return linesArrayList.get(i);
-        } else {
-            return null;
+    public StopTimes getSrlByStopId(int stopId) {
+        for (StopTimes srl : this.stpTimesList) {
+            if (srl.getStopId() == stopId) return srl;
         }
+        return null;
     }
 
-    public ArrayList<Stop> searchInStops(String search) {
-        ArrayList<Stop> res = new ArrayList<>();
-        for (Stop s : stopArrayList) {
-            if (s.getName().toLowerCase().contains(search.toLowerCase())) {
-                res.add(s);
+    // Test & Bullshit
+    public void printLines() {
+        String resStop;
+        Stop curntStop;
+        for (Line l : this.linesList) {
+            System.out.println(l);
+            for (Route r : l.getRoutes()) {
+                System.out.println("   Direction : " + r.getDirection());
+                for (StopTimes srl : r.getStpTimes()) {
+                    curntStop = srl.getStop();
+                    resStop = "      " + curntStop.getName() + " ";
+                    for (Line li : curntStop.getLines()) {
+                        resStop += "(" + li.getLineId() + ")";
+                    }
+                    resStop += srl.getTimes(srl.getNextTimes(3));
+                    System.out.println(resStop);
+                }
             }
         }
-        return res;
     }
 
-    public boolean asData(){
-        return asData;
+    public void printStops() {
+        int i=0;
+        for (Stop s : this.stopList) {
+            System.out.println(s);
+            i++;
+        }
+        System.out.println("Nbr de Stop : " + i);
+    }
+
+    public void printStpTimes() {
+        int i=0;
+        for (StopTimes s : this.stpTimesList) {
+            System.out.println(s);
+            i++;
+        }
+        System.out.println("Nbr StopTimes : " + i);
     }
 
 }

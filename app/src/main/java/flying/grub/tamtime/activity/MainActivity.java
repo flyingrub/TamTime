@@ -32,7 +32,6 @@ public class MainActivity extends AppCompatActivity implements DrawerCallback{
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         dataParser = DataParser.getDataParser(this);
         Log.d("data", "" + dataParser);
-        dataParser.getAll();
 
         navigationDrawerFragment = (NavigationDrawerFragment) getFragmentManager().findFragmentById(R.id.fragment_drawer);
         navigationDrawerFragment.setup(R.id.fragment_drawer, (DrawerLayout) findViewById(R.id.drawer), mToolbar);

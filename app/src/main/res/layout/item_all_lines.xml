@@ -3,6 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="60dp"
+    android:clickable="true"
+    android:background="@drawable/drawer_back"
     android:id="@+id/element"
     android:paddingLeft="20dp"
     android:paddingRight="20dp">

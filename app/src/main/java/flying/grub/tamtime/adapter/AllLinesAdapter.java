@@ -24,6 +24,11 @@ public class AllLinesAdapter extends RecyclerView.Adapter<AllLinesAdapter.ViewHo
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
+    public AllLinesAdapter(int[] myDataset) {
+        mDataset = myDataset;
+    }
+
+    // Provide a suitable constructor (depends on the kind of dataset)
     public AllLinesAdapter(int[] myDataset, int[] myImageset) {
         mDataset = myDataset;
         mImageset = myImageset;
@@ -49,7 +54,7 @@ public class AllLinesAdapter extends RecyclerView.Adapter<AllLinesAdapter.ViewHo
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
         holder.mTextView.setText("Ligne " + mDataset[position]);
-        holder.mImageView.setImageResource(mImageset[position]);
+        //holder.mImageView.setImageResource(mImageset[position]);
     }
 
                 // Return the size of your dataset (invoked by the layout manager)
