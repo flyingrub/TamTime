@@ -35,4 +35,10 @@ public class Route {
         return stopArrayList;
     }
 
+    @Override
+    public String toString() {
+        return "Route{" +
+                "direction='" + direction + '\'' +
+                '}';
+    }
 }

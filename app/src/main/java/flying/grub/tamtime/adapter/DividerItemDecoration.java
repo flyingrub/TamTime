@@ -19,6 +19,9 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
     @Override
     public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
         LinearLayout l = (LinearLayout) parent.findViewById(R.id.element);
+        if (l == null) {
+            return;
+        }
         int left = l.getPaddingLeft();
         int right = parent.getWidth() - l.getPaddingRight();
 

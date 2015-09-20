@@ -22,6 +22,7 @@ import java.util.ArrayList;
  */
 public class DataParser {
 
+    private static final String TAG = DataParser.class.getSimpleName();
     private static final String all = "http://www.tam-direct.com/webservice/data.php?pattern=getAll";
 
     private JSONObject allInfo;
@@ -30,10 +31,20 @@ public class DataParser {
     private Boolean asData;
     private Context context;
 
-    public DataParser(Context context) {
+    public static DataParser data;
+
+    private DataParser(Context context) {
         stopArrayList = new ArrayList<>();
         asData = false;
         this.context = context;
+    }
+
+    public static DataParser getDataParser(Context context) {
+        if (data == null) {
+            return new DataParser(context);
+        } else {
+            return data;
+        }
     }
 
     public void httpRequest(String url){
@@ -109,6 +120,10 @@ public class DataParser {
         return null;
     }
 
+    public ArrayList<Stop> getStopArrayList() {
+        return stopArrayList;
+    }
+
     public void getAll(){
         httpRequest(all);
     }
@@ -121,11 +136,18 @@ public class DataParser {
         }
     }
 
+    public ArrayList<Stop> searchInStops(String search) {
+        ArrayList<Stop> res = new ArrayList<>();
+        for (Stop s : stopArrayList) {
+            if (s.getName().toLowerCase().contains(search.toLowerCase())) {
+                res.add(s);
+            }
+        }
+        return res;
+    }
+
     public boolean asData(){
         return asData;
     }
-
-
-
 
 }

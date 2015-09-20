@@ -63,4 +63,11 @@ public class Stop {
         times.add(aTimes);
         Collections.sort(times);
     }
+
+    @Override
+    public String toString() {
+        return "Stop{" +
+                "name='" + name + '\'' +
+                '}';
+    }
 }

@@ -99,7 +99,7 @@ public class SlidingTabLayout extends HorizontalScrollView {
         mTitleOffset = (int) (TITLE_OFFSET_DIPS * getResources().getDisplayMetrics().density);
 
         mTabStrip = new SlidingTabStrip(context);
-        mTabStrip.setBackgroundColor(getResources().getColor(R.color.myPrimaryColor));
+        mTabStrip.setBackgroundColor(getResources().getColor(R.color.primaryColor));
         addView(mTabStrip, LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
     }
 
@@ -175,7 +175,7 @@ public class SlidingTabLayout extends HorizontalScrollView {
         textView.setGravity(Gravity.CENTER);
         textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, TAB_VIEW_TEXT_SIZE_SP);
         textView.setId(i);
-        textView.setTextColor(getResources().getColorStateList(R.color.tab_text_selector));
+        textView.setTextColor(getResources().getColor(R.color.textClearColor));
 
         TypedValue outValue = new TypedValue();
         getContext().getTheme().resolveAttribute(android.R.attr.selectableItemBackground,
@@ -214,7 +214,7 @@ public class SlidingTabLayout extends HorizontalScrollView {
             }
 
             tabTitleView.setText(adapter.getPageTitle(i));
-            tabTitleView.setTextColor(getResources().getColor(R.color.myTextPrimaryColor));
+            tabTitleView.setTextColor(getResources().getColor(R.color.textClearColor));
             tabView.setOnClickListener(tabClickListener);
 
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(

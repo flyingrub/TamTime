@@ -72,6 +72,10 @@ public class Line {
         return null;
     }
 
+    public ArrayList<Stop> getStopArrayList() {
+        return stopArrayList;
+    }
+
     public Route getRoute(int i){
         return routeArrayList.get(i);
     }

@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.support.v4.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,10 +12,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import flying.grub.tamtime.activity.OneLineActivity;
 import flying.grub.tamtime.adapter.AllLinesAdapter;
 import flying.grub.tamtime.adapter.DividerItemDecoration;
 import flying.grub.tamtime.data.WaitForData;
-import flying.grub.tamtime.activity.InfoLineActivity;
 import flying.grub.tamtime.activity.MainActivity;
 import flying.grub.tamtime.R;
 
@@ -25,7 +24,6 @@ import flying.grub.tamtime.R;
  */
 public class AllLinesFragment extends Fragment {
 
-    private FragmentActivity myContext;
     private RecyclerView mRecyclerView;
     private AllLinesAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
@@ -33,9 +31,9 @@ public class AllLinesFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.recycler_view, container, false);
+        View view = inflater.inflate(R.layout.view_recycler, container, false);
 
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.my_recycler_view);
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
 
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
@@ -75,13 +73,12 @@ public class AllLinesFragment extends Fragment {
 
     @Override
     public void onAttach(Activity activity) {
-        myContext=(FragmentActivity) activity;
         super.onAttach(activity);
     }
 
     public void selectitem(int i){
         if (MainActivity.getData().asData()) {
-            Intent intent = new Intent(getActivity(), InfoLineActivity.class);
+            Intent intent = new Intent(getActivity(), OneLineActivity.class);
             Bundle bundle = new Bundle();
             bundle.putInt("id", i);
             intent.putExtras(bundle);

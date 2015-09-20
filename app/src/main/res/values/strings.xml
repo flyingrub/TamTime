@@ -1,14 +1,13 @@
 <resources>
     <string name="app_name">TamTime</string>
 
-    <string name="lines">Lignes</string>
-    <string name="stop">Arrêts</string>
-    <string name="fav">Favoris</string>
+    <string name="all_infos">Infos</string>
+    <string name="all_lines">Lignes</string>
+    <string name="all_stops">Arrêts</string>
+    <string name="all_favs">Favoris</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-
-    <string name="action_example">Example action</string>
 
     <string name="action_settings">Settings</string>
 

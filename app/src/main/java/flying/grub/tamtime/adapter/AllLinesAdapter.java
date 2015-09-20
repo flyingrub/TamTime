@@ -16,7 +16,7 @@ public class AllLinesAdapter extends RecyclerView.Adapter<AllLinesAdapter.ViewHo
     public OnItemClickListener mItemClickListener;
 
     public interface OnItemClickListener {
-        public void onItemClick(View view , int position);
+        void onItemClick(View view , int position);
     }
 
     public void SetOnItemClickListener(final OnItemClickListener mItemClickListener) {
@@ -35,7 +35,7 @@ public class AllLinesAdapter extends RecyclerView.Adapter<AllLinesAdapter.ViewHo
                                                    int viewType) {
         // create a new view
         View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.all_lines_item, parent, false);
+                .inflate(R.layout.item_all_lines, parent, false);
 
         // set the view's size, margins, paddings and layout parameters
         ViewHolder vh = new ViewHolder(v);
@@ -58,8 +58,6 @@ public class AllLinesAdapter extends RecyclerView.Adapter<AllLinesAdapter.ViewHo
         return mDataset.length;
     }
 
-
-
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         public TextView mTextView;
@@ -73,8 +71,6 @@ public class AllLinesAdapter extends RecyclerView.Adapter<AllLinesAdapter.ViewHo
             mImageView = (ImageView) itemView.findViewById(R.id.icon);
             linearLayout = (LinearLayout) itemView.findViewById(R.id.element);
             v.setOnClickListener(this);
-
-
         }
 
         @Override
