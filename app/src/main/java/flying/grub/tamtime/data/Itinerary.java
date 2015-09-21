@@ -1,4 +1,4 @@
-package flying.grub.tamtime.data;
+package flying.grub.tamtime.data;//TODO : Change the Start/Stop by 2
 
 import java.util.ArrayList;
 
@@ -91,18 +91,25 @@ public class Itinerary {
             curntRoutesList.clear();
         }
     }
-
+    // Need to handle the case when getLength() return 0, which means TODO
+    // that we can't order by time length and we must found an other way.
     private static ArrayList<Itinerary> orderItineraryList(ArrayList<Itinerary> startList) {
         ArrayList<Itinerary> resList = new ArrayList<Itinerary>();
         int i=0;
         for (Itinerary curntIt : startList) {
-            while (i<resList.size() && resList.get(i).nbrStop <= curntIt.nbrStop) {
+            while (i<resList.size() && curntIt.getLength() <= resList.get(i).getLength()) {
                 i++;
             }
             resList.add(i, curntIt);
             i=0;
         }
         return resList;
+    }
+
+    public int getLength() {
+        int res;
+        return 0;
+
     }
 
     // Test & Bullshit

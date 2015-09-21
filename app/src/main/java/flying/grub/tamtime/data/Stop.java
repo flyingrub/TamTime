@@ -1,17 +1,22 @@
 package flying.grub.tamtime.data;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.Collections;
+
+import flying.grub.tamtime.data.Line;
 
 
 public class Stop {
     private String name;
     private ArrayList<Line> linesList;
-
     private ArrayList<StopTimes> stopTimeList;
 
     public Stop(String name, Line line){
-        this.linesList = new ArrayList<>();
-        this.stopTimeList = new ArrayList<>();
+        this.linesList = new ArrayList<Line>();
+        this.stopTimeList = new ArrayList<StopTimes>();
         this.name = name;
         this.linesList.add(line);
     }
@@ -25,6 +30,16 @@ public class Stop {
         return this.linesList;
     }
 
+    // Add
+    public void addLine(Line line){
+        if (!this.linesList.contains(line)) this.linesList.add(line);
+    }
+
+    public void addStpTim(StopTimes stpTim) {
+        this.stopTimeList.add(stpTim);
+    }
+
+
     public ArrayList<StopTimes> getStopTimeForLine(int lineId) {
         ArrayList<StopTimes> res = new ArrayList<>();
         for (StopTimes s : stopTimeList) {
@@ -34,15 +49,6 @@ public class Stop {
             }
         }
         return res;
-    }
-
-    // Add
-    public void addLine(Line line){
-        if (!this.linesList.contains(line)) this.linesList.add(line);
-    }
-
-    public void addStopTime(StopTimes stpTim) {
-        this.stopTimeList.add(stpTim);
     }
 
     // Test & Bullshit

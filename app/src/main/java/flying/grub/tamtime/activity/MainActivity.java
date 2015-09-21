@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.Menu;
 
 import flying.grub.tamtime.data.DataParser;
+import flying.grub.tamtime.data.FavoriteStops;
 import flying.grub.tamtime.fragment.AllLinesFragment;
 import flying.grub.tamtime.fragment.AllStopFragment;
 import flying.grub.tamtime.fragment.NavigationDrawerFragment;
@@ -75,6 +76,9 @@ public class MainActivity extends AppCompatActivity implements DrawerCallback {
                 transaction.addToBackStack("");
                 transaction.commit();
                 break;
+            case 3:
+                Intent intent = new Intent(this, FavoriteActivity.class);
+                startActivity(intent);
         }
     }
 }

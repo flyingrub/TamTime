@@ -6,10 +6,16 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 import flying.grub.tamtime.R;
+import flying.grub.tamtime.adapter.AllStopAdapter;
+import flying.grub.tamtime.data.FavoriteStops;
 import flying.grub.tamtime.data.Stop;
 import flying.grub.tamtime.fragment.LineRouteFragment;
 import flying.grub.tamtime.fragment.StopRouteFragment;
@@ -22,6 +28,8 @@ public class OneStopActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private ViewPager viewPager;
     private SlidingTabLayout slidingTabLayout;
+
+    private FavoriteStops favoriteStops;
 
     private String stopName;
     private Stop stop;
@@ -49,6 +57,7 @@ public class OneStopActivity extends AppCompatActivity {
 
         viewPager.setAdapter(new OneStopPageAdapter(getSupportFragmentManager()));
 
+        favoriteStops = new FavoriteStops(getApplicationContext());
 
         slidingTabLayout = new SlidingTabLayout(getApplicationContext());
         slidingTabLayout = (SlidingTabLayout) findViewById(R.id.sliding_tabs);
@@ -56,6 +65,35 @@ public class OneStopActivity extends AppCompatActivity {
         slidingTabLayout.setDividerColors(getResources().getColor(R.color.primaryColor));
         slidingTabLayout.setViewPager(viewPager);
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.favorites_menu, menu);
+        MenuItem item = menu.getItem(0);
+        if (favoriteStops.isInFav(stopName)) {
+            item.setIcon(R.drawable.ic_star_white_36dp);
+        } else {
+            item.setIcon(R.drawable.ic_star_border_white_36dp);
+        }
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_favorite:
+                if (favoriteStops.isInFav(stopName)) {
+                    favoriteStops.remove(stopName);
+                    item.setIcon(R.drawable.ic_star_border_white_36dp);
+                } else {
+                    favoriteStops.add(stopName);
+                    item.setIcon(R.drawable.ic_star_white_36dp);
+                }
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     public class OneStopPageAdapter extends FragmentStatePagerAdapter {
