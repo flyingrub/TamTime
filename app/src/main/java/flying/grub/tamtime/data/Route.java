@@ -1,7 +1,9 @@
-package flying.grub.tamtime.data;
-
+import org.json.JSONObject;
+import org.json.JSONArray;
+import org.json.JSONException;
 
 import java.util.ArrayList;
+
 
 public class Route {
     private Line line;
@@ -9,7 +11,7 @@ public class Route {
     private ArrayList<StopTimes> stpTimes;
 
     public Route(String direction, Line line) {
-        this.stpTimes = new ArrayList<>();
+        this.stpTimes = new ArrayList<StopTimes>();
         this.line = line;
         this.direction = direction;
     }
@@ -21,7 +23,7 @@ public class Route {
 
     // Get
     public ArrayList<Stop> getStops() {
-        ArrayList<Stop> stopList = new ArrayList<>();
+        ArrayList<Stop> stopList = new ArrayList<Stop>();
         for (StopTimes lsr : this.stpTimes) {
             stopList.add(lsr.getStop());
         }
