@@ -1,6 +1,7 @@
 package flying.grub.tamtime.adapter;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,11 +51,11 @@ public class OneRouteAdapter extends RecyclerView.Adapter<OneRouteAdapter.ViewHo
     public void onBindViewHolder(ViewHolder holder, final int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-        StopTimes s = stops.get(position);
-        holder.mStop.setText(s.getStop().getName());
-        holder.tps1.setText(s.getTimes(1));
-        holder.tps2.setText(s.getTimes(2));
-        holder.tps3.setText(s.getTimes(3));
+        StopTimes stop = stops.get(position);
+        holder.mStop.setText(stop.getStop().getName());
+        holder.tps1.setText(stop.getTimes(0));
+        holder.tps2.setText(stop.getTimes(1));
+        holder.tps3.setText(stop.getTimes(2));
     }
 
     // Return the size of your dataset (invoked by the layout manager)

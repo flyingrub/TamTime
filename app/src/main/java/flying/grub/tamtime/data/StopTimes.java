@@ -56,56 +56,57 @@ public class StopTimes {
 
     // Get
     public String getTimes(int i) {
-        String time;
         try {
-            int min = (this.realTimesList.get(i) / 60);
-            if (min >= 60) {
-                int hour = min /60;
-                min = min % 60;
-                time = hour + "h " + min + "min";
-            } else if (min < 0 ) {
-                time = "A quai";
-            } else if (min == 0 ) {
-                time = "Proche";
-            } else {
-                time = min + "min";
-            }
-            return time;
+            return parseTimeInt(this.realTimesList.get(i), false);
         } catch (IndexOutOfBoundsException e) {
             return "-";
         }
     }
 
-    public String getTimes(ArrayList<Integer> intab) {
-        String time, res = " ";
-        int min, hour;
+    public String parseTimeInt(int timeInt, boolean isTheoritical) {
+        String time;
+        int min = (timeInt / 60);
+        if (min >= 60) {
+            int hour = min /60;
+            min = min % 60;
+            time = hour + "h " + min + "min";
+        } else if (min < 0 ) {
+            time = "A quai";
+        } else if (min == 0 ) {
+            time = "Proche";
+        } else {
+            time = min + "min";
+        }
+        if (isTheoritical) {
+            time += "*";
+        }
+        return time;
+    }
 
-        for (Integer i : intab) {
-            if (i != null) {
-                min = (i / 60);
+    // Return un ArrayList de string
+    public ArrayList<String> getNextTimeString(int nbr) {
+        ArrayList<String> res = new ArrayList<>();// Gros nbr gros tableau
+        int i=0;
 
-                if (min >= 60) {
-                    hour = min /60;
-                    min = min % 60;
-                    time = hour + "h " + min + "min";
-                } else if (min < 0 ) {
-                    time = "A quai";
-                } else if (min == 0 ) {
-                    time = "Proche";
-                } else {
-                    time = min + "min";
-                }
-                res += time + " - ";
-            } else {
-                res += "|";
+        while (i<nbr && i<this.realTimesList.size()) {
+            res.add(parseTimeInt(this.realTimesList.get(i), false));
+            i++;
+        }
+        res.add(null);
+        // Arranger bien les times (ordre)
+        if (i<nbr) {
+            i++;
+            for (Integer integer : this.getNextTheoricTimes(nbr - i, i)) {
+                res.add(parseTimeInt(integer, true));
             }
         }
+
         return res;
     }
 
     // Return un ArrayList d'Integer avec un null pour séparer les réel des théorique
     public ArrayList<Integer> getNextTimes(int nbr) {
-        ArrayList<Integer> res = new ArrayList<Integer>();// Gros nbr gros tableau
+        ArrayList<Integer> res = new ArrayList<>();
         int i=0;
 
         while (i<nbr && i<this.realTimesList.size()) {
@@ -116,14 +117,15 @@ public class StopTimes {
         // Arranger bien les times (ordre)
         if (i<nbr) {
             i++;
-            this.getNextTheoricTimes(nbr-i, i, res);
+            res.addAll(this.getNextTheoricTimes(nbr-i, i));
         }
 
         return res;
     }
 
     // Work with getNextTimes
-    private void getNextTheoricTimes(int nbr, int jumpN, ArrayList<Integer> res) {
+    private ArrayList<Integer> getNextTheoricTimes(int nbr, int jumpN) {
+        ArrayList<Integer> res = new ArrayList<>();
         Calendar curntDate = Calendar.getInstance();
         int i=0, j=0;
         int inMsec;
@@ -136,6 +138,7 @@ public class StopTimes {
             }
             i++;
         }
+        return res;
     }
 
     public ArrayList<String> getAllRealTimes() {

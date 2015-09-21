@@ -220,43 +220,4 @@ public class DataParser {
         return res;
     }
 
-    // Test & Bullshit \\
-    public void printLines() {
-        String resStop;
-        Stop curntStop;
-        for (Line l : this.linesList) {
-            System.out.println(l);
-            for (Route r : l.getRoutes()) {
-                System.out.println("   Direction : " + r.getDirection());
-                for (StopTimes srl : r.getStpTimes()) {
-                    curntStop = srl.getStop();
-                    resStop = "      " + curntStop.getName() + " ";
-                    for (Line li : curntStop.getLines()) {
-                        resStop += "(" + li.getLineId() + ")";
-                    }
-                    resStop += srl.getTimes(srl.getNextTimes(3));
-                    System.out.println(resStop);
-                }
-            }
-        }
-    }
-
-    public void printStops() {
-        int i=0;
-        for (Stop s : this.stopList) {
-            System.out.println(s);
-            i++;
-        }
-        System.out.println("Nbr de Stop : " + i);
-    }
-
-    public void printStpTimes() {
-        int i=0;
-        for (StopTimes s : this.stpTimesList) {
-            System.out.println(s);
-            i++;
-        }
-        System.out.println("Nbr StopTimes : " + i);
-    }
-
 }

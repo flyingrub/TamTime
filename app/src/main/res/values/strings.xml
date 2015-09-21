@@ -7,11 +7,12 @@
     <string name="all_favs">Favoris</string>
 
     <string name="one_line">Ligne</string>
+    <string name="no_favs">Pas de Favoris</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
-    <string name="action_settings">Settings</string>
+    <string name="settings">Paramètres</string>
 
     <string name="waiting_for_network">Waiting for Network… Retry in a few moment.</string>
     <string name="new_data">It\'s OK now :).</string>

@@ -47,9 +47,9 @@ public class OneStopAdapter extends RecyclerView.Adapter<OneStopAdapter.ViewHold
     public void onBindViewHolder(ViewHolder holder, int position) {
         StopTimes stop = stopTimes.get(position);
         holder.direction.setText(stop.getRoute().getDirection());
-        holder.tps1.setText(stop.getTimes(1));
-        holder.tps2.setText(stop.getTimes(2));
-        holder.tps3.setText(stop.getTimes(3));
+        holder.tps1.setText(stop.getTimes(0));
+        holder.tps2.setText(stop.getTimes(1));
+        holder.tps3.setText(stop.getTimes(2));
     }
 
     @Override
