@@ -96,13 +96,17 @@ public class Itinerary {
         ArrayList<Itinerary> resList = new ArrayList<Itinerary>();
         int i=0;
         for (Itinerary curntIt : startList) {
-            while (i<resList.size() && resList.get(i).nbrStop <= curntIt.nbrStop) {
+            while (i<resList.size() && curntIt.getLength() <= resList.get(i).getLength()) {
                 i++;
             }
             resList.add(i, curntIt);
             i=0;
         }
         return resList;
+    }
+
+    public int getLength() {
+        return start.howManyTimesTo(stop);
     }
 
     // Test & Bullshit

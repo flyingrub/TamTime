@@ -6,6 +6,7 @@ import java.util.Calendar;
 import java.text.SimpleDateFormat;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 
 public class StopTimes {
     private Stop stop;
@@ -18,95 +19,117 @@ public class StopTimes {
         this.route = route;
         this.stop = stop;
         this.stopId = stopId;
-        this.timesList = new ArrayList<>();
-        this.realTimesList = new ArrayList<>();
-        this.stop.addStopTime(this);
+        this.timesList = new ArrayList<Calendar>();
+        this.realTimesList = new ArrayList<Integer>();
+        stop.addStpTim(this);
     }
 
     public StopTimes(Route route, Stop stop) {
         this(route, stop, 0);
     }
 
+    // end dit être un StopTimes situé après this sur la même route
+    public int howManyTimesTo(StopTimes end) {
+        int res = this.timesList.get(1).compareTo(end.timesList.get(1));
+        return res / 1000 / 60;
+    }
+
+    public void resetRealTimes() {
+        this.realTimesList.clear();
+    }
+
     // Add
-    public void addTime(String time) throws Exception { // String to Calendar
+    private void addTime(String time) throws Exception { // String to Calendar
         Calendar res = Calendar.getInstance();
 
         if (time.contains("*")) time.replace("*", ""); // Handle *
 
-        if (!time.equals("|")) {
+        String[] splt = time.split(" ");
+
+        if (!splt[2].equals("|")) {
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy HH:mm");
-            res.setTime(sdf.parse(time));
+            res.setTime(sdf.parse(splt[0] + " " + splt[2]));
+            res.add(Calendar.DAY_OF_MONTH, Integer.parseInt(splt[1]));
         } else res = null;
 
         this.timesList.add(res);
     }
 
     public void addRealTime(int time){
+        if (time >= 1440) time -= 1440;
         this.realTimesList.add(time);
         Collections.sort(this.realTimesList);
     }
 
-    public void setTheoricalTimes(JSONArray timesJson) throws Exception {
+    public void setTheoTimes(JSONArray timesJson, String date) throws Exception {
         this.timesList.clear(); // Vide les times dèjà set si il y a
 
         for (int i=0; i<timesJson.length(); i++) {
-            this.addTime(timesJson.getString(i));
+            this.addTime(date + " " + timesJson.getString(i));
         }
     }
 
     // Get
+    public static String toTimeString(int timeInt) {
+        String timeStr;
+        int min = (timeInt / 60);
+        if (min >= 60) {
+            int hour = min /60;
+            min = min % 60;
+            timeStr = hour + "h" + min + "min";
+        } else if (min < 0 ) {
+            timeStr = "A quai";
+        } else if (min == 0 ) {
+            timeStr = "Proche";
+        } else {
+            timeStr = min + "min";
+        }
+        return timeStr;
+    }
+
     public String getTimes(int i) {
         try {
-            return parseTimeInt(this.realTimesList.get(i), false);
+            return toTimeString(this.realTimesList.get(i));
         } catch (IndexOutOfBoundsException e) {
             return "-";
         }
     }
 
-    public String parseTimeInt(int timeInt, boolean isTheoritical) {
-        String time;
-        int min = (timeInt / 60);
-        if (min >= 60) {
-            int hour = min /60;
-            min = min % 60;
-            time = hour + "h " + min + "min";
-        } else if (min < 0 ) {
-            time = "A quai";
-        } else if (min == 0 ) {
-            time = "Proche";
-        } else {
-            time = min + "min";
+    public String getTimes(ArrayList<Integer> intab) {
+        String time, res = " ";
+        int min, hour;
+
+        for (Integer i : intab) {
+            if (i != null) {
+                res += toTimeString(i) + " - ";
+            } else res += "|";
         }
-        if (isTheoritical) {
-            time += "*";
-        }
-        return time;
+        return res;
     }
-
-    // Return un ArrayList de string
-    public ArrayList<String> getNextTimeString(int nbr) {
-        ArrayList<String> res = new ArrayList<>();// Gros nbr gros tableau
-        int i=0;
-
-        while (i<nbr && i<this.realTimesList.size()) {
-            res.add(parseTimeInt(this.realTimesList.get(i), false));
-            i++;
-        }
-        res.add(null);
-        // Arranger bien les times (ordre)
-        if (i<nbr) {
-            i++;
-            for (Integer integer : this.getNextTheoricTimes(nbr - i, i)) {
-                res.add(parseTimeInt(integer, true));
+    //Return les nbr prochain passage du tram/bus dans un ArrayList de string avec une * pour les horraires théorique
+    public ArrayList<String> getStrNextTimes(int nbr) {
+        ArrayList<String> res = new ArrayList<>();
+        ArrayList<Integer> times = this.getNextTimes(nbr);
+        boolean theo = false;
+        for (Integer t : times) {
+            if (t == null) {
+                theo = true;
+            } else {
+                if (!theo) {
+                    res.add(toTimeString(t));
+                } else {
+                    res.add(toTimeString(t) + "*");
+                }
             }
-        }
 
+
+        }
         return res;
     }
 
     // Return un ArrayList d'Integer avec un null pour séparer les réel des théorique
     public ArrayList<Integer> getNextTimes(int nbr) {
-        ArrayList<Integer> res = new ArrayList<>();
+        ArrayList<Integer> res = new ArrayList<Integer>();// Gros nbr gros tableau
         int i=0;
 
         while (i<nbr && i<this.realTimesList.size()) {
@@ -117,15 +140,14 @@ public class StopTimes {
         // Arranger bien les times (ordre)
         if (i<nbr) {
             i++;
-            res.addAll(this.getNextTheoricTimes(nbr-i, i));
+            this.getNextTheoricTimes(nbr-i, i, res);
         }
 
         return res;
     }
 
     // Work with getNextTimes
-    private ArrayList<Integer> getNextTheoricTimes(int nbr, int jumpN) {
-        ArrayList<Integer> res = new ArrayList<>();
+    private void getNextTheoricTimes(int nbr, int jumpN, ArrayList<Integer> res) {
         Calendar curntDate = Calendar.getInstance();
         int i=0, j=0;
         int inMsec;
@@ -138,7 +160,6 @@ public class StopTimes {
             }
             i++;
         }
-        return res;
     }
 
     public ArrayList<String> getAllRealTimes() {

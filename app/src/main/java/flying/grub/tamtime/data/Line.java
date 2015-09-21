@@ -1,7 +1,11 @@
 package flying.grub.tamtime.data;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
+
 
 public class Line {
     int lineId;
@@ -9,7 +13,7 @@ public class Line {
 
     public Line(int lineId) {
         this.lineId = lineId;
-        this.routesList = new ArrayList<>();
+        this.routesList = new ArrayList<Route>();
     }
 
     // Get
