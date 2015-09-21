@@ -8,6 +8,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
+import flying.grub.tamtime.data.Line;
 import flying.grub.tamtime.fragment.LineRouteFragment;
 import flying.grub.tamtime.R;
 import flying.grub.tamtime.slidingTab.SlidingTabLayout;
@@ -20,6 +21,8 @@ public class OneLineActivity extends AppCompatActivity {
     private SlidingTabLayout slidingTabLayout;
 
     private int linePosition;
+
+    private Line line;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +38,7 @@ public class OneLineActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
+        line = MainActivity.getData().getLine(linePosition);
 
         viewPager = (ViewPager) findViewById(R.id.viewpager);
 
@@ -55,19 +59,18 @@ public class OneLineActivity extends AppCompatActivity {
 
 
     public class OneLinePageAdapter extends FragmentStatePagerAdapter {
-        public int count = MainActivity.getData().getLine(linePosition).getRouteCount();
         public OneLinePageAdapter(FragmentManager fm) {
             super(fm);
         }
 
         @Override
         public CharSequence getPageTitle(int routePosition) {
-            return MainActivity.getData().getLine(linePosition).getRoute(routePosition).getDirection();
+            return line.getRoutes().get(routePosition).getDirection();
         }
 
         @Override
         public int getCount() {
-            return this.count;
+            return line.getRouteCount();
         }
 
         @Override

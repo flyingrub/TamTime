@@ -9,7 +9,7 @@ public class Line {
 
     public Line(int lineId) {
         this.lineId = lineId;
-        this.routesList = new ArrayList<Route>();
+        this.routesList = new ArrayList<>();
     }
 
     // Get

@@ -9,7 +9,7 @@
         <item name="android:textColorPrimary">@color/textClearColor</item>
         <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
 
-        <item name="android:windowBackground">@color/windowBackground</item>
+        <!--<item name="android:windowBackground">@color/windowBackground</item>-->
     </style>
 
     <style name="DrawerArrowStyle" parent="Widget.AppCompat.DrawerArrowToggle">
@@ -17,8 +17,8 @@
         <item name="color">@android:color/white</item>
     </style>
 
-    <style name="ToolBarStyle" parent="">
+    <style name="ToolBarStyle" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
         <item name="android:textColor">@color/textClearColor</item>
-        <item name="theme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
+        <item name="colorControlNormal">@android:color/white</item>
     </style>
 </resources>

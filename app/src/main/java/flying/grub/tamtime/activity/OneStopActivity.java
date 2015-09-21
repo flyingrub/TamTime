@@ -10,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 
 import flying.grub.tamtime.R;
+import flying.grub.tamtime.data.Stop;
 import flying.grub.tamtime.fragment.LineRouteFragment;
 import flying.grub.tamtime.fragment.StopRouteFragment;
 import flying.grub.tamtime.slidingTab.SlidingTabLayout;
@@ -22,7 +23,8 @@ public class OneStopActivity extends AppCompatActivity {
     private ViewPager viewPager;
     private SlidingTabLayout slidingTabLayout;
 
-    private int stopID;
+    private String stopName;
+    private Stop stop;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,8 +32,8 @@ public class OneStopActivity extends AppCompatActivity {
         setContentView(R.layout.view_sliding_tabs);
 
         Bundle bundle = getIntent().getExtras();
-        stopID = bundle.getInt("stopID");
-        Log.d("STOP", "" + stopID);
+        stopName = bundle.getString("stopName");
+        stop = MainActivity.getData().getStopByName(stopName);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar_actionbar);
         setSupportActionBar(toolbar);
@@ -39,6 +41,9 @@ public class OneStopActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setTitle(stop.getName());
+
+
 
         viewPager = (ViewPager) findViewById(R.id.viewpager);
 
@@ -50,27 +55,27 @@ public class OneStopActivity extends AppCompatActivity {
         slidingTabLayout.setSelectedIndicatorColors(getResources().getColor(R.color.textClearColor));
         slidingTabLayout.setDividerColors(getResources().getColor(R.color.primaryColor));
         slidingTabLayout.setViewPager(viewPager);
+
     }
 
     public class OneStopPageAdapter extends FragmentStatePagerAdapter {
-        public int count = 1;
         public OneStopPageAdapter(FragmentManager fm) {
             super(fm);
         }
 
         @Override
-        public CharSequence getPageTitle(int routePosition) {
-            return MainActivity.getData().getStop(stopID).getName();
+        public CharSequence getPageTitle(int linePosition) {
+            return getString(R.string.one_line) + " " + stop.getLines().get(linePosition).getLineId();
         }
 
         @Override
         public int getCount() {
-            return this.count;
+            return stop.getLines().size();
         }
 
         @Override
         public Fragment getItem(int position) {
-            return StopRouteFragment.newInstance(stopID, position);
+            return StopRouteFragment.newInstance(stopName, position);
         }
     }
 }

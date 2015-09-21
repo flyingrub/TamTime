@@ -7,8 +7,11 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 import flying.grub.tamtime.R;
 import flying.grub.tamtime.data.Stop;
+import flying.grub.tamtime.data.StopTimes;
 
 /**
  * Created by fly on 9/20/15.
@@ -16,10 +19,10 @@ import flying.grub.tamtime.data.Stop;
 public class OneStopAdapter extends RecyclerView.Adapter<OneStopAdapter.ViewHolder> {
 
     public OnItemClickListener mItemClickListener;
-    public Stop stop;
+    public ArrayList<StopTimes> stopTimes;
 
-    public OneStopAdapter(Stop stop) {
-        this.stop = stop;
+    public OneStopAdapter(ArrayList<StopTimes> stopTimes) {
+        this.stopTimes = stopTimes;
     }
 
     public interface OnItemClickListener {
@@ -42,7 +45,8 @@ public class OneStopAdapter extends RecyclerView.Adapter<OneStopAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.direction.setText(stop.getName());
+        StopTimes stop = stopTimes.get(position);
+        holder.direction.setText(stop.getRoute().getDirection());
         holder.tps1.setText(stop.getTimes(1));
         holder.tps2.setText(stop.getTimes(2));
         holder.tps3.setText(stop.getTimes(3));
@@ -50,7 +54,7 @@ public class OneStopAdapter extends RecyclerView.Adapter<OneStopAdapter.ViewHold
 
     @Override
     public int getItemCount() {
-        return 1;
+        return stopTimes.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

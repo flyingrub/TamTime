@@ -6,10 +6,14 @@ import android.util.Log;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.VolleyLog;
 import com.android.volley.error.VolleyError;
+import com.android.volley.request.JsonObjectRequest;
 import com.android.volley.request.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 
 import org.json.JSONArray;
@@ -19,8 +23,11 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import flying.grub.tamtime.R;
+
 public class DataParser {
 
+    private static final String TAG = DataParser.class.getSimpleName();
     private final String JSON_PLAN = "http://www.tam-direct.com/webservice/data.php?pattern=getAll";
     private final String JSON_THEOTIME = "http://www.bl00m.science/TamTimeData/allLines.json";// "http://www.tam-direct.com/webservice/data.php?pattern=getAll";
     private final String JSON_REALTIME = "http://www.tam-direct.com/webservice/data.php?pattern=getDetails";
@@ -42,14 +49,11 @@ public class DataParser {
         this.stpTimesList = new ArrayList<>();
         asData = false;
         this.context = context;
-        try {
-            setUp();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        setupLines();
+        setupTimes();
     }
 
-    public static DataParser getDataParser(Context context) {
+    public static synchronized DataParser getDataParser(Context context) {
         if (data == null) {
             return new DataParser(context);
         } else {
@@ -57,31 +61,51 @@ public class DataParser {
         }
     }
 
-    // HTTP GET request
-    private JSONArray getPlanJson() throws Exception {
-        URL request = new URL(JSON_PLAN);
-        Scanner scanner = new Scanner(request.openStream());
-        String response = scanner.useDelimiter("\\Z").next();
-        JSONObject allData = new JSONObject(response);
-        scanner.close();
-        return allData.getJSONArray("lines");
+    public void setupTimes() { // Real times
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
+                JSON_REALTIME, null,
+                new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        setTimes(response);
+                    }
+                }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d(TAG, "Error: " + error.getMessage());
+            }
+        });
+        VolleyApp.getInstance(context).addToRequestQueue(jsonObjReq);
     }
 
-    public JSONObject getRealTimesJson() throws Exception { // Real times
-        URL request = new URL(JSON_REALTIME);
-        Scanner scanner = new Scanner(request.openStream());
-        String response = scanner.useDelimiter("\\Z").next();
-        scanner.close();
-        return new JSONObject(response);
+    public void setupLines() {
+        String json = null;
+        try {
+            InputStream is = context.getResources().openRawResource(R.raw.data);
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+            json = new String(buffer, "UTF-8");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        try {
+            setLines(new JSONObject(json));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
 	// Setup toutes les instance nécéssaire
-	public void setUp() throws JSONException {
-		this.linesList = new ArrayList<Line>();
-		this.stopList = new ArrayList<Stop>();
+	private void setLines(JSONObject planJson) {
+		this.linesList = new ArrayList<>();
+		this.stopList = new ArrayList<>();
 
 		try {
-			JSONArray linesInfoJson = this.getPlanJson();
+			JSONArray linesInfoJson = planJson.getJSONArray("lines");
 			JSONObject jsonLine;
 			for (int i=0; i<linesInfoJson.length(); i++) { // Parcour du Json et construction des lignes
 				jsonLine = linesInfoJson.getJSONObject(i);
@@ -116,14 +140,14 @@ public class DataParser {
 				this.addLine(curntLine);
 			}
 		} catch (Exception e) {
-		e.printStackTrace();
+		    e.printStackTrace();
 		}
+        asData = true;
 	}
 
-    public void setTimes() {
+    private void setTimes(JSONObject timesJson) {
         StopTimes stpTimes;
         try {
-            JSONObject timesJson = getRealTimesJson(); // On récupère aller et retour
             JSONArray aller = timesJson.getJSONArray("aller");
             JSONArray retour = timesJson.getJSONArray("retour");
 
@@ -164,6 +188,14 @@ public class DataParser {
         return null;
     }
 
+    public ArrayList<Line> getLinesList() {
+        return linesList;
+    }
+
+    public ArrayList<Stop> getStopList() {
+        return stopList;
+    }
+
     public Stop getStopByName(String name) {
         for (Stop stp : this.stopList) {
             if (stp.getName().equals(name)) return stp;
@@ -178,7 +210,17 @@ public class DataParser {
         return null;
     }
 
-    // Test & Bullshit
+    public ArrayList<Stop> searchInStops(String search) {
+        ArrayList<Stop> res = new ArrayList<>();
+        for (Stop s : stopList) {
+            if (s.getName().toLowerCase().contains(search.toLowerCase())) {
+                res.add(s);
+            }
+        }
+        return res;
+    }
+
+    // Test & Bullshit \\
     public void printLines() {
         String resStop;
         Stop curntStop;

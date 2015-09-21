@@ -14,9 +14,9 @@ import com.gc.materialdesign.views.ProgressBarCircularIndeterminate;
 
 import flying.grub.tamtime.R;
 import flying.grub.tamtime.activity.MainActivity;
-import flying.grub.tamtime.adapter.DividerItemDecoration;
-import flying.grub.tamtime.adapter.OneLineAdapter;
 import flying.grub.tamtime.adapter.OneStopAdapter;
+import flying.grub.tamtime.data.Line;
+import flying.grub.tamtime.data.Stop;
 
 /**
  * Created by fly on 9/19/15.
@@ -29,16 +29,18 @@ public class StopRouteFragment extends Fragment {
     private SwipeRefreshLayout refreshLayout;
     private ProgressBarCircularIndeterminate circularIndeterminate;
 
-    private int stopID;
-    private int routePosition;
+    private String stopName;
+    private int linePosition;
+    private Stop stop;
+    private Line line;
 
-    public static Fragment newInstance(int stopID, int routePosition) {
+    public static Fragment newInstance(String stopName, int routePosition) {
         StopRouteFragment f = new StopRouteFragment();
 
         // Supply num input as an argument.
         Bundle args = new Bundle();
-        args.putInt("stopID", stopID);
-        args.putInt("routePosition", routePosition);
+        args.putString("stopName", stopName);
+        args.putInt("linePosition", routePosition);
         f.setArguments(args);
         return f;
     }
@@ -49,8 +51,8 @@ public class StopRouteFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        stopID = getArguments().getInt("stopID");
-        routePosition = getArguments().getInt("routePosition");
+        stopName = getArguments().getString("stopName");
+        linePosition = getArguments().getInt("linePosition");
     }
 
     /**
@@ -62,7 +64,6 @@ public class StopRouteFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.view_swype_refresh,
                 container, false);
-        container.addView(view);
 
         recyclerView = (RecyclerView) view.findViewById(R.id.my_recycler_view);
         circularIndeterminate = (ProgressBarCircularIndeterminate) view.findViewById(R.id.progressBarCircularIndeterminate);
@@ -74,7 +75,10 @@ public class StopRouteFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        adapter = new OneStopAdapter(MainActivity.getData().getStop(stopID));
+        stop = MainActivity.getData().getStopByName(stopName);
+        line = stop.getLines().get(linePosition);
+
+        adapter = new OneStopAdapter(stop.getStopTimeForLine(line.getLineId()));
 
         recyclerView.setAdapter(adapter);
         adapter.SetOnItemClickListener(new OneStopAdapter.OnItemClickListener() {
@@ -83,8 +87,6 @@ public class StopRouteFragment extends Fragment {
                 selectitem(position);
             }
         });
-
-        getActivity().setTitle(MainActivity.getData().getStop(stopID).getName());
 
         circularIndeterminate.setVisibility(View.GONE);
         refreshLayout.setVisibility(View.VISIBLE);

@@ -7,18 +7,19 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 import flying.grub.tamtime.data.Stop;
 import flying.grub.tamtime.activity.MainActivity;
 import flying.grub.tamtime.R;
+import flying.grub.tamtime.data.StopTimes;
 
 /**
  * Created by fly on 10/02/15.
  */
-public class OneLineAdapter extends RecyclerView.Adapter<OneLineAdapter.ViewHolder> {
-    public int lineId;
-    public int routeId;
+public class OneRouteAdapter extends RecyclerView.Adapter<OneRouteAdapter.ViewHolder> {
     public OnItemClickListener mItemClickListener;
-    public int count;
+    private ArrayList<StopTimes> stops;
 
     public void refresh(){
         notifyDataSetChanged();
@@ -32,32 +33,25 @@ public class OneLineAdapter extends RecyclerView.Adapter<OneLineAdapter.ViewHold
         this.mItemClickListener = mItemClickListener;
     }
 
-    // Provide a suitable constructor (depends on the kind of dataset)
-    public OneLineAdapter(int mLineId, int mRouteId) {
-        this.lineId = mLineId;
-        this.routeId = mRouteId;
-        this.count = MainActivity.getData().getLine(lineId).getRoute(routeId).getStopArrayList().size();
+    public OneRouteAdapter(ArrayList<StopTimes> stops) {
+        this.stops = stops;
     }
 
-    // Create new views (invoked by the layout manager)
     @Override
-    public OneLineAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
+    public OneRouteAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
                                                          int viewType) {
-        // create a new view
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_one_line, parent, false);
-        // set the view's size, margins, paddings and layout parameters
         ViewHolder vh = new ViewHolder(v);
         return vh;
     }
 
-    // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-        Stop s = MainActivity.getData().getLine(lineId).getRoute(routeId).getStopArrayList().get(position);
-        holder.mStop.setText(s.getName());
+        StopTimes s = stops.get(position);
+        holder.mStop.setText(s.getStop().getName());
         holder.tps1.setText(s.getTimes(1));
         holder.tps2.setText(s.getTimes(2));
         holder.tps3.setText(s.getTimes(3));
@@ -66,7 +60,7 @@ public class OneLineAdapter extends RecyclerView.Adapter<OneLineAdapter.ViewHold
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
-        return this.count;
+        return stops.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

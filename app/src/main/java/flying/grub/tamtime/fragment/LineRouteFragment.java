@@ -15,13 +15,13 @@ import android.widget.Toast;
 
 import com.gc.materialdesign.views.ProgressBarCircularIndeterminate;
 
-import flying.grub.tamtime.activity.OneLineActivity;
+
 import flying.grub.tamtime.activity.OneStopActivity;
 import flying.grub.tamtime.adapter.DividerItemDecoration;
-import flying.grub.tamtime.adapter.OneLineAdapter;
 import flying.grub.tamtime.activity.MainActivity;
 import flying.grub.tamtime.R;
-import flying.grub.tamtime.data.WaitForData;
+import flying.grub.tamtime.adapter.OneRouteAdapter;
+import flying.grub.tamtime.data.Route;
 
 /**
  * Created by fly on 25/03/15.
@@ -30,19 +30,16 @@ public class LineRouteFragment extends Fragment {
 
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
-    private OneLineAdapter adapter;
+    private OneRouteAdapter adapter;
     private SwipeRefreshLayout refreshLayout;
     private ProgressBarCircularIndeterminate circularIndeterminate;
 
     private int linePosition;
     private int routePosition;
+    private Route route;
 
     private static final String TAG = LineRouteFragment.class.getSimpleName();
 
-    /**
-     * Create a new instance of CountingFragment, providing "num"
-     * as an argument.
-     */
     public static Fragment newInstance(int linePosition, int routePosition) {
         LineRouteFragment f = new LineRouteFragment();
 
@@ -54,9 +51,6 @@ public class LineRouteFragment extends Fragment {
         return f;
     }
 
-    /**
-     * When creating, retrieve this instance's number from its arguments.
-     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,16 +58,11 @@ public class LineRouteFragment extends Fragment {
         routePosition = getArguments().getInt("routePosition");
     }
 
-    /**
-     * The Fragment's UI is just a simple text view showing its
-     * instance number.
-     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.view_swype_refresh,
                 container, false);
-        container.addView(view);
 
         recyclerView = (RecyclerView) view.findViewById(R.id.my_recycler_view);
         circularIndeterminate = (ProgressBarCircularIndeterminate) view.findViewById(R.id.progressBarCircularIndeterminate);
@@ -88,11 +77,11 @@ public class LineRouteFragment extends Fragment {
         RecyclerView.ItemDecoration itemDecoration = new DividerItemDecoration(getActivity());
         recyclerView.addItemDecoration(itemDecoration);
 
-
-        adapter = new OneLineAdapter(linePosition, routePosition);
+        route = MainActivity.getData().getLine(linePosition).getRoutes().get(routePosition);
+        adapter = new OneRouteAdapter(route.getStpTimes());
 
         recyclerView.setAdapter(adapter);
-        adapter.SetOnItemClickListener(new OneLineAdapter.OnItemClickListener() {
+        adapter.SetOnItemClickListener(new OneRouteAdapter.OnItemClickListener() {
 
             @Override
             public void onItemClick(View v, int position) {
@@ -112,7 +101,7 @@ public class LineRouteFragment extends Fragment {
         if (MainActivity.getData().asData()) {
             Intent intent = new Intent(getActivity(), OneStopActivity.class);
             Bundle bundle = new Bundle();
-            bundle.putInt("stopID", MainActivity.getData().getLine(linePosition).getStopArrayList().get(i).getId());
+            bundle.putString("stopName", route.getStpTimes().get(i).getStop().getName());
             intent.putExtras(bundle);
             startActivity(intent);
         } else {
@@ -120,14 +109,7 @@ public class LineRouteFragment extends Fragment {
         }
     }
 
-    private Runnable asNewDataAdapter (){
-        return new Runnable(){
-            @Override
-            public void run() {
-                adapter = new OneLineAdapter(linePosition, routePosition);
-            }
-        };
-    }
+
     /*
     private Runnable asNewData (){
         return new Runnable(){

@@ -12,9 +12,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 import flying.grub.tamtime.activity.OneLineActivity;
 import flying.grub.tamtime.adapter.AllLinesAdapter;
 import flying.grub.tamtime.adapter.DividerItemDecoration;
+import flying.grub.tamtime.data.Line;
+import flying.grub.tamtime.data.Stop;
 import flying.grub.tamtime.data.WaitForData;
 import flying.grub.tamtime.activity.MainActivity;
 import flying.grub.tamtime.R;
@@ -27,6 +31,8 @@ public class AllLinesFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private AllLinesAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+
+    private ArrayList<Line> lines;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -47,16 +53,8 @@ public class AllLinesFragment extends Fragment {
         mRecyclerView.addItemDecoration(itemDecoration);
         // specify an adapter (see also next example)
 
-        int[] integer = new int[17];
-        int count = 0;
-        for(int i = 0; i< integer.length; i++){
-            count++;
-            if (count == 5 || count == 18){
-                count++;
-            }
-            integer[i] = + count;
-        }
-        mAdapter = new AllLinesAdapter(integer);
+        lines = MainActivity.getData().getLinesList();
+        mAdapter = new AllLinesAdapter(lines);
         mRecyclerView.setAdapter(mAdapter);
         mAdapter.SetOnItemClickListener(new AllLinesAdapter.OnItemClickListener() {
 

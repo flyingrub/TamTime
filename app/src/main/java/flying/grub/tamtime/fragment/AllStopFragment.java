@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import flying.grub.tamtime.R;
 import flying.grub.tamtime.activity.MainActivity;
 import flying.grub.tamtime.activity.OneLineActivity;
+import flying.grub.tamtime.activity.OneStopActivity;
 import flying.grub.tamtime.adapter.AllStopAdapter;
 import flying.grub.tamtime.adapter.DividerItemDecoration;
 import flying.grub.tamtime.data.Stop;
@@ -40,6 +41,7 @@ public class AllStopFragment extends Fragment {
     private RecyclerView recyclerView;
     private AllStopAdapter adapter;
     private RecyclerView.LayoutManager layoutManager;
+    private ArrayList<Stop> currentDisplayedStop;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -61,7 +63,8 @@ public class AllStopFragment extends Fragment {
         RecyclerView.ItemDecoration itemDecoration = new DividerItemDecoration(getActivity());
         recyclerView.addItemDecoration(itemDecoration);
 
-        adapter = new AllStopAdapter(MainActivity.getData().getStopArrayList());
+        currentDisplayedStop = MainActivity.getData().getStopList();
+        adapter = new AllStopAdapter(currentDisplayedStop);
         recyclerView.setAdapter(adapter);
         adapter.SetOnItemClickListener(new AllStopAdapter.OnItemClickListener() {
 
@@ -85,15 +88,15 @@ public class AllStopFragment extends Fragment {
         sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                ArrayList<Stop> stops = MainActivity.getData().searchInStops(query);
-                recyclerView.swapAdapter(new AllStopAdapter(stops), false);
+                currentDisplayedStop = MainActivity.getData().searchInStops(query);
+                recyclerView.swapAdapter(new AllStopAdapter(currentDisplayedStop), false);
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                ArrayList<Stop> stops = MainActivity.getData().searchInStops(newText);
-                recyclerView.swapAdapter(new AllStopAdapter(stops), false);
+                currentDisplayedStop = MainActivity.getData().searchInStops(newText);
+                recyclerView.swapAdapter(new AllStopAdapter(currentDisplayedStop), false);
                 return false;
             }
         });
@@ -106,7 +109,16 @@ public class AllStopFragment extends Fragment {
     }
 
     public void selectitem(int i){
-        Toast.makeText(getActivity(), "test", Toast.LENGTH_SHORT).show();
+        Stop s = currentDisplayedStop.get(i);
+        if (MainActivity.getData().asData()) {
+            Intent intent = new Intent(getActivity(), OneStopActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putString("stopName", s.getName());
+            intent.putExtras(bundle);
+            startActivity(intent);
+        } else {
+            Toast.makeText(getActivity(), getString(R.string.waiting_for_network), Toast.LENGTH_SHORT).show();
+        }
     }
 
 }

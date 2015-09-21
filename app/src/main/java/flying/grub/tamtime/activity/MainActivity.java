@@ -17,7 +17,7 @@ import flying.grub.tamtime.fragment.NavigationDrawerFragment;
 import flying.grub.tamtime.R;
 import flying.grub.tamtime.navigation.DrawerCallback;
 
-public class MainActivity extends AppCompatActivity implements DrawerCallback{
+public class MainActivity extends AppCompatActivity implements DrawerCallback {
 
     private Toolbar mToolbar;
     private NavigationDrawerFragment navigationDrawerFragment;

@@ -9,7 +9,7 @@ public class Route {
     private ArrayList<StopTimes> stpTimes;
 
     public Route(String direction, Line line) {
-        this.stpTimes = new ArrayList<StopTimes>();
+        this.stpTimes = new ArrayList<>();
         this.line = line;
         this.direction = direction;
     }
@@ -21,7 +21,7 @@ public class Route {
 
     // Get
     public ArrayList<Stop> getStops() {
-        ArrayList<Stop> stopList = new ArrayList<Stop>();
+        ArrayList<Stop> stopList = new ArrayList<>();
         for (StopTimes lsr : this.stpTimes) {
             stopList.add(lsr.getStop());
         }

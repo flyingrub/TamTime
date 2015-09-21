@@ -8,12 +8,15 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 import flying.grub.tamtime.R;
+import flying.grub.tamtime.data.Line;
+import flying.grub.tamtime.data.Stop;
 
 public class AllLinesAdapter extends RecyclerView.Adapter<AllLinesAdapter.ViewHolder> {
-    private int[] mDataset;
-    private int[] mImageset;
     public OnItemClickListener mItemClickListener;
+    private ArrayList<Line> lines;
 
     public interface OnItemClickListener {
         void onItemClick(View view , int position);
@@ -23,15 +26,8 @@ public class AllLinesAdapter extends RecyclerView.Adapter<AllLinesAdapter.ViewHo
         this.mItemClickListener = mItemClickListener;
     }
 
-    // Provide a suitable constructor (depends on the kind of dataset)
-    public AllLinesAdapter(int[] myDataset) {
-        mDataset = myDataset;
-    }
-
-    // Provide a suitable constructor (depends on the kind of dataset)
-    public AllLinesAdapter(int[] myDataset, int[] myImageset) {
-        mDataset = myDataset;
-        mImageset = myImageset;
+    public AllLinesAdapter(ArrayList<Line> lines) {
+        this.lines = lines;
     }
 
     // Create new views (invoked by the layout manager)
@@ -53,14 +49,14 @@ public class AllLinesAdapter extends RecyclerView.Adapter<AllLinesAdapter.ViewHo
     public void onBindViewHolder(ViewHolder holder, final int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-        holder.mTextView.setText("Ligne " + mDataset[position]);
+        holder.mTextView.setText("Ligne " + lines.get(position).getLineId());
         //holder.mImageView.setImageResource(mImageset[position]);
     }
 
                 // Return the size of your dataset (invoked by the layout manager)
         @Override
     public int getItemCount() {
-        return mDataset.length;
+        return lines.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{

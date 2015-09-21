@@ -18,8 +18,9 @@ public class StopTimes {
         this.route = route;
         this.stop = stop;
         this.stopId = stopId;
-        this.timesList = new ArrayList<Calendar>();
-        this.realTimesList = new ArrayList<Integer>();
+        this.timesList = new ArrayList<>();
+        this.realTimesList = new ArrayList<>();
+        this.stop.addStopTime(this);
     }
 
     public StopTimes(Route route, Stop stop) {
