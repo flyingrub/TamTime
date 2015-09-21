@@ -1,3 +1,5 @@
+package flying.grub.tamtime.data;
+
 import java.util.ArrayList;
 
 public class Itinerary {
