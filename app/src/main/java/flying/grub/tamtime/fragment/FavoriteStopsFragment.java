@@ -5,8 +5,10 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -46,12 +48,10 @@ public class FavoriteStopsFragment extends Fragment {
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-
-
-        RecyclerView.ItemDecoration itemDecoration = new DividerItemDecoration(getActivity());
-        recyclerView.addItemDecoration(itemDecoration);
+        recyclerView.setBackgroundColor(getResources().getColor(R.color.windowBackgroundCard));
 
         favoriteStops = new FavoriteStops(getActivity());
+        getActivity().setTitle(getString(R.string.all_stops_favs));
 
         adapter = new FavoriteAdapter(favoriteStops.getFavoriteStop());
         recyclerView.setAdapter(adapter);
@@ -60,6 +60,28 @@ public class FavoriteStopsFragment extends Fragment {
             @Override
             public void onItemClick(View v, int position) {
                 selectitem(position);
+            }
+        });
+
+        adapter.SetOnMenuClickListener(new FavoriteAdapter.OnMenuClickListener() {
+            @Override
+            public void onItemClick(View v, final int position) {
+                //Creating the instance of PopupMenu
+                PopupMenu popup = new PopupMenu(getActivity(), v);
+                //Inflating the Popup using xml file
+                popup.getMenuInflater().inflate(R.menu.delete_menu, popup.getMenu());
+
+                //registering popup with OnMenuItemClickListener
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        favoriteStops.remove(position);
+                        recyclerView.swapAdapter(new FavoriteAdapter(favoriteStops.getFavoriteStop()), false);
+                        return true;
+                    }
+                });
+
+                popup.show();//showing popup menu
             }
         });
 
@@ -74,6 +96,7 @@ public class FavoriteStopsFragment extends Fragment {
             bundle.putString("stopName", s.getName());
             intent.putExtras(bundle);
             startActivity(intent);
+            getActivity().overridePendingTransition(R.anim.slide_from_right, R.anim.fade_scale_out);
         } else {
             Toast.makeText(getActivity(), getString(R.string.waiting_for_network), Toast.LENGTH_SHORT).show();
         }

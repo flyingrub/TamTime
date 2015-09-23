@@ -12,9 +12,7 @@
         android:layout_gravity="center"
         android:layout_width="fill_parent"
         android:layout_height="200dp"
-        android:elevation="3dp"
-        android:clickable="true"
-        android:background="?android:attr/selectableItemBackground"
+        android:elevation="5dp"
         android:focusable="true"
         card_view:cardCornerRadius="2dp"
         card_view:cardUseCompatPadding="true">

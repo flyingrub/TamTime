@@ -54,7 +54,7 @@ public class NavigationDrawerAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        holder.itemView.setSelected(currentPos == position);
+        holder.itemView.setSelected(currentPos == position); // don't select the favorites.
         ItemWithDrawable item = itemWithDrawables.get(position);
         if (holder instanceof ViewHolderItem && !item.isHeader()) {
             ViewHolderItem hold = (ViewHolderItem) holder;
@@ -114,7 +114,7 @@ public class NavigationDrawerAdapter extends RecyclerView.Adapter<RecyclerView.V
             currentPos = getLayoutPosition();
             notifyItemChanged(currentPos);
             if (itemClickListener != null) {
-                itemClickListener.onItemClick(v, getPosition());
+                itemClickListener.onItemClick(v, getAdapterPosition());
             }
         }
     }

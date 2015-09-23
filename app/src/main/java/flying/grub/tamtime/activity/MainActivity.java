@@ -14,6 +14,7 @@ import flying.grub.tamtime.data.DataParser;
 import flying.grub.tamtime.data.FavoriteStops;
 import flying.grub.tamtime.fragment.AllLinesFragment;
 import flying.grub.tamtime.fragment.AllStopFragment;
+import flying.grub.tamtime.fragment.FavoriteStopsFragment;
 import flying.grub.tamtime.fragment.NavigationDrawerFragment;
 import flying.grub.tamtime.R;
 import flying.grub.tamtime.navigation.DrawerCallback;
@@ -77,8 +78,16 @@ public class MainActivity extends AppCompatActivity implements DrawerCallback {
                 transaction.commit();
                 break;
             case 3:
-                Intent intent = new Intent(this, FavoriteActivity.class);
+                fragment = new FavoriteStopsFragment();
+                transaction.replace(R.id.container, fragment);
+                transaction.addToBackStack("");
+                transaction.commit();
+                break;
+            case 5:
+                Intent intent = new Intent(this, SettingsActivity.class);
                 startActivity(intent);
+                overridePendingTransition(R.anim.slide_from_right, R.anim.fade_scale_out);
+                break;
         }
     }
 }

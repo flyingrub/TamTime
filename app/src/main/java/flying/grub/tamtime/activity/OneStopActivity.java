@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 
 import flying.grub.tamtime.R;
 import flying.grub.tamtime.adapter.AllStopAdapter;
@@ -50,6 +51,12 @@ public class OneStopActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setTitle(stop.getName());
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
 
 
@@ -65,6 +72,12 @@ public class OneStopActivity extends AppCompatActivity {
         slidingTabLayout.setDividerColors(getResources().getColor(R.color.primaryColor));
         slidingTabLayout.setViewPager(viewPager);
 
+    }
+
+    @Override
+    public void onPause(){
+        super.onPause();
+        if (isFinishing()) overridePendingTransition(R.anim.fade_scale_in, R.anim.slide_to_right);
     }
 
     @Override

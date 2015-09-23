@@ -1,7 +1,10 @@
 package flying.grub.tamtime.adapter;
 
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -22,7 +25,8 @@ import flying.grub.tamtime.data.Stop;
  */
 public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHolder> {
 
-    public OnItemClickListener mItemClickListener;
+    public OnItemClickListener itemClickListener;
+    public OnMenuClickListener menuClickListener;
     private ArrayList<Stop> stops;
 
     public FavoriteAdapter(ArrayList<Stop> stops) {
@@ -39,7 +43,7 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // create a new view
         View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_stop, parent, false);
+                .inflate(R.layout.item_card_favorite, parent, false);
 
         // set the view's size, margins, paddings and layout parameters
         ViewHolder vh = new ViewHolder(v);
@@ -58,30 +62,43 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
     }
 
     public interface OnItemClickListener {
-        void onItemClick(View view , int position);
+        void onItemClick(View view, int position);
+    }
+
+    public interface OnMenuClickListener {
+        void onItemClick(View view, int position);
     }
 
     public void SetOnItemClickListener(final OnItemClickListener mItemClickListener) {
-        this.mItemClickListener = mItemClickListener;
+        this.itemClickListener = mItemClickListener;
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public void SetOnMenuClickListener(final OnMenuClickListener menuClickListener) {
+        this.menuClickListener = menuClickListener;
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         public TextView textView;
-        public LinearLayout linearLayout;
-
+        public CardView cardView;
+        public ImageView imageView;
 
         public ViewHolder(View v) {
             super(v);
             textView = (TextView) itemView.findViewById(R.id.title);
-            linearLayout = (LinearLayout) itemView.findViewById(R.id.element);
-            v.setOnClickListener(this);
+            imageView = (ImageView) itemView.findViewById(R.id.menu);
+            cardView = (CardView) itemView.findViewById(R.id.card_view);
+            cardView.setOnClickListener(this);
+            imageView.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
-            if (mItemClickListener != null) {
-                mItemClickListener.onItemClick(v, getPosition());
+            if (v instanceof ImageView && menuClickListener != null) {
+                menuClickListener.onItemClick(v, getPosition());
+            }
+            if (v instanceof CardView && itemClickListener != null) {
+                itemClickListener.onItemClick(v, getPosition());
             }
         }
     }

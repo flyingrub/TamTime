@@ -12,6 +12,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,6 +53,8 @@ public class NavigationDrawerFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(false);
 
+        getActivity().setTitle(getString(R.string.app_name));
+
         drawerAdapter = new NavigationDrawerAdapter(getItems());
         recyclerView.setAdapter(drawerAdapter);
         drawerAdapter.SetOnItemClickListener(new NavigationDrawerAdapter.OnItemClickListener() {
@@ -60,7 +63,7 @@ public class NavigationDrawerFragment extends Fragment {
                 selectItem(position);
             }
         });
-        selectItem(currentSelectedPosition);
+
         return view;
     }
 
@@ -74,6 +77,7 @@ public class NavigationDrawerFragment extends Fragment {
         } else {
             currentSelectedPosition = 1;
         }
+        selectItem(currentSelectedPosition);
     }
 
     private ArrayList<ItemWithDrawable> getItems() {
@@ -81,7 +85,7 @@ public class NavigationDrawerFragment extends Fragment {
         itemWithDrawables.add(new ItemWithDrawable(getString(R.string.all_infos), null, true));
         itemWithDrawables.add(new ItemWithDrawable(getString(R.string.all_lines), getResources().getDrawable(R.drawable.ic_directions_subway_black_36dp), false));
         itemWithDrawables.add(new ItemWithDrawable(getString(R.string.all_stops), getResources().getDrawable(R.drawable.ic_place_black_36dp), false));
-        itemWithDrawables.add(new ItemWithDrawable(getString(R.string.all_favs), getResources().getDrawable(R.drawable.ic_favorite_black_36dp), false));
+        itemWithDrawables.add(new ItemWithDrawable(getString(R.string.all_stops_favs), getResources().getDrawable(R.drawable.ic_favorite_black_36dp), false));
         itemWithDrawables.add(new ItemWithDrawable(getString(R.string.settings), null, true));
         itemWithDrawables.add(new ItemWithDrawable(getString(R.string.settings), getResources().getDrawable(R.drawable.ic_settings_black_36dp), false));
         return itemWithDrawables;

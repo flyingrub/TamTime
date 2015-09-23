@@ -20,6 +20,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -59,6 +60,7 @@ public class AllStopFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
+        getActivity().setTitle(getString(R.string.all_stops));
 
         RecyclerView.ItemDecoration itemDecoration = new DividerItemDecoration(getActivity());
         recyclerView.addItemDecoration(itemDecoration);
@@ -100,7 +102,23 @@ public class AllStopFragment extends Fragment {
                 return false;
             }
         });
+        changeSearchViewTextColor(sv);
         item.setActionView(sv);
+    }
+
+
+    private void changeSearchViewTextColor(View view) {
+        if (view != null) {
+            if (view instanceof TextView) {
+                ((TextView) view).setTextColor(getResources().getColor(R.color.textClearColor));
+                return;
+            } else if (view instanceof ViewGroup) {
+                ViewGroup viewGroup = (ViewGroup) view;
+                for (int i = 0; i < viewGroup.getChildCount(); i++) {
+                    changeSearchViewTextColor(viewGroup.getChildAt(i));
+                }
+            }
+        }
     }
 
     @Override
@@ -116,6 +134,7 @@ public class AllStopFragment extends Fragment {
             bundle.putString("stopName", s.getName());
             intent.putExtras(bundle);
             startActivity(intent);
+            getActivity().overridePendingTransition(R.anim.slide_from_right, R.anim.fade_scale_out);
         } else {
             Toast.makeText(getActivity(), getString(R.string.waiting_for_network), Toast.LENGTH_SHORT).show();
         }

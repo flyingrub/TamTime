@@ -49,6 +49,8 @@ public class AllLinesFragment extends Fragment {
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
+        getActivity().setTitle(getString(R.string.all_lines));
+
         RecyclerView.ItemDecoration itemDecoration = new DividerItemDecoration(getActivity());
         mRecyclerView.addItemDecoration(itemDecoration);
         // specify an adapter (see also next example)
@@ -80,7 +82,7 @@ public class AllLinesFragment extends Fragment {
             bundle.putInt("id", i);
             intent.putExtras(bundle);
             startActivity(intent);
-            //getActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+            getActivity().overridePendingTransition(R.anim.slide_from_right, R.anim.fade_scale_out);
         } else {
             Toast.makeText(getActivity(), getString(R.string.waiting_for_network), Toast.LENGTH_SHORT).show();
             new WaitForData(asNewData()).execute();

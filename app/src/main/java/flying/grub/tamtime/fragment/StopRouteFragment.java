@@ -70,6 +70,7 @@ public class StopRouteFragment extends Fragment {
         refreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.refresh_layout);
 
         recyclerView.setHasFixedSize(true);
+        recyclerView.setBackgroundColor(getResources().getColor(R.color.windowBackgroundCard));
 
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);

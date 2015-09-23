@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 
 import flying.grub.tamtime.data.Line;
 import flying.grub.tamtime.fragment.LineRouteFragment;
@@ -38,6 +39,13 @@ public class OneLineActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
         line = MainActivity.getData().getLine(linePosition);
 
         viewPager = (ViewPager) findViewById(R.id.viewpager);
@@ -53,10 +61,10 @@ public class OneLineActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onResume(){
-        super.onResume();
+    public void onPause(){
+        super.onPause();
+        if (isFinishing()) overridePendingTransition(R.anim.fade_scale_in, R.anim.slide_to_right);
     }
-
 
     public class OneLinePageAdapter extends FragmentStatePagerAdapter {
         public OneLinePageAdapter(FragmentManager fm) {

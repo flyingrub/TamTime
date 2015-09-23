@@ -104,6 +104,7 @@ public class LineRouteFragment extends Fragment {
             bundle.putString("stopName", route.getStpTimes().get(i).getStop().getName());
             intent.putExtras(bundle);
             startActivity(intent);
+            getActivity().overridePendingTransition(R.anim.slide_from_right, R.anim.fade_scale_out);
         } else {
             Toast.makeText(getActivity(), getString(R.string.waiting_for_network), Toast.LENGTH_SHORT).show();
         }
