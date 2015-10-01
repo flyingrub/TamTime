@@ -18,12 +18,12 @@
     <color name="windowBackgroundCard">#f5f5f5</color>
     <color name="windowBackgroundSelected">#e0e0e0</color>
     <color name="textClearColor">#fafafa</color>
-    <color name="textDarkColor">#424242</color>
-    <color name="textDarkSelected">#424242</color>
+    <color name="textDarkColor">#212121</color>
+    <color name="textDarkSelected">#212121</color>
 
     <color name="black">#000000</color>
     <color name="transparent">#000000FF</color>
-    <color name="ripple">#20000000</color>
+    <color name="ripple">#20000000</color>c
 
     <color name="separator">#bdbdbd</color>
     <color name="selected_gray">#ffdbdbdb</color>

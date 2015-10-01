@@ -46,7 +46,7 @@ public class NavigationDrawerAdapter extends RecyclerView.Adapter<RecyclerView.V
             return new ViewHolderItem(v);
         } else if (viewType == TYPE_HEADER) {
             View v = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.drawer_item_header, parent, false);
+                    .inflate(R.layout.drawer_item_separator, parent, false);
             return new ViewHolderHeader(v);
         }
         throw new RuntimeException("there is no type that matches the type " + viewType + " + make sure your using types correctly");
@@ -54,7 +54,7 @@ public class NavigationDrawerAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        holder.itemView.setSelected(currentPos == position); // don't select the favorites.
+        holder.itemView.setSelected(currentPos == position && position != 5); // don't select the favorites & Settings
         ItemWithDrawable item = itemWithDrawables.get(position);
         if (holder instanceof ViewHolderItem && !item.isHeader()) {
             ViewHolderItem hold = (ViewHolderItem) holder;
@@ -62,11 +62,13 @@ public class NavigationDrawerAdapter extends RecyclerView.Adapter<RecyclerView.V
             Drawable draw = item.getDrawable().getConstantState().newDrawable().mutate();
             if (position == currentPos) {
                 draw.setColorFilter(Color.parseColor("#1e88e5"), PorterDuff.Mode.SRC_ATOP);
+            } else {
+                draw.setColorFilter(Color.parseColor("#616161"), PorterDuff.Mode.SRC_ATOP);
             }
             hold.imageView.setImageDrawable(draw);
         } else if (holder instanceof ViewHolderHeader && item.isHeader()) {
             ViewHolderHeader hold = (ViewHolderHeader) holder;
-            hold.textView.setText(item.getText());
+            //hold.textView.setText(item.getText());
         }
     }
 

@@ -82,11 +82,11 @@ public class NavigationDrawerFragment extends Fragment {
 
     private ArrayList<ItemWithDrawable> getItems() {
         ArrayList<ItemWithDrawable> itemWithDrawables = new ArrayList<>();
-        itemWithDrawables.add(new ItemWithDrawable(getString(R.string.all_infos), null, true));
         itemWithDrawables.add(new ItemWithDrawable(getString(R.string.all_lines), getResources().getDrawable(R.drawable.ic_directions_subway_black_36dp), false));
         itemWithDrawables.add(new ItemWithDrawable(getString(R.string.all_stops), getResources().getDrawable(R.drawable.ic_place_black_36dp), false));
         itemWithDrawables.add(new ItemWithDrawable(getString(R.string.all_stops_favs), getResources().getDrawable(R.drawable.ic_favorite_black_36dp), false));
-        itemWithDrawables.add(new ItemWithDrawable(getString(R.string.settings), null, true));
+        itemWithDrawables.add(new ItemWithDrawable(getString(R.string.maps), getResources().getDrawable(R.drawable.ic_map_black_36dp), false));
+        itemWithDrawables.add(new ItemWithDrawable(null, null, true));
         itemWithDrawables.add(new ItemWithDrawable(getString(R.string.settings), getResources().getDrawable(R.drawable.ic_settings_black_36dp), false));
         return itemWithDrawables;
     }

@@ -23,6 +23,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import de.greenrobot.event.EventBus;
 import flying.grub.tamtime.R;
 
 public class DataParser {
@@ -35,11 +36,6 @@ public class DataParser {
     private ArrayList<Stop> stopList;
     private ArrayList<StopTimes> stpTimesList;
 
-    public Boolean asData() {
-        return asData;
-    }
-
-    private Boolean asData;
     private Context context;
     private static DataParser data;
 
@@ -47,7 +43,6 @@ public class DataParser {
         this.stopList = new ArrayList<>();
         this.linesList = new ArrayList<>();
         this.stpTimesList = new ArrayList<>();
-        asData = false;
         this.context = context;
         setupLines();
         setupTimes();
@@ -142,7 +137,6 @@ public class DataParser {
 		} catch (Exception e) {
 		    e.printStackTrace();
 		}
-        asData = true;
 	}
 
     private void setTimes(JSONObject timesJson) {
@@ -167,6 +161,7 @@ public class DataParser {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        EventBus.getDefault().post(new MessageEvent(MessageEvent.Type.TIMESUPDATE));
     }
 
     // Add

@@ -5,7 +5,7 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/primaryColor</item>
         <item name="colorPrimaryDark">@color/primaryDarkColor</item>
-        <item name="colorAccent">@color/accentColor</item>
+        <item name="colorAccent">@color/primaryColor</item>
         <item name="android:textColorPrimary">@color/textDarkColor</item>
         <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
         <item name="searchViewStyle">@style/MySearchViewStyle</item>
@@ -25,4 +25,5 @@
     <style name="MySearchViewStyle" parent="Widget.AppCompat.SearchView">
         <item name="queryBackground">@color/transparent</item>
     </style>
+
 </resources>

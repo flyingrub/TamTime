@@ -17,6 +17,7 @@ import flying.grub.tamtime.fragment.AllStopFragment;
 import flying.grub.tamtime.fragment.FavoriteStopsFragment;
 import flying.grub.tamtime.fragment.NavigationDrawerFragment;
 import flying.grub.tamtime.R;
+import flying.grub.tamtime.fragment.WebFragment;
 import flying.grub.tamtime.navigation.DrawerCallback;
 
 public class MainActivity extends AppCompatActivity implements DrawerCallback {
@@ -24,6 +25,7 @@ public class MainActivity extends AppCompatActivity implements DrawerCallback {
     private Toolbar mToolbar;
     private NavigationDrawerFragment navigationDrawerFragment;
     private static DataParser dataParser;
+    private static final String MAP_URL = "http://tam.cartographie.pro/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,22 +67,28 @@ public class MainActivity extends AppCompatActivity implements DrawerCallback {
         android.support.v4.app.FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         Fragment fragment;
         switch (position) {
-            case 1:
+            case 0:
                 fragment = new AllLinesFragment();
                 transaction.replace(R.id.container, fragment);
                 transaction.addToBackStack("");
                 transaction.commit();
                 break;
-            case 2:
+            case 1:
                 fragment = new AllStopFragment();
                 transaction.replace(R.id.container, fragment);
                 transaction.addToBackStack("");
                 transaction.commit();
                 break;
-            case 3:
+            case 2:
                 fragment = new FavoriteStopsFragment();
                 transaction.replace(R.id.container, fragment);
                 transaction.addToBackStack("");
+                transaction.commit();
+                break;
+            case 3:
+                WebFragment webFragment = WebFragment.newInstance(MAP_URL);
+                transaction.replace(R.id.container, webFragment);
+                transaction.addToBackStack(null);
                 transaction.commit();
                 break;
             case 5:

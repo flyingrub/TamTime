@@ -16,11 +16,13 @@ import android.widget.Toast;
 import com.gc.materialdesign.views.ProgressBarCircularIndeterminate;
 
 
+import de.greenrobot.event.EventBus;
 import flying.grub.tamtime.activity.OneStopActivity;
 import flying.grub.tamtime.adapter.DividerItemDecoration;
 import flying.grub.tamtime.activity.MainActivity;
 import flying.grub.tamtime.R;
 import flying.grub.tamtime.adapter.OneRouteAdapter;
+import flying.grub.tamtime.data.MessageEvent;
 import flying.grub.tamtime.data.Route;
 
 /**
@@ -33,6 +35,7 @@ public class LineRouteFragment extends Fragment {
     private OneRouteAdapter adapter;
     private SwipeRefreshLayout refreshLayout;
     private ProgressBarCircularIndeterminate circularIndeterminate;
+    private boolean isfirstime = true;
 
     private int linePosition;
     private int routePosition;
@@ -54,8 +57,15 @@ public class LineRouteFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
         linePosition = getArguments().getInt("linePosition");
         routePosition = getArguments().getInt("routePosition");
+    }
+
+    @Override
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
     }
 
     @Override
@@ -93,52 +103,32 @@ public class LineRouteFragment extends Fragment {
 
         circularIndeterminate.setVisibility(View.GONE);
         refreshLayout.setVisibility(View.VISIBLE);
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                MainActivity.getData().setupTimes();
+            }
+        });
+        refreshLayout.setColorSchemeResources(R.color.primaryColor);
+
 
         return view;
     }
 
     public void selectitem(int i){
-        if (MainActivity.getData().asData()) {
-            Intent intent = new Intent(getActivity(), OneStopActivity.class);
-            Bundle bundle = new Bundle();
-            bundle.putString("stopName", route.getStpTimes().get(i).getStop().getName());
-            intent.putExtras(bundle);
-            startActivity(intent);
-            getActivity().overridePendingTransition(R.anim.slide_from_right, R.anim.fade_scale_out);
-        } else {
-            Toast.makeText(getActivity(), getString(R.string.waiting_for_network), Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(getActivity(), OneStopActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putString("stopName", route.getStpTimes().get(i).getStop().getName());
+        intent.putExtras(bundle);
+        startActivity(intent);
+        getActivity().overridePendingTransition(R.anim.slide_from_right, R.anim.fade_scale_out);
+    }
+
+    public void onEvent(MessageEvent event){
+        if (event.type == MessageEvent.Type.TIMESUPDATE) {
+            refreshLayout.setRefreshing(false);
+            recyclerView.swapAdapter(new OneRouteAdapter(route.getStpTimes()), false);
         }
     }
-
-
-    /*
-    private Runnable asNewData (){
-        return new Runnable(){
-            public void run(){
-                if (isfirstime){
-                    firstData();
-                }else{
-                    refreshLayout.setRefreshing(false);
-                    adapter.refresh();
-                }
-            }
-        };
-    }
-
-    public void firstData(){
-        getActivity().setTitle("Ligne " + MainActivity.getData().getLine(linePosition).getLineId());
-
-        circularIndeterminate.setVisibility(View.GONE);
-        refreshLayout.setVisibility(View.VISIBLE);
-        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                new WaitForData(asNewData()).execute();
-            }
-        });
-        refreshLayout.setColorSchemeResources(R.color.myPrimaryColor);
-
-        isfirstime = false;
-    }*/
 
 }

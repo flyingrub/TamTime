@@ -32,7 +32,6 @@ import flying.grub.tamtime.activity.OneStopActivity;
 import flying.grub.tamtime.adapter.AllStopAdapter;
 import flying.grub.tamtime.adapter.DividerItemDecoration;
 import flying.grub.tamtime.data.Stop;
-import flying.grub.tamtime.data.WaitForData;
 
 /**
  * Created by fly on 09/02/15.
@@ -128,16 +127,12 @@ public class AllStopFragment extends Fragment {
 
     public void selectitem(int i){
         Stop s = currentDisplayedStop.get(i);
-        if (MainActivity.getData().asData()) {
-            Intent intent = new Intent(getActivity(), OneStopActivity.class);
-            Bundle bundle = new Bundle();
-            bundle.putString("stopName", s.getName());
-            intent.putExtras(bundle);
-            startActivity(intent);
-            getActivity().overridePendingTransition(R.anim.slide_from_right, R.anim.fade_scale_out);
-        } else {
-            Toast.makeText(getActivity(), getString(R.string.waiting_for_network), Toast.LENGTH_SHORT).show();
-        }
+        Intent intent = new Intent(getActivity(), OneStopActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putString("stopName", s.getName());
+        intent.putExtras(bundle);
+        startActivity(intent);
+        getActivity().overridePendingTransition(R.anim.slide_from_right, R.anim.fade_scale_out);
     }
 
 }

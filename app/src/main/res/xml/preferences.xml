@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <PreferenceCategory
         android:title="@string/settings"
         android:key="pref_key_storage_settings">
 
-
+        <Preference
+            android:key="nothing"
+            android:title="Rien ici pour le moment"
+            android:summary="....">
+        </Preference>
     </PreferenceCategory>
 
     <PreferenceCategory

@@ -12,10 +12,13 @@ import android.view.ViewGroup;
 
 import com.gc.materialdesign.views.ProgressBarCircularIndeterminate;
 
+import de.greenrobot.event.EventBus;
 import flying.grub.tamtime.R;
 import flying.grub.tamtime.activity.MainActivity;
+import flying.grub.tamtime.adapter.OneRouteAdapter;
 import flying.grub.tamtime.adapter.OneStopAdapter;
 import flying.grub.tamtime.data.Line;
+import flying.grub.tamtime.data.MessageEvent;
 import flying.grub.tamtime.data.Stop;
 
 /**
@@ -51,8 +54,15 @@ public class StopRouteFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
         stopName = getArguments().getString("stopName");
         linePosition = getArguments().getInt("linePosition");
+    }
+
+    @Override
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
     }
 
     /**
@@ -85,17 +95,31 @@ public class StopRouteFragment extends Fragment {
         adapter.SetOnItemClickListener(new OneStopAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View v, int position) {
-                selectitem(position);
+                // Unneeded ?
             }
         });
 
         circularIndeterminate.setVisibility(View.GONE);
         refreshLayout.setVisibility(View.VISIBLE);
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                MainActivity.getData().setupTimes();
+            }
+        });
+        refreshLayout.setColorSchemeResources(R.color.primaryColor);
 
         return view;
     }
 
-    public void selectitem(int i){
+    public void onEvent(MessageEvent event){
+        if (event.type == MessageEvent.Type.TIMESUPDATE) {
+            refreshLayout.setRefreshing(false);
+            stop = MainActivity.getData().getStopByName(stopName);
+            line = stop.getLines().get(linePosition);
 
+            adapter = new OneStopAdapter(stop.getStopTimeForLine(line.getLineId()));
+            recyclerView.swapAdapter(adapter, false);
+        }
     }
 }

@@ -90,15 +90,11 @@ public class FavoriteStopsFragment extends Fragment {
 
     public void selectitem(int i){
         Stop s = favoriteStops.getFavoriteStop().get(i);
-        if (MainActivity.getData().asData()) {
-            Intent intent = new Intent(getActivity(), OneStopActivity.class);
-            Bundle bundle = new Bundle();
-            bundle.putString("stopName", s.getName());
-            intent.putExtras(bundle);
-            startActivity(intent);
-            getActivity().overridePendingTransition(R.anim.slide_from_right, R.anim.fade_scale_out);
-        } else {
-            Toast.makeText(getActivity(), getString(R.string.waiting_for_network), Toast.LENGTH_SHORT).show();
-        }
+        Intent intent = new Intent(getActivity(), OneStopActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putString("stopName", s.getName());
+        intent.putExtras(bundle);
+        startActivity(intent);
+        getActivity().overridePendingTransition(R.anim.slide_from_right, R.anim.fade_scale_out);
     }
 }

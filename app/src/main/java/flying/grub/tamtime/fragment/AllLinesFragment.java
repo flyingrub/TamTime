@@ -14,12 +14,14 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import de.greenrobot.event.EventBus;
 import flying.grub.tamtime.activity.OneLineActivity;
 import flying.grub.tamtime.adapter.AllLinesAdapter;
 import flying.grub.tamtime.adapter.DividerItemDecoration;
+import flying.grub.tamtime.adapter.OneRouteAdapter;
 import flying.grub.tamtime.data.Line;
+import flying.grub.tamtime.data.MessageEvent;
 import flying.grub.tamtime.data.Stop;
-import flying.grub.tamtime.data.WaitForData;
 import flying.grub.tamtime.activity.MainActivity;
 import flying.grub.tamtime.R;
 
@@ -28,9 +30,9 @@ import flying.grub.tamtime.R;
  */
 public class AllLinesFragment extends Fragment {
 
-    private RecyclerView mRecyclerView;
-    private AllLinesAdapter mAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
+    private RecyclerView recyclerView;
+    private AllLinesAdapter adapter;
+    private RecyclerView.LayoutManager layoutManager;
 
     private ArrayList<Line> lines;
 
@@ -39,26 +41,26 @@ public class AllLinesFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.view_recycler, container, false);
 
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
+        recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
 
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
-        mRecyclerView.setHasFixedSize(true);
+        recyclerView.setHasFixedSize(true);
 
-        mLayoutManager = new LinearLayoutManager(getActivity());
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        layoutManager = new LinearLayoutManager(getActivity());
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
 
         getActivity().setTitle(getString(R.string.all_lines));
 
         RecyclerView.ItemDecoration itemDecoration = new DividerItemDecoration(getActivity());
-        mRecyclerView.addItemDecoration(itemDecoration);
+        recyclerView.addItemDecoration(itemDecoration);
         // specify an adapter (see also next example)
 
         lines = MainActivity.getData().getLinesList();
-        mAdapter = new AllLinesAdapter(lines);
-        mRecyclerView.setAdapter(mAdapter);
-        mAdapter.SetOnItemClickListener(new AllLinesAdapter.OnItemClickListener() {
+        adapter = new AllLinesAdapter(lines);
+        recyclerView.setAdapter(adapter);
+        adapter.SetOnItemClickListener(new AllLinesAdapter.OnItemClickListener() {
 
             @Override
             public void onItemClick(View v , int position) {
@@ -67,7 +69,18 @@ public class AllLinesFragment extends Fragment {
         });
 
         return view;
+    }
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
     }
 
     @Override
@@ -76,24 +89,18 @@ public class AllLinesFragment extends Fragment {
     }
 
     public void selectitem(int i){
-        if (MainActivity.getData().asData()) {
-            Intent intent = new Intent(getActivity(), OneLineActivity.class);
-            Bundle bundle = new Bundle();
-            bundle.putInt("id", i);
-            intent.putExtras(bundle);
-            startActivity(intent);
-            getActivity().overridePendingTransition(R.anim.slide_from_right, R.anim.fade_scale_out);
-        } else {
-            Toast.makeText(getActivity(), getString(R.string.waiting_for_network), Toast.LENGTH_SHORT).show();
-            new WaitForData(asNewData()).execute();
-        }
+        Intent intent = new Intent(getActivity(), OneLineActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putInt("id", i);
+        intent.putExtras(bundle);
+        startActivity(intent);
+        getActivity().overridePendingTransition(R.anim.slide_from_right, R.anim.fade_scale_out);
     }
 
-    private Runnable asNewData (){
-        return new Runnable(){
-            public void run(){
-                Toast.makeText(getActivity(), getString(R.string.new_data), Toast.LENGTH_SHORT).show();
-            }
-        };
+    public void onEvent(MessageEvent event){
+        if (event.type == MessageEvent.Type.LINESUPDATE) {
+            lines = MainActivity.getData().getLinesList();
+            recyclerView.swapAdapter(new AllLinesAdapter(lines), false);
+        }
     }
 }

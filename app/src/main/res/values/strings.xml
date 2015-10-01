@@ -6,6 +6,7 @@
     <string name="all_stops">Arrêts</string>
     <string name="all_itinary_favs">Mes Trajets</string>
     <string name="all_stops_favs">Mes Arrêts</string>
+    <string name="maps">La Carte</string>
 
     <string name="one_line">Ligne</string>
     <string name="no_favs">Pas de Favoris</string>
