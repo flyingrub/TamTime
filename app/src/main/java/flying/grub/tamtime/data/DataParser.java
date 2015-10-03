@@ -29,8 +29,8 @@ import flying.grub.tamtime.R;
 public class DataParser {
 
     private static final String TAG = DataParser.class.getSimpleName();
-    private final String JSON_PLAN = "http://www.tam-direct.com/webservice/data.php?pattern=getAll";
-    private final String JSON_THEOTIME = "http://www.bl00m.science/TamTimeData/allLines.json";// "http://www.tam-direct.com/webservice/data.php?pattern=getAll";
+    private final String JSON_PLAN = "http://bl00m.science/TamTimeData/allData.json"; 
+    private final String JSON_THEOTIME = "http://www.bl00m.science/TamTimeData/timesTest.json";
     private final String JSON_REALTIME = "http://www.tam-direct.com/webservice/data.php?pattern=getDetails";
     private ArrayList<Line> linesList;
     private ArrayList<Stop> stopList;
@@ -44,8 +44,8 @@ public class DataParser {
         this.linesList = new ArrayList<>();
         this.stpTimesList = new ArrayList<>();
         this.context = context;
-        setupLines();
-        setupTimes();
+        setupMap();
+        setupRealTimes();
     }
 
     public static synchronized DataParser getDataParser(Context context) {
@@ -59,14 +59,14 @@ public class DataParser {
         }
     }
 
-    public void setupTimes() { // Real times
+    public void setupRealTimes() { // Real times
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
                 JSON_REALTIME, null,
                 new Response.Listener<JSONObject>() {
 
                     @Override
                     public void onResponse(JSONObject response) {
-                        setTimes(response);
+                        setRealTimes(response);
                     }
                 }, new Response.ErrorListener() {
 
@@ -78,7 +78,7 @@ public class DataParser {
         VolleyApp.getInstance(context).addToRequestQueue(jsonObjReq);
     }
 
-    public void setupLines() {
+    public void setupMap() {
         String json = null;
         try {
             InputStream is = context.getResources().openRawResource(R.raw.data);
@@ -91,80 +91,108 @@ public class DataParser {
             ex.printStackTrace();
         }
         try {
-            setLines(new JSONObject(json));
+            setMap(new JSONObject(json));
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
 
-	// Setup toutes les instance nécéssaire
-	private void setLines(JSONObject planJson) {
-		this.linesList = new ArrayList<>();
-		this.stopList = new ArrayList<>();
+    // Setup toutes les instance nécéssaire
+    public void setMap(JSONObject planJson) throws JSONException {
+        this.linesList = new ArrayList<Line>();
+        this.stopList = new ArrayList<Stop>();
 
-		try {
-			JSONArray linesInfoJson = planJson.getJSONArray("lines");
-			JSONObject jsonLine;
-			for (int i=0; i<linesInfoJson.length(); i++) { // Parcour du Json et construction des lignes
-				jsonLine = linesInfoJson.getJSONObject(i);
-				Line curntLine = new Line(jsonLine.getInt("route_number"));
-
-				JSONArray jsonRoutesList = jsonLine.getJSONArray("routes"); // On récupère le Json des routes
-
-				Route curntRoute = null;
-				Stop curntStop;
-				String directionRoute;
-				StopTimes stpTimes;
-				for (int j=0; j<jsonRoutesList.length(); j++) {
-					if (jsonRoutesList.getJSONObject(j).getInt("stop_order") == 1) { // Si c'est un Arret n°1 alors on crée une nouvelle Route
-					    // Maybe dangerous d'initialiser dans un if (si le json n'a pas de stop n°1 alors ça plantera grave)
-					    curntRoute = new Route(jsonRoutesList.getJSONObject(j).getString("direction"), curntLine);
-					    curntLine.addRoute(curntRoute); // Et on l'ajoute a la ligne
-					}
-
-					curntStop = this.getStopByName(jsonRoutesList.getJSONObject(j).getString("stop_name")); // On regarde si l'Arret est déjà setup
-
-					if (curntStop == null) { // Si non alors on le crée avec la ligne
-					    curntStop = new Stop(jsonRoutesList.getJSONObject(j).getString("stop_name"), curntLine);
-					    this.addStop(curntStop); // On le référence au Data
-					} else {
-				    	curntStop.addLine(curntLine); // Si oui alors on lui ajoute ljuste a ligne
-					}
-					 // On add le stop a route via StopTimes
-					stpTimes = new StopTimes(curntRoute, curntStop, jsonRoutesList.getJSONObject(j).getInt("stop_id"));
-					this.addStpTimes(stpTimes);
-					curntRoute.addStopTimes(stpTimes);
-				}
-				this.addLine(curntLine);
-			}
-		} catch (Exception e) {
-		    e.printStackTrace();
-		}
-	}
-
-    private void setTimes(JSONObject timesJson) {
+        Line curntLine;
+        Stop curntStop;
+        Route curntRoute;
         StopTimes stpTimes;
+
+        try {
+            // Create all Stops
+            JSONArray stopsDetailsJson = planJson.getJSONArray("stop_details");
+            JSONObject curntStpJson;
+            for (int i=0; i<stopsDetailsJson.length(); i++) {
+                curntStpJson = stopsDetailsJson.getJSONObject(i);
+                curntStop = new Stop(curntStpJson.getString("name"), curntStpJson.getInt("our_id"), curntStpJson.getDouble("lat"), curntStpJson.getDouble("lon"));
+                this.stopList.add(curntStop);
+            }
+            curntStop = null; // Need to be null
+
+            // Create all Lines/Routes/StopTimes
+            JSONArray linesInfoJson = planJson.getJSONArray("lines");
+            JSONObject jsonLine;
+            JSONArray jsonRoutesList;
+            JSONArray jsonStopsList;
+            for (int i=0; i<linesInfoJson.length(); i++) { // Browse the lines JsonArray
+                jsonLine = linesInfoJson.getJSONObject(i);
+                curntLine = new Line(jsonLine.getInt("num"), jsonLine.getString("id"));
+
+                jsonRoutesList = jsonLine.getJSONArray("routes");
+                for (int j=0; j<jsonRoutesList.length(); j++) { // Browse the routes array
+                    curntRoute = new Route(jsonRoutesList.getJSONObject(j).getString("direction"), curntLine, j+1);
+                    curntLine.addRoute(curntRoute);
+
+                    jsonStopsList = jsonRoutesList.getJSONObject(j).getJSONArray("stops");
+                    for (int k=0; k<jsonStopsList.length(); k++) { // Browse the stops (StopTimes)array
+                        curntStop = this.getStopByName(jsonStopsList.getJSONObject(k).getString("name")); // Get the stop
+                        curntStop.addLine(curntLine);
+
+                        stpTimes = new StopTimes(curntRoute, curntStop, curntLine, jsonStopsList.getJSONObject(k).getInt("stop_id"));
+                        this.addStpTimes(stpTimes);
+                        curntRoute.addStopTimes(stpTimes);
+                    }
+                }
+                this.linesList.add(curntLine);
+            }
+        } catch (Exception e) {
+              e.printStackTrace();
+        }
+    }
+
+    public void setRealTimes(JSONObject timesJson) {
+        StopTimes stpTimes;
+
+        this.resetAllRealTimes(); // Reset all the real times
+
         try {
             JSONArray aller = timesJson.getJSONArray("aller");
             JSONArray retour = timesJson.getJSONArray("retour");
-
-            for (int i=0; i < aller.length(); i++) { // Pour tout aller
-                stpTimes = this.getSrlByStopId(aller.getJSONArray(i).getInt(4)); // On récupère le RouteLinkStop
-                if (stpTimes != null) { // Si il existe on lui ajoute le time
-                    stpTimes.addRealTime(Integer.parseInt(aller.getJSONArray(i).get(5).toString()));
+            JSONArray curntStop;
+            for (int i=0; i < aller.length(); i++) {
+                curntStop = aller.getJSONArray(i);
+                stpTimes = this.getTheStopTimes(curntStop.getString(0), curntStop.getString(6), curntStop.getInt(4)); // Get the StopTimes
+                if (stpTimes != null) {
+                    stpTimes.addRealTime(curntStop.getInt(5));
                 }
             }
 
             for (int i=0; i < retour.length(); i++) {
-                stpTimes = this.getSrlByStopId(retour.getJSONArray(i).getInt(4));
+                curntStop = retour.getJSONArray(i);
+                stpTimes = this.getTheStopTimes(curntStop.getString(0), curntStop.getString(6), curntStop.getInt(4));
                 if (stpTimes != null) {
-                    stpTimes.addRealTime(Integer.parseInt(retour.getJSONArray(i).get(5).toString()));
+                    stpTimes.addRealTime(curntStop.getInt(5));
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         EventBus.getDefault().post(new MessageEvent(MessageEvent.Type.TIMESUPDATE));
+    }
+
+    public void setTheoTimes(JSONObject theoTimesJson) {
+        StopTimes curntStpTim;
+        try {
+            JSONArray stpTimJson = theoTimesJson.getJSONArray("stops");
+            String date = theoTimesJson.getString("date");
+
+            for (int i=0; i < stpTimJson.length(); i++) {
+                curntStpTim = this.getStopTimesByOurId(stpTimJson.getJSONObject(i).getInt("our_id"));
+                curntStpTim.setTheoTimes(stpTimJson.getJSONObject(i).getJSONArray("times"), date);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     // Add
@@ -201,11 +229,33 @@ public class DataParser {
         return null;
     }
 
-    public StopTimes getSrlByStopId(int stopId) {
-        for (StopTimes srl : this.stpTimesList) {
-            if (srl.getStopId() == stopId) return srl;
+    public Stop getStopByOurId(int ourId) {
+        for (Stop stp : this.stopList) {
+            if (stp.getOurId() == ourId) return stp;
         }
         return null;
+    }
+
+    public StopTimes getStopTimesByOurId(int ourId) {
+        for (StopTimes st : this.stpTimesList) {
+            if (st.getOurId() == ourId) return st;
+        }
+        return null;
+    }
+
+        // Return the StopTimes which correspond to line/direction/stopId
+    public StopTimes getTheStopTimes(String line, String direction, int stopId) {
+        for (StopTimes st : this.stpTimesList) {
+            if (st.isTheOne(line, direction, stopId)) return st;
+        }
+        return null;
+    }
+ 
+        // Reset the real times for all StopTimes
+    public void resetAllRealTimes() {
+        for (StopTimes stp : stpTimesList) {
+            stp.resetRealTimes();
+        }
     }
 
     public ArrayList<Stop> searchInStops(String search) {

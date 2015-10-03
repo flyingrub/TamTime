@@ -1,24 +1,29 @@
 package flying.grub.tamtime.data;
 
 import org.json.JSONException;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
-import flying.grub.tamtime.data.Line;
-
 
 public class Stop {
+    private int ourId;
     private String name;
     private ArrayList<Line> linesList;
-    private ArrayList<StopTimes> stopTimeList;
+    private ArrayList<StopTimes> stpTimList;
+    private static ArrayList<String[]> idToName = new ArrayList<>();
+    private double lat;
+    private double lon;
 
-    public Stop(String name, Line line){
+    public Stop(String name, int ourId, double lat, double lon){
         this.linesList = new ArrayList<Line>();
-        this.stopTimeList = new ArrayList<StopTimes>();
+        this.stpTimList = new ArrayList<StopTimes>();
         this.name = name;
-        this.linesList.add(line);
+        this.ourId = ourId;
+        this.lat = lat;
+        this.lon = lon;
     }
 
     // Get
@@ -30,15 +35,9 @@ public class Stop {
         return this.linesList;
     }
 
-    // Add
-    public void addLine(Line line){
-        if (!this.linesList.contains(line)) this.linesList.add(line);
+    public int getOurId() {
+        return this.ourId;
     }
-
-    public void addStpTim(StopTimes stpTim) {
-        this.stopTimeList.add(stpTim);
-    }
-
 
     public ArrayList<StopTimes> getStopTimeForLine(int lineId) {
         ArrayList<StopTimes> res = new ArrayList<>();
@@ -51,13 +50,12 @@ public class Stop {
         return res;
     }
 
-    // Test & Bullshit
-    public String toString() {
-        String res = this.name + "\n";
-        for (Line line : linesList) {
-            res += "--- " + line + "\n";
-        }
-        return res;
+    // Add
+    public void addLine(Line line){
+        if (!this.linesList.contains(line)) this.linesList.add(line);
     }
 
+    public void addStpTim(StopTimes stpTim) {
+        this.stpTimList.add(stpTim);
+    }
 }
