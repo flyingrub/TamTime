@@ -8,10 +8,12 @@ import java.util.ArrayList;
 
 
 public class Line {
-    int lineId;
+    String lineId;
+    int num;
     ArrayList<Route> routesList;
 
-    public Line(int lineId) {
+    public Line(int num, String lineId) {
+        this.num = num;
         this.lineId = lineId;
         this.routesList = new ArrayList<Route>();
     }
@@ -34,8 +36,12 @@ public class Line {
         return this.routesList.size();
     }
 
-    public int getLineId(){
+    public String getLineId(){
         return this.lineId;
+    }
+
+    public int getLineNum(){
+        return this.num;
     }
 
     // Add

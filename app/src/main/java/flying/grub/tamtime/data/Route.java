@@ -6,18 +6,18 @@ import org.json.JSONException;
 
 import java.util.ArrayList;
 
-import flying.grub.tamtime.data.Line;
-
 
 public class Route {
     private Line line;
     private String direction;
     private ArrayList<StopTimes> stpTimes;
+    private int num;
 
-    public Route(String direction, Line line) {
+    public Route(String direction, Line line, int num) {
         this.stpTimes = new ArrayList<StopTimes>();
         this.line = line;
         this.direction = direction;
+        this.num = num;
     }
 
     // Add
@@ -59,6 +59,10 @@ public class Route {
 
     public String getDirection() {
         return this.direction;
+    }
+
+    public int getDirNum() {
+        return this.num;
     }
 
     // Test & Bullshit
