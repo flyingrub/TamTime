@@ -39,6 +39,17 @@ public class Stop {
         return this.ourId;
     }
 
+    public ArrayList<StopTimes> getStopTimeForLine(int lineId) {
+        ArrayList<StopTimes> res = new ArrayList<>();
+        for (StopTimes s : stopTimeList) {
+            int stopLineId = s.getRoute().getLine().getLineId();
+            if (stopLineId == lineId) {
+                res.add(s);
+            }
+        }
+        return res;
+    }
+
     // Add
     public void addLine(Line line){
         if (!this.linesList.contains(line)) this.linesList.add(line);

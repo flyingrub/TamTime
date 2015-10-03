@@ -44,8 +44,8 @@ public class DataParser {
         this.linesList = new ArrayList<>();
         this.stpTimesList = new ArrayList<>();
         this.context = context;
-        setupLines();
-        setupTimes();
+        setupMap();
+        setupRealTimes();
     }
 
     public static synchronized DataParser getDataParser(Context context) {
@@ -56,14 +56,14 @@ public class DataParser {
         }
     }
 
-    public void setupTimes() { // Real times
+    public void setupRealTimes() { // Real times
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
                 JSON_REALTIME, null,
                 new Response.Listener<JSONObject>() {
 
                     @Override
                     public void onResponse(JSONObject response) {
-                        setTimes(response);
+                        setRealTimes(response);
                     }
                 }, new Response.ErrorListener() {
 
@@ -75,7 +75,7 @@ public class DataParser {
         VolleyApp.getInstance(context).addToRequestQueue(jsonObjReq);
     }
 
-    public void setupLines() {
+    public void setupMap() {
         String json = null;
         try {
             InputStream is = context.getResources().openRawResource(R.raw.data);
@@ -88,7 +88,7 @@ public class DataParser {
             ex.printStackTrace();
         }
         try {
-            setLines(new JSONObject(json));
+            setMap(new JSONObject(json));
         } catch (JSONException e) {
             e.printStackTrace();
         }
