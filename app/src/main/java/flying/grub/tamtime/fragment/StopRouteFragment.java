@@ -17,9 +17,11 @@ import flying.grub.tamtime.R;
 import flying.grub.tamtime.activity.MainActivity;
 import flying.grub.tamtime.adapter.OneRouteAdapter;
 import flying.grub.tamtime.adapter.OneStopAdapter;
+import flying.grub.tamtime.data.DataParser;
 import flying.grub.tamtime.data.Line;
 import flying.grub.tamtime.data.MessageEvent;
 import flying.grub.tamtime.data.Stop;
+import flying.grub.tamtime.data.StopTimes;
 
 /**
  * Created by fly on 9/19/15.
@@ -32,18 +34,16 @@ public class StopRouteFragment extends Fragment {
     private SwipeRefreshLayout refreshLayout;
     private ProgressBarCircularIndeterminate circularIndeterminate;
 
-    private String stopName;
-    private int linePosition;
     private Stop stop;
     private Line line;
 
-    public static Fragment newInstance(String stopName, int routePosition) {
+    public static Fragment newInstance(Integer stopId, int linePosition) {
         StopRouteFragment f = new StopRouteFragment();
 
         // Supply num input as an argument.
         Bundle args = new Bundle();
-        args.putString("stopName", stopName);
-        args.putInt("linePosition", routePosition);
+        args.putInt("stopId", stopId);
+        args.putInt("linePosition", linePosition);
         f.setArguments(args);
         return f;
     }
@@ -55,8 +55,8 @@ public class StopRouteFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EventBus.getDefault().register(this);
-        stopName = getArguments().getString("stopName");
-        linePosition = getArguments().getInt("linePosition");
+        stop = DataParser.getDataParser().getStopByOurId(getArguments().getInt("stopId"));
+        line = stop.getLines().get(getArguments().getInt("linePosition"));
     }
 
     @Override
@@ -86,9 +86,6 @@ public class StopRouteFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        stop = MainActivity.getData().getStopByName(stopName);
-        line = stop.getLines().get(linePosition);
-
         adapter = new OneStopAdapter(stop.getStopTimeForLine(line.getLineId()));
 
         recyclerView.setAdapter(adapter);
@@ -104,7 +101,7 @@ public class StopRouteFragment extends Fragment {
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                MainActivity.getData().setupRealTimes();
+                DataParser.getDataParser().setupRealTimes(getActivity());
             }
         });
         refreshLayout.setColorSchemeResources(R.color.primaryColor);
@@ -115,8 +112,8 @@ public class StopRouteFragment extends Fragment {
     public void onEvent(MessageEvent event){
         if (event.type == MessageEvent.Type.TIMESUPDATE) {
             refreshLayout.setRefreshing(false);
-            stop = MainActivity.getData().getStopByName(stopName);
-            line = stop.getLines().get(linePosition);
+            stop = DataParser.getDataParser().getStopByOurId(getArguments().getInt("stopId"));
+            line = stop.getLines().get(getArguments().getInt("linePosition"));
 
             adapter = new OneStopAdapter(stop.getStopTimeForLine(line.getLineId()));
             recyclerView.swapAdapter(adapter, false);

@@ -1,17 +1,13 @@
 package flying.grub.tamtime.data;
 
-import org.json.JSONException;
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
-import java.util.Collections;
 
 
 public class Stop {
     private int ourId;
     private String name;
     private ArrayList<Line> linesList;
+
     private ArrayList<StopTimes> stpTimList;
     private static ArrayList<String[]> idToName = new ArrayList<>();
     private double lat;
@@ -39,15 +35,19 @@ public class Stop {
         return this.ourId;
     }
 
-    public ArrayList<StopTimes> getStopTimeForLine(int lineId) {
+    public ArrayList<StopTimes> getStopTimeForLine(String lineId) {
         ArrayList<StopTimes> res = new ArrayList<>();
-        for (StopTimes s : stopTimeList) {
-            int stopLineId = s.getRoute().getLine().getLineId();
-            if (stopLineId == lineId) {
+        for (StopTimes s : stpTimList) {
+;
+            if (s.getRoute().getLine().getLineId().equals(lineId)) {
                 res.add(s);
             }
         }
         return res;
+    }
+
+    public ArrayList<StopTimes> getStpTimList() {
+        return stpTimList;
     }
 
     // Add

@@ -92,7 +92,7 @@ public class FavoriteStopsFragment extends Fragment {
         Stop s = favoriteStops.getFavoriteStop().get(i);
         Intent intent = new Intent(getActivity(), OneStopActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putString("stopName", s.getName());
+        bundle.putInt("stopId", s.getOurId());
         intent.putExtras(bundle);
         startActivity(intent);
         getActivity().overridePendingTransition(R.anim.slide_from_right, R.anim.fade_scale_out);

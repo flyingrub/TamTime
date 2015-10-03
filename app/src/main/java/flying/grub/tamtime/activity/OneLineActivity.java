@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
+import flying.grub.tamtime.data.DataParser;
 import flying.grub.tamtime.data.Line;
 import flying.grub.tamtime.fragment.LineRouteFragment;
 import flying.grub.tamtime.R;
@@ -46,7 +47,7 @@ public class OneLineActivity extends AppCompatActivity {
             }
         });
 
-        line = MainActivity.getData().getLine(linePosition);
+        line = DataParser.getDataParser().getLine(linePosition);
 
         viewPager = (ViewPager) findViewById(R.id.viewpager);
 

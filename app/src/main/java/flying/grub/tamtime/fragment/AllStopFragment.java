@@ -31,6 +31,7 @@ import flying.grub.tamtime.activity.OneLineActivity;
 import flying.grub.tamtime.activity.OneStopActivity;
 import flying.grub.tamtime.adapter.AllStopAdapter;
 import flying.grub.tamtime.adapter.DividerItemDecoration;
+import flying.grub.tamtime.data.DataParser;
 import flying.grub.tamtime.data.Stop;
 
 /**
@@ -64,7 +65,7 @@ public class AllStopFragment extends Fragment {
         RecyclerView.ItemDecoration itemDecoration = new DividerItemDecoration(getActivity());
         recyclerView.addItemDecoration(itemDecoration);
 
-        currentDisplayedStop = MainActivity.getData().getStopList();
+        currentDisplayedStop = DataParser.getDataParser().getStopList();
         adapter = new AllStopAdapter(currentDisplayedStop);
         recyclerView.setAdapter(adapter);
         adapter.SetOnItemClickListener(new AllStopAdapter.OnItemClickListener() {
@@ -89,14 +90,14 @@ public class AllStopFragment extends Fragment {
         sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                currentDisplayedStop = MainActivity.getData().searchInStops(query);
+                currentDisplayedStop = DataParser.getDataParser().searchInStops(query);
                 recyclerView.swapAdapter(new AllStopAdapter(currentDisplayedStop), false);
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                currentDisplayedStop = MainActivity.getData().searchInStops(newText);
+                currentDisplayedStop = DataParser.getDataParser().searchInStops(newText);
                 recyclerView.swapAdapter(new AllStopAdapter(currentDisplayedStop), false);
                 return false;
             }
@@ -129,7 +130,7 @@ public class AllStopFragment extends Fragment {
         Stop s = currentDisplayedStop.get(i);
         Intent intent = new Intent(getActivity(), OneStopActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putString("stopName", s.getName());
+        bundle.putInt("stopId", s.getOurId());
         intent.putExtras(bundle);
         startActivity(intent);
         getActivity().overridePendingTransition(R.anim.slide_from_right, R.anim.fade_scale_out);
