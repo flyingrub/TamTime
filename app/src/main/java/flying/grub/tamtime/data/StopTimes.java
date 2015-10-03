@@ -192,26 +192,4 @@ public class StopTimes {
     public Line getLine() {
         return  this.line;
     }
-
-    //Test & Bullshit
-    public String toString() {
-        return this.route.getLine().getLineId() + " / " + this.route.getDirection() + " / " + this.stop.getName() + " / " + this.stopId + " / " + this.line.getLineId();
-    }
-
-    public String getStringTimes() {
-        String res = "\n";
-        for (Calendar cal : this.timesList) {
-            res += "        " + cal.toString() + "\n";
-        }
-        return res;
-    }
-
-    public void displayAllCalendar() {
-        for (Calendar cal : this.timesList) {
-            if (cal != null) {
-                System.out.println(cal.get(Calendar.DAY_OF_MONTH) + "/" + cal.get(Calendar.MONTH) + " -- " + cal.get(Calendar.HOUR_OF_DAY) + ":" + cal.get(Calendar.MINUTE));
-            } else System.out.println("---");
-        }
-    }
-
 }

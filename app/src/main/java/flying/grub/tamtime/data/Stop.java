@@ -47,14 +47,4 @@ public class Stop {
     public void addStpTim(StopTimes stpTim) {
         this.stpTimList.add(stpTim);
     }
-
-    // Test & Bullshit
-    public String toString() {
-        String res = this.name + "\n";
-        for (Line line : linesList) {
-            res += "--- " + line + "\n";
-        }
-        return res;
-    }
-
 }

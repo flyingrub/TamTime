@@ -64,9 +64,4 @@ public class Route {
     public int getDirNum() {
         return this.num;
     }
-
-    // Test & Bullshit
-    public String toString() {
-        return "---> " + this.direction + "\n";
-    }
 }

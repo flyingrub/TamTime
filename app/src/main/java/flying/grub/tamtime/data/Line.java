@@ -48,11 +48,4 @@ public class Line {
     public void addRoute(Route r) {
         this.routesList.add(r);
     }
-
-
-    // Test & Bullshit
-    public String toString() {
-        return "Line " + this.lineId;
-    }
-
 }
