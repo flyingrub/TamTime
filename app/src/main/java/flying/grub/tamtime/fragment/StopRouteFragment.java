@@ -104,7 +104,7 @@ public class StopRouteFragment extends Fragment {
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                MainActivity.getData().setupTimes();
+                MainActivity.getData().setupRealTimes();
             }
         });
         refreshLayout.setColorSchemeResources(R.color.primaryColor);
