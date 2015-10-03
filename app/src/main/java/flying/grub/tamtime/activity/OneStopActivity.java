@@ -16,6 +16,7 @@ import android.view.View;
 
 import flying.grub.tamtime.R;
 import flying.grub.tamtime.adapter.AllStopAdapter;
+import flying.grub.tamtime.data.DataParser;
 import flying.grub.tamtime.data.FavoriteStops;
 import flying.grub.tamtime.data.Stop;
 import flying.grub.tamtime.fragment.LineRouteFragment;
@@ -32,7 +33,7 @@ public class OneStopActivity extends AppCompatActivity {
 
     private FavoriteStops favoriteStops;
 
-    private String stopName;
+    private int stopId;
     private Stop stop;
 
     @Override
@@ -41,8 +42,8 @@ public class OneStopActivity extends AppCompatActivity {
         setContentView(R.layout.view_sliding_tabs);
 
         Bundle bundle = getIntent().getExtras();
-        stopName = bundle.getString("stopName");
-        stop = MainActivity.getData().getStopByName(stopName);
+        stopId = bundle.getInt("stopId");
+        stop = DataParser.getDataParser().getStopByOurId(stopId);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar_actionbar);
         setSupportActionBar(toolbar);
@@ -84,7 +85,7 @@ public class OneStopActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.favorites_menu, menu);
         MenuItem item = menu.getItem(0);
-        if (favoriteStops.isInFav(stopName)) {
+        if (favoriteStops.isInFav(stop.getOurId())) {
             item.setIcon(R.drawable.ic_star_white_36dp);
         } else {
             item.setIcon(R.drawable.ic_star_border_white_36dp);
@@ -96,11 +97,11 @@ public class OneStopActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_favorite:
-                if (favoriteStops.isInFav(stopName)) {
-                    favoriteStops.remove(stopName);
+                if (favoriteStops.isInFav(stop.getOurId())) {
+                    favoriteStops.remove(stop.getOurId());
                     item.setIcon(R.drawable.ic_star_border_white_36dp);
                 } else {
-                    favoriteStops.add(stopName);
+                    favoriteStops.add(stop.getOurId());
                     item.setIcon(R.drawable.ic_star_white_36dp);
                 }
                 return true;
@@ -126,7 +127,7 @@ public class OneStopActivity extends AppCompatActivity {
 
         @Override
         public Fragment getItem(int position) {
-            return StopRouteFragment.newInstance(stopName, position);
+            return StopRouteFragment.newInstance(stop.getOurId(), position);
         }
     }
 }

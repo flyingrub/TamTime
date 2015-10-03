@@ -19,6 +19,7 @@ import flying.grub.tamtime.activity.OneLineActivity;
 import flying.grub.tamtime.adapter.AllLinesAdapter;
 import flying.grub.tamtime.adapter.DividerItemDecoration;
 import flying.grub.tamtime.adapter.OneRouteAdapter;
+import flying.grub.tamtime.data.DataParser;
 import flying.grub.tamtime.data.Line;
 import flying.grub.tamtime.data.MessageEvent;
 import flying.grub.tamtime.data.Stop;
@@ -57,7 +58,7 @@ public class AllLinesFragment extends Fragment {
         recyclerView.addItemDecoration(itemDecoration);
         // specify an adapter (see also next example)
 
-        lines = MainActivity.getData().getLinesList();
+        lines = DataParser.getDataParser().getLinesList();
         adapter = new AllLinesAdapter(lines);
         recyclerView.setAdapter(adapter);
         adapter.SetOnItemClickListener(new AllLinesAdapter.OnItemClickListener() {
@@ -99,7 +100,7 @@ public class AllLinesFragment extends Fragment {
 
     public void onEvent(MessageEvent event){
         if (event.type == MessageEvent.Type.LINESUPDATE) {
-            lines = MainActivity.getData().getLinesList();
+            lines = DataParser.getDataParser().getLinesList();
             recyclerView.swapAdapter(new AllLinesAdapter(lines), false);
         }
     }

@@ -132,6 +132,7 @@ public class StopTimes {
 
 
         }
+        while (res.size() < nbr) res.add("-");
         return res;
     }
 

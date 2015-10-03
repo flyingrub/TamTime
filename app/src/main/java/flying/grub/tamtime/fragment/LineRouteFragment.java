@@ -22,6 +22,7 @@ import flying.grub.tamtime.adapter.DividerItemDecoration;
 import flying.grub.tamtime.activity.MainActivity;
 import flying.grub.tamtime.R;
 import flying.grub.tamtime.adapter.OneRouteAdapter;
+import flying.grub.tamtime.data.DataParser;
 import flying.grub.tamtime.data.MessageEvent;
 import flying.grub.tamtime.data.Route;
 
@@ -87,7 +88,7 @@ public class LineRouteFragment extends Fragment {
         RecyclerView.ItemDecoration itemDecoration = new DividerItemDecoration(getActivity());
         recyclerView.addItemDecoration(itemDecoration);
 
-        route = MainActivity.getData().getLine(linePosition).getRoutes().get(routePosition);
+        route = DataParser.getDataParser().getLine(linePosition).getRoutes().get(routePosition);
         adapter = new OneRouteAdapter(route.getStpTimes());
 
         recyclerView.setAdapter(adapter);
@@ -99,14 +100,14 @@ public class LineRouteFragment extends Fragment {
             }
         });
 
-        getActivity().setTitle("Ligne " + MainActivity.getData().getLine(linePosition).getLineId());
+        getActivity().setTitle("Ligne " + DataParser.getDataParser().getLine(linePosition).getLineId());
 
         circularIndeterminate.setVisibility(View.GONE);
         refreshLayout.setVisibility(View.VISIBLE);
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                MainActivity.getData().setupRealTimes();
+                DataParser.getDataParser().setupRealTimes(getActivity());
             }
         });
         refreshLayout.setColorSchemeResources(R.color.primaryColor);

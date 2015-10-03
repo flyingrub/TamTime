@@ -36,30 +36,29 @@ public class DataParser {
     private ArrayList<Stop> stopList;
     private ArrayList<StopTimes> stpTimesList;
 
-    private Context context;
     private static DataParser data;
 
-    private DataParser(Context context) {
+    private DataParser() {
         this.stopList = new ArrayList<>();
         this.linesList = new ArrayList<>();
         this.stpTimesList = new ArrayList<>();
-        this.context = context;
-        setupMap();
-        setupRealTimes();
+        this.data = this;
     }
 
-    public static synchronized DataParser getDataParser(Context context) {
+    public void init(Context context) {
+        setupMap(context);
+        setupRealTimes(context);
+    }
+
+    public static synchronized DataParser getDataParser() {
         if (data == null) {
-            if (context == null) {
-                Log.d("DATA", "it's giong to crash. Context == null");
-            }
-            return new DataParser(context);
+            return new DataParser();
         } else {
             return data;
         }
     }
 
-    public void setupRealTimes() { // Real times
+    public void setupRealTimes(Context context) { // Real times
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
                 JSON_REALTIME, null,
                 new Response.Listener<JSONObject>() {
@@ -78,7 +77,7 @@ public class DataParser {
         VolleyApp.getInstance(context).addToRequestQueue(jsonObjReq);
     }
 
-    public void setupMap() {
+    public void setupMap(Context context) {
         String json = null;
         try {
             InputStream is = context.getResources().openRawResource(R.raw.data);
