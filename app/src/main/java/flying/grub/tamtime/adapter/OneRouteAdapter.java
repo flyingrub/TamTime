@@ -53,9 +53,11 @@ public class OneRouteAdapter extends RecyclerView.Adapter<OneRouteAdapter.ViewHo
         // - replace the contents of the view with that element
         StopTimes stop = stops.get(position);
         holder.mStop.setText(stop.getStop().getName());
-        holder.tps1.setText(stop.getTimes(0));
-        holder.tps2.setText(stop.getTimes(1));
-        holder.tps3.setText(stop.getTimes(2));
+
+        ArrayList<String> times = stop.getStrNextTimes(3); // Request 3 next times
+        holder.tps1.setText(times.get(0));
+        holder.tps2.setText(times.get(1));
+        holder.tps3.setText(times.get(2));
     }
 
     // Return the size of your dataset (invoked by the layout manager)
