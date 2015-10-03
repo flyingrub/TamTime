@@ -153,19 +153,25 @@ public class StopTimes {
         return res;
     }
 
-    // Work with getNextTimes (theoric part)
+        // Work with getNextTimes (theoric part)
     private void getNextTheoricTimes(int nbr, int jumpN, ArrayList<Integer> res) {
         Calendar curntDate = Calendar.getInstance();
         int i=0, j=0;
         int inMsec;
 
-        while (i+jumpN<this.timesList.size() && j<nbr) { // TODO check condition and find a better solution
-            if (this.timesList.get(i) != null && this.timesList.get(i+jumpN) != null && curntDate.before(this.timesList.get(i))) {
-                inMsec = (int)(this.timesList.get(i+jumpN).getTimeInMillis() - curntDate.getTimeInMillis());
-                res.add(inMsec/1000); //On ajoute le temps restant en seconde
+        while (i<this.timesList.size() && !curntDate.before(this.timesList.get(i))) {
+            i++;
+        }
+
+        int k = i+jumpN;
+
+        while (k<this.timesList.size() && j<=nbr) {
+            if (this.timesList.get(k) != null) {
+                inMsec = (int)(this.timesList.get(k).getTimeInMillis() - curntDate.getTimeInMillis());
+                res.add(inMsec/1000); // Add times left in second       
                 j++;
             }
-            i++;
+            k++;
         }
     }
 
