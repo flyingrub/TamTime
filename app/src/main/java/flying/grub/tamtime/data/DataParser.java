@@ -50,6 +50,9 @@ public class DataParser {
 
     public static synchronized DataParser getDataParser(Context context) {
         if (data == null) {
+            if (context == null) {
+                Log.d("DATA", "it's giong to crash. Context == null");
+            }
             return new DataParser(context);
         } else {
             return data;

@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity implements DrawerCallback {
 
     private Toolbar mToolbar;
     private NavigationDrawerFragment navigationDrawerFragment;
-    private static DataParser dataParser;
+    private static Context context;
     private static final String MAP_URL = "http://tam.cartographie.pro/";
 
     @Override
@@ -34,8 +34,7 @@ public class MainActivity extends AppCompatActivity implements DrawerCallback {
         mToolbar = (Toolbar) findViewById(R.id.toolbar_actionbar);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        dataParser = DataParser.getDataParser(this);
-        Log.d("data", "" + dataParser);
+        context = this;
 
         navigationDrawerFragment = (NavigationDrawerFragment) getFragmentManager().findFragmentById(R.id.fragment_drawer);
         navigationDrawerFragment.setup(R.id.fragment_drawer, (DrawerLayout) findViewById(R.id.drawer), mToolbar);
@@ -59,7 +58,7 @@ public class MainActivity extends AppCompatActivity implements DrawerCallback {
     }
 
     public static DataParser getData(){
-        return dataParser;
+        return DataParser.getDataParser(context);
     }
 
     @Override
