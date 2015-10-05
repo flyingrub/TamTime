@@ -9,6 +9,9 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -18,6 +21,7 @@ import com.gc.materialdesign.views.ProgressBarCircularIndeterminate;
 
 import de.greenrobot.event.EventBus;
 import flying.grub.tamtime.activity.OneStopActivity;
+import flying.grub.tamtime.activity.TheoriticalActivity;
 import flying.grub.tamtime.adapter.DividerItemDecoration;
 import flying.grub.tamtime.activity.MainActivity;
 import flying.grub.tamtime.R;
@@ -36,11 +40,12 @@ public class LineRouteFragment extends Fragment {
     private OneRouteAdapter adapter;
     private SwipeRefreshLayout refreshLayout;
     private ProgressBarCircularIndeterminate circularIndeterminate;
-    private boolean isfirstime = true;
 
     private int linePosition;
     private int routePosition;
     private Route route;
+
+    private boolean isTheoritical;
 
     private static final String TAG = LineRouteFragment.class.getSimpleName();
 
@@ -51,6 +56,19 @@ public class LineRouteFragment extends Fragment {
         Bundle args = new Bundle();
         args.putInt("linePosition", linePosition);
         args.putInt("routePosition", routePosition);
+        args.putBoolean("isTheoritical", false);
+        f.setArguments(args);
+        return f;
+    }
+
+    public static Fragment newInstance(int linePosition, int routePosition, boolean isTheoritical) {
+        LineRouteFragment f = new LineRouteFragment();
+
+        // Supply num input as an argument.
+        Bundle args = new Bundle();
+        args.putInt("linePosition", linePosition);
+        args.putInt("routePosition", routePosition);
+        args.putBoolean("isTheoritical", isTheoritical);
         f.setArguments(args);
         return f;
     }
@@ -58,9 +76,15 @@ public class LineRouteFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EventBus.getDefault().register(this);
         linePosition = getArguments().getInt("linePosition");
         routePosition = getArguments().getInt("routePosition");
+        isTheoritical = getArguments().getBoolean("isTheoritical");
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -89,7 +113,8 @@ public class LineRouteFragment extends Fragment {
         recyclerView.addItemDecoration(itemDecoration);
 
         route = DataParser.getDataParser().getLine(linePosition).getRoutes().get(routePosition);
-        adapter = new OneRouteAdapter(route.getStpTimes());
+
+        adapter = new OneRouteAdapter(route.getStpTimes(), isTheoritical);
 
         recyclerView.setAdapter(adapter);
         adapter.SetOnItemClickListener(new OneRouteAdapter.OnItemClickListener() {
@@ -112,14 +137,39 @@ public class LineRouteFragment extends Fragment {
         });
         refreshLayout.setColorSchemeResources(R.color.primaryColor);
 
+        setHasOptionsMenu(true);
 
         return view;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.line_menu, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.go_theoritical:
+                if (!isTheoritical) {
+                    Intent intent = new Intent(getActivity(), TheoriticalActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("linePosition", linePosition);
+                    intent.putExtras(bundle);
+                    startActivity(intent);
+                    getActivity().overridePendingTransition(R.anim.slide_from_right, R.anim.fade_scale_out);
+                }
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     public void selectitem(int i){
         Intent intent = new Intent(getActivity(), OneStopActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putString("stopName", route.getStpTimes().get(i).getStop().getName());
+        bundle.putInt("stopId", route.getStpTimes().get(i).getStop().getOurId());
         intent.putExtras(bundle);
         startActivity(intent);
         getActivity().overridePendingTransition(R.anim.slide_from_right, R.anim.fade_scale_out);

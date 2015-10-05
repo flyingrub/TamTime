@@ -1,6 +1,7 @@
 package flying.grub.tamtime.data;
 
 import android.content.Context;
+import android.text.format.Time;
 import android.util.Log;
 
 import com.android.volley.Request;
@@ -20,7 +21,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Scanner;
 
 import de.greenrobot.event.EventBus;
@@ -48,6 +51,7 @@ public class DataParser {
     public void init(Context context) {
         setupMap(context);
         setupRealTimes(context);
+        //setupTheoTimes(context);
     }
 
     public static synchronized DataParser getDataParser() {
@@ -66,6 +70,25 @@ public class DataParser {
                     @Override
                     public void onResponse(JSONObject response) {
                         setRealTimes(response);
+                    }
+                }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d(TAG, "Error: " + error.getMessage());
+            }
+        });
+        VolleyApp.getInstance(context).addToRequestQueue(jsonObjReq);
+    }
+
+    public void setupTheoTimes(Context context) { // Real times
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
+                JSON_THEOTIME, null,
+                new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        setTheoTimes(response);
                     }
                 }, new Response.ErrorListener() {
 

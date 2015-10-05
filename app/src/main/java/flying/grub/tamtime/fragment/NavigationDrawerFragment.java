@@ -75,7 +75,7 @@ public class NavigationDrawerFragment extends Fragment {
             currentSelectedPosition = savedInstanceState.getInt(STATE_SELECTED_POSITION);
             fromSavedInstanceState = true;
         } else {
-            currentSelectedPosition = 1;
+            currentSelectedPosition = 0;
         }
         selectItem(currentSelectedPosition);
     }
