@@ -38,7 +38,7 @@ public class Stop {
     public ArrayList<StopTimes> getStopTimeForLine(String lineId) {
         ArrayList<StopTimes> res = new ArrayList<>();
         for (StopTimes s : stpTimList) {
-;
+
             if (s.getRoute().getLine().getLineId().equals(lineId)) {
                 res.add(s);
             }

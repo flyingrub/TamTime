@@ -32,7 +32,7 @@ import flying.grub.tamtime.R;
 public class DataParser {
 
     private static final String TAG = DataParser.class.getSimpleName();
-    private final String JSON_PLAN = "http://bl00m.science/TamTimeData/allData.json"; 
+    private final String JSON_PLAN = "http://bl00m.science/TamTimeData/map.json";
     private final String JSON_THEOTIME = "http://www.bl00m.science/TamTimeData/timesTest.json";
     private final String JSON_REALTIME = "http://www.tam-direct.com/webservice/data.php?pattern=getDetails";
     private ArrayList<Line> linesList;
@@ -81,7 +81,7 @@ public class DataParser {
         VolleyApp.getInstance(context).addToRequestQueue(jsonObjReq);
     }
 
-    public void setupTheoTimes(Context context) { // Real times
+    public void setupTheoTimes(Context context) { // Theoric times
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
                 JSON_THEOTIME, null,
                 new Response.Listener<JSONObject>() {
@@ -103,7 +103,7 @@ public class DataParser {
     public void setupMap(Context context) {
         String json = null;
         try {
-            InputStream is = context.getResources().openRawResource(R.raw.data);
+            InputStream is = context.getResources().openRawResource(R.raw.map);
             int size = is.available();
             byte[] buffer = new byte[size];
             is.read(buffer);
@@ -164,7 +164,9 @@ public class DataParser {
                         curntRoute.addStopTimes(stpTimes);
                     }
                 }
-                this.linesList.add(curntLine);
+                int e=0;
+                while (e < this.linesList.size() && this.linesList.get(e).getLineNum() < curntLine.getLineNum()) e++;
+                this.linesList.add(e, curntLine);
             }
         } catch (Exception e) {
               e.printStackTrace();
@@ -267,12 +269,27 @@ public class DataParser {
 
         // Return the StopTimes which correspond to line/direction/stopId
     public StopTimes getTheStopTimes(String line, String direction, int stopId) {
-        for (StopTimes st : this.stpTimesList) {
-            if (st.isTheOne(line, direction, stopId)) return st;
-        }
-        return null;
+        int linum = line.contains("L") ? Integer.parseInt(line.replace("L", "")) : Integer.parseInt(line);
+
+        int i=0;
+        while (i<this.linesList.size() && this.linesList.get(i).getLineNum() != linum) i++;
+        if (i>=this.linesList.size()) return null;
+        Line curntLine = this.linesList.get(i);
+
+        i=0;
+        ArrayList<Route> routesTab = curntLine.getRoutes();
+        while (i<routesTab.size() && !routesTab.get(i).getDirection().toLowerCase().contains(direction.toLowerCase())) i++;
+        if (i>=routesTab.size()) return null;
+        Route curntRoute = routesTab.get(i);
+
+        i=0;
+        ArrayList<StopTimes> stpTimesTab = curntRoute.getStpTimes();
+        while (i<stpTimesTab.size() && stpTimesTab.get(i).getStopId() != stopId) i++;
+        if (i>=stpTimesTab.size()) return null;
+
+        return stpTimesTab.get(i);
     }
- 
+
         // Reset the real times for all StopTimes
     public void resetAllRealTimes() {
         for (StopTimes stp : stpTimesList) {
