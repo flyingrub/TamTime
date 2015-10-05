@@ -125,7 +125,11 @@ public class LineRouteFragment extends Fragment {
             }
         });
 
-        getActivity().setTitle("Ligne " + DataParser.getDataParser().getLine(linePosition).getLineId());
+        if (isTheoritical) {
+            getActivity().setTitle("Thèorique : Ligne " + DataParser.getDataParser().getLine(linePosition).getLineId());
+        } else {
+            getActivity().setTitle("Ligne " + DataParser.getDataParser().getLine(linePosition).getLineId());
+        }
 
         circularIndeterminate.setVisibility(View.GONE);
         refreshLayout.setVisibility(View.VISIBLE);
@@ -144,7 +148,9 @@ public class LineRouteFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.line_menu, menu);
+        if (!isTheoritical) {
+            inflater.inflate(R.menu.line_menu, menu);
+        }
         super.onCreateOptionsMenu(menu, inflater);
     }
 
