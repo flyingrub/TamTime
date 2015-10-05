@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="10dp"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp">
+    <!-- A CardView that contains a TextView -->
+    <android.support.v7.widget.CardView
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/card_view"
+        android:layout_gravity="center"
+        android:layout_width="fill_parent"
+        android:layout_height="200dp"
+        android:clickable="true"
+        android:elevation="5dp"
+        android:foreground="@drawable/background_color"
+        android:focusable="true"
+        card_view:cardCornerRadius="2dp"
+        card_view:cardUseCompatPadding="true">
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="24sp"
+            android:layout_marginTop="15dp"
+            android:layout_marginStart="25dp"
+            android:layout_marginLeft="25dp"
+            android:textColor="@color/black"
+            android:text="Mosson"
+            />
+
+        <TextView
+            android:id="@+id/direction2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginTop="50dp"
+            android:layout_marginStart="50dp"
+            android:layout_marginLeft="50dp"
+            android:textColor="@color/black"
+            android:text="Mosson"
+            />
+
+        <TextView
+            android:id="@+id/direction1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginBottom="30dp"
+            android:layout_marginStart="50dp"
+            android:layout_marginLeft="50dp"
+            android:textColor="@color/black"
+            android:text="Mosson"
+            />
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1px"
+            android:layout_gravity="center"
+            android:layout_marginStart="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="20dp"
+            android:background="@color/separator" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginTop="75dp"
+            android:layout_marginStart="50dp"
+            android:layout_marginLeft="50dp"
+            android:weightSum="3.0"
+            android:gravity="right">
+
+            <TextView
+                android:id="@+id/tps4"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.0"
+                android:maxLines="1"
+                android:gravity="center"
+                android:text="tps1"
+                android:textColor="@color/primaryColor"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tps5"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.0"
+                android:lines="1"
+                android:gravity="center"
+                android:text="tps2"
+                android:textColor="@color/separator"
+                android:textSize="14sp"/>
+
+            <TextView
+                android:id="@+id/tps6"
+                android:layout_width="0dp"
+                android:textColor="@color/separator"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.0"
+                android:maxLines="1"
+                android:gravity="center"
+                android:text="tps3"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginBottom="5dp"
+            android:layout_marginStart="50dp"
+            android:layout_marginLeft="50dp"
+            android:weightSum="3.0"
+            android:gravity="right">
+
+            <TextView
+                android:id="@+id/tps1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.0"
+                android:maxLines="1"
+                android:gravity="center"
+                android:text="tps1"
+                android:textColor="@color/primaryColor"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tps2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.0"
+                android:lines="1"
+                android:gravity="center"
+                android:text="tps2"
+                android:textColor="@color/separator"
+                android:textSize="14sp"/>
+
+            <TextView
+                android:id="@+id/tps3"
+                android:layout_width="0dp"
+                android:textColor="@color/separator"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.0"
+                android:maxLines="1"
+                android:gravity="center"
+                android:text="tps3"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+
+</LinearLayout>
