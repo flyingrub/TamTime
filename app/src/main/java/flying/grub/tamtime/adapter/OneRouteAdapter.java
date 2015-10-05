@@ -21,13 +21,10 @@ import flying.grub.tamtime.data.StopTimes;
 public class OneRouteAdapter extends RecyclerView.Adapter<OneRouteAdapter.ViewHolder> {
     public OnItemClickListener mItemClickListener;
     private ArrayList<StopTimes> stops;
-
-    public void refresh(){
-        notifyDataSetChanged();
-    }
+    private boolean isTheoritical;
 
     public interface OnItemClickListener {
-        public void onItemClick(View view, int position);
+        void onItemClick(View view, int position);
     }
 
     public void SetOnItemClickListener(final OnItemClickListener mItemClickListener) {
@@ -36,6 +33,12 @@ public class OneRouteAdapter extends RecyclerView.Adapter<OneRouteAdapter.ViewHo
 
     public OneRouteAdapter(ArrayList<StopTimes> stops) {
         this.stops = stops;
+        this.isTheoritical = false;
+    }
+
+    public OneRouteAdapter(ArrayList<StopTimes> stops, boolean isTheoritical) {
+        this.stops = stops;
+        this.isTheoritical = isTheoritical;
     }
 
     @Override

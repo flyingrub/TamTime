@@ -6,20 +6,15 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
 import flying.grub.tamtime.R;
-import flying.grub.tamtime.adapter.AllStopAdapter;
 import flying.grub.tamtime.data.DataParser;
 import flying.grub.tamtime.data.FavoriteStops;
 import flying.grub.tamtime.data.Stop;
-import flying.grub.tamtime.fragment.LineRouteFragment;
 import flying.grub.tamtime.fragment.StopRouteFragment;
 import flying.grub.tamtime.slidingTab.SlidingTabLayout;
 
@@ -39,7 +34,7 @@ public class OneStopActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.view_sliding_tabs);
+        setContentView(R.layout.activity_slidingtabs);
 
         Bundle bundle = getIntent().getExtras();
         stopId = bundle.getInt("stopId");

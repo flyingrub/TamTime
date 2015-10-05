@@ -54,9 +54,14 @@ public class StopRouteFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EventBus.getDefault().register(this);
         stop = DataParser.getDataParser().getStopByOurId(getArguments().getInt("stopId"));
         line = stop.getLines().get(getArguments().getInt("linePosition"));
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        EventBus.getDefault().register(this);
     }
 
     @Override
