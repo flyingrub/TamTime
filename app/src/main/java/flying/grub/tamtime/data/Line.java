@@ -40,10 +40,6 @@ public class Line {
         return this.lineId;
     }
 
-    public int getLineIdInt() {
-        return Integer.parseInt(this.lineId);
-    }
-
     public int getLineNum(){
         return this.num;
     }

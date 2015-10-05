@@ -13,6 +13,7 @@ public class StopTimes {
     private Route route;
     private Line line;
     private int stopId;
+    private int ourId;
     private ArrayList<Calendar> timesList; // Real Times
     private ArrayList<Integer> realTimesList; // Theoric Times
 
@@ -21,6 +22,7 @@ public class StopTimes {
         this.stop = stop;
         this.line = line;
         this.stopId = stopId;
+        this.ourId = Integer.parseInt("" + this.line.getLineNum() + this.route.getDirNum() + this.stop.getOurId());
         this.timesList = new ArrayList<Calendar>();
         this.realTimesList = new ArrayList<Integer>();
         stop.addStpTim(this);
@@ -36,17 +38,8 @@ public class StopTimes {
         return res / 1000 / 60;
     }
 
-    // Return true if line/direction/stopId correspond to this
-    public boolean isTheOne(String line, String direction, int stopId) {
-        int linum = line.contains("L") ? Integer.parseInt(line.replace("L", "")) : Integer.parseInt(line);
-        if (linum == this.line.getLineNum() && this.route.getDirection().toLowerCase().contains(direction.toLowerCase()) && this.stopId == stopId) {
-            return true;
-        }
-        return false;
-    }
-
     public void resetRealTimes() {
-        this.realTimesList.clear();
+        this.realTimesList = = new ArrayList<Integer>();
     }
 
     // Add
@@ -80,7 +73,7 @@ public class StopTimes {
             for (int j=0; j<curnTab.length(); j++) {
                 this.addTheoTime(curnTab.getString(j), date, i);
             }
-            
+
         }
     }
 
@@ -88,6 +81,9 @@ public class StopTimes {
     public static String toTimeString(int timeInt) {
         String timeStr;
         int min = (timeInt / 60);
+
+        if (timeInt >= 10800) return "+ de 3h";
+
         if (min >= 60) {
             int hour = min /60;
             min = min % 60;
@@ -111,7 +107,7 @@ public class StopTimes {
     }
 
     public int getOurId() {
-        return Integer.parseInt("" + this.line.getLineNum() + this.route.getDirNum() + this.stop.getOurId());
+        return this.ourId;
     }
 
     //Return the 'nbr' next passage of the tram/bus as an String ArrayList with an * for theoric times
@@ -119,6 +115,7 @@ public class StopTimes {
         ArrayList<String> res = new ArrayList<>();
         ArrayList<Integer> times = this.getNextTimes(nbr);
         boolean theo = false;
+
         for (Integer t : times) {
             if (t == null) {
                 theo = true;
@@ -136,7 +133,7 @@ public class StopTimes {
         return res;
     }
 
-    // Return an nteger ArrayLIst with null to separate real & theoric times
+    // Return an Integer ArrayLIst with null to separate real & theoric times
     public ArrayList<Integer> getNextTimes(int nbr) {
         ArrayList<Integer> res = new ArrayList<Integer>();
         int i=0;
@@ -169,19 +166,11 @@ public class StopTimes {
         while (k<this.timesList.size() && j<=nbr) {
             if (this.timesList.get(k) != null) {
                 inMsec = (int)(this.timesList.get(k).getTimeInMillis() - curntDate.getTimeInMillis());
-                res.add(inMsec/1000); // Add times left in second       
+                res.add(inMsec/1000); // Add times left in second
                 j++;
             }
             k++;
         }
-    }
-
-    public ArrayList<String> getAllRealTimes() {
-        ArrayList<String> res = new ArrayList<String>();
-        for (int i=0; i<this.realTimesList.size(); i++) {
-            res.add(this.getTimes(1));
-        }
-        return res;
     }
 
     public int getStopId() {
