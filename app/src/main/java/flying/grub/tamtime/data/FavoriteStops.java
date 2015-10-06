@@ -1,20 +1,3 @@
-/*
- * Copyright (C) 2015 - Holy Lobster
- *
- * Nuntius is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * Nuntius is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Nuntius. If not, see <http://www.gnu.org/licenses/>.
- */
-
 package flying.grub.tamtime.data;
 
 import android.content.Context;
@@ -61,7 +44,8 @@ public class FavoriteStops {
         return res;
     }
 
-    public boolean isInFav(Integer stopId) {
+    public boolean isInFav(Stop stop) {
+        stopId = stop.getOurId();
         for (Integer s : favoriteStop) {
             if (s.equals(stopId)) {
                 return true;
@@ -70,8 +54,8 @@ public class FavoriteStops {
         return false;
     }
 
-    public void add(Integer stopId) {
-        favoriteStop.add(stopId);
+    public void add(Stop stop) {
+        favoriteStop.add(stop.getOurId());
         sortAndPush();
     }
 
@@ -80,8 +64,8 @@ public class FavoriteStops {
         sortAndPush();
     }
 
-    public void remove(String stopName) {
-        favoriteStop.remove(stopName);
+    public void remove(Stop stop) {
+        favoriteStop.remove(stop.getOurId());
         sortAndPush();
     }
 

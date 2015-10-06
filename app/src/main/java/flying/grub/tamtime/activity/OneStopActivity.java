@@ -80,7 +80,7 @@ public class OneStopActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.favorites_menu, menu);
         MenuItem item = menu.getItem(0);
-        if (favoriteStops.isInFav(stop.getOurId())) {
+        if (favoriteStops.isInFav(stop)) {
             item.setIcon(R.drawable.ic_star_white_36dp);
         } else {
             item.setIcon(R.drawable.ic_star_border_white_36dp);
@@ -92,11 +92,11 @@ public class OneStopActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_favorite:
-                if (favoriteStops.isInFav(stop.getOurId())) {
-                    favoriteStops.remove(stop.getOurId());
+                if (favoriteStops.isInFav(stop)) {
+                    favoriteStops.remove(stop);
                     item.setIcon(R.drawable.ic_star_border_white_36dp);
                 } else {
-                    favoriteStops.add(stop.getOurId());
+                    favoriteStops.add(stop);
                     item.setIcon(R.drawable.ic_star_white_36dp);
                 }
                 return true;
