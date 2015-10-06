@@ -58,4 +58,13 @@ public class Stop {
     public void addStpTim(StopTimes stpTim) {
         this.stpTimList.add(stpTim);
     }
+
+
+    @Override
+    public String toString() {
+        return "Stop{" +
+                "ourId=" + ourId +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }

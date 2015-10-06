@@ -31,12 +31,6 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
 
     public FavoriteAdapter(ArrayList<Stop> stops) {
         this.stops = stops;
-        Collections.sort(stops, new Comparator<Stop>() {
-            @Override
-            public int compare(Stop s1, Stop s2) {
-                return s1.getName().compareToIgnoreCase(s2.getName());
-            }
-        });
     }
 
     @Override
