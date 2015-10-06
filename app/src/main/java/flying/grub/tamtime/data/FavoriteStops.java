@@ -45,7 +45,7 @@ public class FavoriteStops {
     }
 
     public boolean isInFav(Stop stop) {
-        stopId = stop.getOurId();
+        int stopId = stop.getOurId();
         for (Integer s : favoriteStop) {
             if (s.equals(stopId)) {
                 return true;
@@ -65,7 +65,7 @@ public class FavoriteStops {
     }
 
     public void remove(Stop stop) {
-        favoriteStop.remove(stop.getOurId());
+        favoriteStop.remove((Integer) stop.getOurId());
         sortAndPush();
     }
 
