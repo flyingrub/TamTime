@@ -11,6 +11,7 @@ public class Stop {
     private ArrayList<Line> linesList;
 
     public Location location;
+    private Report report;
     public float distanceFromUser;
 
     private ArrayList<StopTimes> stpTimList;
@@ -55,6 +56,10 @@ public class Stop {
     }
 
     // Add
+    public void setReport(Report report) {
+        this.report = report;
+    }
+
     public void addLine(Line line){
         if (!this.linesList.contains(line)) this.linesList.add(line);
     }
