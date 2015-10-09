@@ -17,12 +17,14 @@ import flying.grub.tamtime.fragment.AllStopFragment;
 import flying.grub.tamtime.fragment.FavoriteStopsFragment;
 import flying.grub.tamtime.fragment.NavigationDrawerFragment;
 import flying.grub.tamtime.R;
+import flying.grub.tamtime.fragment.NearStopFragment;
 import flying.grub.tamtime.fragment.WebFragment;
 import flying.grub.tamtime.navigation.DrawerCallback;
 
 public class MainActivity extends AppCompatActivity implements DrawerCallback {
 
     private Toolbar mToolbar;
+
     private NavigationDrawerFragment navigationDrawerFragment;
     private static final String MAP_URL = "http://tam.cartographie.pro/";
 
@@ -39,6 +41,11 @@ public class MainActivity extends AppCompatActivity implements DrawerCallback {
 
         navigationDrawerFragment = (NavigationDrawerFragment) getFragmentManager().findFragmentById(R.id.fragment_drawer);
         navigationDrawerFragment.setup(R.id.fragment_drawer, (DrawerLayout) findViewById(R.id.drawer), mToolbar);
+    }
+
+
+    public NavigationDrawerFragment getNavigationDrawerFragment() {
+        return navigationDrawerFragment;
     }
 
     @Override
@@ -82,12 +89,19 @@ public class MainActivity extends AppCompatActivity implements DrawerCallback {
                 transaction.commit();
                 break;
             case 3:
+                fragment = new NearStopFragment();
+                transaction.replace(R.id.container, fragment);
+                transaction.addToBackStack("");
+                transaction.commit();
+                break;
+            case 4:
                 WebFragment webFragment = WebFragment.newInstance(MAP_URL);
                 transaction.replace(R.id.container, webFragment);
                 transaction.addToBackStack(null);
                 transaction.commit();
                 break;
-            case 5:
+            case 6:
+                NavigationDrawerFragment.currentSelectedPosition.setI(0);
                 Intent intent = new Intent(this, SettingsActivity.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.slide_from_right, R.anim.fade_scale_out);

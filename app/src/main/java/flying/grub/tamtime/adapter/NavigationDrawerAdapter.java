@@ -17,6 +17,8 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import flying.grub.tamtime.R;
+import flying.grub.tamtime.data.IntRef;
+import flying.grub.tamtime.fragment.NavigationDrawerFragment;
 import flying.grub.tamtime.navigation.ItemWithDrawable;
 
 /**
@@ -26,16 +28,18 @@ public class NavigationDrawerAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     public OnItemClickListener itemClickListener;
 
+    private static final String TAG = NavigationDrawerAdapter.class.getSimpleName();
+
     private static final int TYPE_HEADER = 0;
     private static final int TYPE_ITEM = 1;
 
     private ArrayList<ItemWithDrawable> itemWithDrawables;
 
-    private int currentPos = 1;
+    private IntRef currentPos;
 
-
-    public NavigationDrawerAdapter(ArrayList<ItemWithDrawable> items) {
+    public NavigationDrawerAdapter(ArrayList<ItemWithDrawable> items, IntRef curPos) {
         this.itemWithDrawables = items;
+        this.currentPos = curPos;
     }
 
     @Override
@@ -54,13 +58,13 @@ public class NavigationDrawerAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        holder.itemView.setSelected(currentPos == position && position != 5); // don't select the favorites & Settings
+        holder.itemView.setSelected(currentPos.getI() == position);
         ItemWithDrawable item = itemWithDrawables.get(position);
         if (holder instanceof ViewHolderItem && !item.isHeader()) {
             ViewHolderItem hold = (ViewHolderItem) holder;
             hold.textView.setText(item.getText());
             Drawable draw = item.getDrawable().getConstantState().newDrawable().mutate();
-            if (position == currentPos) {
+            if (position == currentPos.getI()) {
                 draw.setColorFilter(Color.parseColor("#1e88e5"), PorterDuff.Mode.SRC_ATOP);
             } else {
                 draw.setColorFilter(Color.parseColor("#616161"), PorterDuff.Mode.SRC_ATOP);
@@ -112,9 +116,6 @@ public class NavigationDrawerAdapter extends RecyclerView.Adapter<RecyclerView.V
 
         @Override
         public void onClick(View v) {
-            notifyItemChanged(currentPos);
-            currentPos = getLayoutPosition();
-            notifyItemChanged(currentPos);
             if (itemClickListener != null) {
                 itemClickListener.onItemClick(v, getAdapterPosition());
             }

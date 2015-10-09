@@ -1,6 +1,7 @@
 package flying.grub.tamtime.data;
 
 import android.content.Context;
+import android.location.Location;
 import android.text.format.Time;
 import android.util.Log;
 
@@ -219,6 +220,12 @@ public class DataParser {
         }
     }
 
+    public void setAlldistance(Location user) {
+        for (Stop stop : stopList) {
+            stop.calcDistanceFromUser(user);
+        }
+    }
+
     // Add
     public void addStop(Stop s){
         this.stopList.add(s);
@@ -295,6 +302,16 @@ public class DataParser {
         for (StopTimes stp : stpTimesList) {
             stp.resetRealTimes();
         }
+    }
+
+    public ArrayList<Stop> getAllNearStops() {
+        ArrayList<Stop> res = new ArrayList<>();
+        for (Stop s : stopList) {
+            if (s.distanceFromUser <= 500) { // in meter
+                res.add(s);
+            }
+        }
+        return res;
     }
 
     public ArrayList<Stop> searchInStops(String search) {

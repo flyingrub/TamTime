@@ -8,9 +8,13 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+
+import com.nispok.snackbar.Snackbar;
+import com.nispok.snackbar.listeners.ActionClickListener;
 
 import flying.grub.tamtime.data.DataParser;
 import flying.grub.tamtime.data.Line;
@@ -21,6 +25,7 @@ import flying.grub.tamtime.slidingTab.SlidingTabLayout;
 
 public class OneLineActivity extends AppCompatActivity {
 
+    private static final String TAG = OneLineActivity.class.getSimpleName();
     private Toolbar toolbar;
     private ViewPager viewPager;
     private SlidingTabLayout slidingTabLayout;
@@ -55,18 +60,36 @@ public class OneLineActivity extends AppCompatActivity {
 
         viewPager.setAdapter(new OneLinePageAdapter(getSupportFragmentManager()));
 
-
         slidingTabLayout = new SlidingTabLayout(getApplicationContext());
         slidingTabLayout = (SlidingTabLayout) findViewById(R.id.sliding_tabs);
         slidingTabLayout.setSelectedIndicatorColors(getResources().getColor(R.color.textClearColor));
         slidingTabLayout.setDividerColors(getResources().getColor(R.color.primaryColor));
         slidingTabLayout.setViewPager(viewPager);
+
+        if (true) { // to be replaced
+            showInfo("Preturbation en cours sur la ligne...");
+        }
     }
 
     @Override
     public void onPause(){
         super.onPause();
         if (isFinishing()) overridePendingTransition(R.anim.fade_scale_in, R.anim.slide_to_right);
+    }
+
+    public void showInfo(String text) {
+        Snackbar.with(getApplicationContext()) // context
+                .text(text) // text to display
+                .duration(Snackbar.SnackbarDuration.LENGTH_INDEFINITE) // make it shorter
+                .actionLabel("Ok")
+                .actionListener(new ActionClickListener() {
+                    @Override
+                    public void onActionClicked(Snackbar snackbar) {
+                        Log.d(TAG, "Doing something");
+                    }
+                }) // action button's ActionClickListener
+                .actionColor(getResources().getColor(R.color.accentColor))
+                .show(this); // activity where it is displayed
     }
 
     public class OneLinePageAdapter extends FragmentStatePagerAdapter {

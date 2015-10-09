@@ -21,10 +21,13 @@ import java.util.ArrayList;
 
 import flying.grub.tamtime.R;
 import flying.grub.tamtime.adapter.NavigationDrawerAdapter;
+import flying.grub.tamtime.data.IntRef;
 import flying.grub.tamtime.navigation.DrawerCallback;
 import flying.grub.tamtime.navigation.ItemWithDrawable;
 
 public class NavigationDrawerFragment extends Fragment {
+
+    public static final String TAG = NavigationDrawerFragment.class.getSimpleName();
     private static final String PREF_USER_LEARNED_DRAWER = "navigation_drawer_learned";
     private static final String STATE_SELECTED_POSITION = "selected_navigation_drawer_position";
     private static final String PREFERENCES_FILE = "app_settings";
@@ -37,9 +40,7 @@ public class NavigationDrawerFragment extends Fragment {
     private NavigationDrawerAdapter drawerAdapter;
 
     private boolean userLearnedDrawer;
-    private boolean fromSavedInstanceState;
-    private int currentSelectedPosition;
-
+    public static IntRef currentSelectedPosition = new IntRef(0);
 
     @Nullable
     @Override
@@ -55,7 +56,7 @@ public class NavigationDrawerFragment extends Fragment {
 
         getActivity().setTitle(getString(R.string.app_name));
 
-        drawerAdapter = new NavigationDrawerAdapter(getItems());
+        drawerAdapter = new NavigationDrawerAdapter(getItems(), currentSelectedPosition);
         recyclerView.setAdapter(drawerAdapter);
         drawerAdapter.SetOnItemClickListener(new NavigationDrawerAdapter.OnItemClickListener() {
             @Override
@@ -71,13 +72,12 @@ public class NavigationDrawerFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         userLearnedDrawer = Boolean.valueOf(readSharedSetting(getActivity(), PREF_USER_LEARNED_DRAWER, "false"));
-        if (savedInstanceState != null) {
-            currentSelectedPosition = savedInstanceState.getInt(STATE_SELECTED_POSITION);
-            fromSavedInstanceState = true;
-        } else {
-            currentSelectedPosition = 0;
-        }
-        selectItem(currentSelectedPosition);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        selectItem(currentSelectedPosition.getI());
     }
 
     private ArrayList<ItemWithDrawable> getItems() {
@@ -85,6 +85,7 @@ public class NavigationDrawerFragment extends Fragment {
         itemWithDrawables.add(new ItemWithDrawable(getString(R.string.all_lines), getResources().getDrawable(R.drawable.ic_directions_subway_black_36dp), false));
         itemWithDrawables.add(new ItemWithDrawable(getString(R.string.all_stops), getResources().getDrawable(R.drawable.ic_place_black_36dp), false));
         itemWithDrawables.add(new ItemWithDrawable(getString(R.string.all_stops_favs), getResources().getDrawable(R.drawable.ic_favorite_black_36dp), false));
+        itemWithDrawables.add(new ItemWithDrawable(getString(R.string.nearby_stop), getResources().getDrawable(R.drawable.ic_my_location_black_36dp), false));
         itemWithDrawables.add(new ItemWithDrawable(getString(R.string.maps), getResources().getDrawable(R.drawable.ic_map_black_36dp), false));
         itemWithDrawables.add(new ItemWithDrawable(null, null, true));
         itemWithDrawables.add(new ItemWithDrawable(getString(R.string.settings), getResources().getDrawable(R.drawable.ic_settings_black_36dp), false));
@@ -117,7 +118,7 @@ public class NavigationDrawerFragment extends Fragment {
             }
         };
 
-        if (!userLearnedDrawer && !fromSavedInstanceState)
+        if (!userLearnedDrawer)
             this.drawerLayout.openDrawer(containerView);
 
         this.drawerLayout.post(new Runnable() {
@@ -154,8 +155,9 @@ public class NavigationDrawerFragment extends Fragment {
         }
     }
 
-    void selectItem(int position) {
-        currentSelectedPosition = position;
+    public void selectItem(int position) {
+        currentSelectedPosition.setI(position);
+        drawerAdapter.notifyDataSetChanged();
         if (drawerLayout != null) {
             drawerLayout.closeDrawer(containerView);
         }
@@ -172,12 +174,6 @@ public class NavigationDrawerFragment extends Fragment {
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         actionBarDrawerToggle.onConfigurationChanged(newConfig);
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putInt(STATE_SELECTED_POSITION, currentSelectedPosition);
     }
 
     public static void saveSharedSetting(Context ctx, String settingName, String settingValue) {

@@ -1,5 +1,7 @@
 package flying.grub.tamtime.data;
 
+import android.location.Location;
+
 import java.util.ArrayList;
 
 
@@ -8,18 +10,20 @@ public class Stop {
     private String name;
     private ArrayList<Line> linesList;
 
+    public Location location;
+    public float distanceFromUser;
+
     private ArrayList<StopTimes> stpTimList;
-    private static ArrayList<String[]> idToName = new ArrayList<>();
-    private double lat;
-    private double lon;
+
 
     public Stop(String name, int ourId, double lat, double lon){
-        this.linesList = new ArrayList<Line>();
-        this.stpTimList = new ArrayList<StopTimes>();
+        this.linesList = new ArrayList<>();
+        this.stpTimList = new ArrayList<>();
         this.name = name;
         this.ourId = ourId;
-        this.lat = lat;
-        this.lon = lon;
+        this.location = new Location(name);
+        this.location.setLongitude(lon);
+        this.location.setLatitude(lat);
     }
 
     // Get
@@ -59,6 +63,17 @@ public class Stop {
         this.stpTimList.add(stpTim);
     }
 
+    public float distanceToStop(Stop dest) {
+        return this.location.distanceTo(dest.location);
+    }
+
+    public void calcDistanceFromUser(Location user) {
+        distanceFromUser = user.distanceTo(this.location);
+    }
+
+    public float getDistanceFromUser() {
+        return distanceFromUser;
+    }
 
     @Override
     public String toString() {

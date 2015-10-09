@@ -6,6 +6,7 @@
     <string name="all_stops">Arrêts</string>
     <string name="all_itinary_favs">Mes Trajets</string>
     <string name="all_stops_favs">Mes Arrêts</string>
+    <string name="nearby_stop">Arrêts Proches</string>
     <string name="maps">La Carte</string>
 
     <string name="one_line">Ligne</string>
@@ -16,6 +17,10 @@
 
     <string name="waiting_for_network">Waiting for Network… Retry in a few moment.</string>
     <string name="new_data">It\'s OK now :).</string>
+
+    <string name="waiting_for_fix">En attente de données GPS …</string>
+    <string name="gps_disabled">GPS désactivé</string>
+    <string name="please_enable_gps">Pour vous permettre de connaitre les arrêts proche, veuillez activer le GPS.</string>
 
     <string name="settings">Paramètres</string>
     <string name="app_info">A propos</string>
