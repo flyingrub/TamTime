@@ -78,18 +78,18 @@ public class OneLineActivity extends AppCompatActivity {
     }
 
     public void showInfo(String text) {
-        Snackbar.with(getApplicationContext()) // context
-                .text(text) // text to display
-                .duration(Snackbar.SnackbarDuration.LENGTH_INDEFINITE) // make it shorter
+        Snackbar.with(getApplicationContext())
+                .text(text)
+                .duration(Snackbar.SnackbarDuration.LENGTH_LONG)
                 .actionLabel("Ok")
                 .actionListener(new ActionClickListener() {
                     @Override
                     public void onActionClicked(Snackbar snackbar) {
-                        Log.d(TAG, "Doing something");
+                        Log.d(TAG, "TEST");
                     }
-                }) // action button's ActionClickListener
+                })
                 .actionColor(getResources().getColor(R.color.accentColor))
-                .show(this); // activity where it is displayed
+                .show(this);
     }
 
     public class OneLinePageAdapter extends FragmentStatePagerAdapter {

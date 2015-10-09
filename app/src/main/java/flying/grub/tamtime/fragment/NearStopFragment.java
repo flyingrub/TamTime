@@ -113,9 +113,9 @@ public class NearStopFragment extends Fragment {
             setupAdapter();
         }
         if (!hasPermission()) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)) {
-                getLocation();
-            }
+            ActivityCompat.requestPermissions(getActivity(),
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    PERMISSION);
         } else {
             getLocation();
         }
@@ -163,9 +163,7 @@ public class NearStopFragment extends Fragment {
     }
 
     private void getLocation() {
-        ActivityCompat.requestPermissions(getActivity(),
-                new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                PERMISSION);
+
 
         if (locationManager.getAllProviders().indexOf(LocationManager.GPS_PROVIDER) >= 0) {
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 500, 0, locationListener);
@@ -185,6 +183,20 @@ public class NearStopFragment extends Fragment {
         } else if (lastKnownLocationGps != null) {
             new getAllDistance().execute(lastKnownLocationGps);
         }
+    }
+
+    public void showGNoPermissionDialog(){
+        Dialog dialog = new Dialog(getActivity(), getResources().getString(R.string.no_perm_gps), getResources().getString(R.string.please_autorise_gps));
+
+        dialog.setOnAcceptButtonClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ActivityCompat.requestPermissions(getActivity(),
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                        PERMISSION);
+            }
+        });
+        dialog.show();
     }
 
     public void showGpsDisabledDialog(){

@@ -20,7 +20,9 @@
 
     <string name="waiting_for_fix">En attente de données GPS …</string>
     <string name="gps_disabled">GPS désactivé</string>
-    <string name="please_enable_gps">Pour vous permettre de connaitre les arrêts proche, veuillez activer le GPS.</string>
+    <string name="please_enable_gps">Pour vous permettre de connaitre les arrêts proches, veuillez activer le GPS.</string>
+    <string name="no_perm_gps">Permission GPS refusée</string>
+    <string name="please_autorise_gps">Pour vous permettre de connaitre les arrêts proches, veuillez nous accorder la permission d\'accéder au GPS.</string>
 
     <string name="settings">Paramètres</string>
     <string name="app_info">A propos</string>
