@@ -39,6 +39,12 @@ public class Report {
         return type;
     }
 
+    public String getTime() {
+        Calendar now = Calendar.getInstance();
+        int inSec = now.compareTo(this.date);
+        return "Postée il y a " + StopTimes.toTimeString(inSec);
+    }
+
     public String getMessage() {
         return message;
     }
