@@ -76,7 +76,9 @@ public class Stop {
     }
 
     public void addLine(Line line){
-        if (!this.linesList.contains(line)) this.linesList.add(line);
+        int i=0;
+        while (i<this.linesList.size() && this.linesList.get(i).getLineNum() < line.getLineNum()) i++;
+        if (!this.linesList.contains(line)) this.linesList.add(i, line);
     }
 
     public void addStpTim(StopTimes stpTim) {
