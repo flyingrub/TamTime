@@ -22,9 +22,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Scanner;
 
 import de.greenrobot.event.EventBus;
@@ -36,9 +35,11 @@ public class DataParser {
     private final String JSON_PLAN = "http://bl00m.science/TamTimeData/map.json";
     private final String JSON_THEOTIME = "http://www.bl00m.science/TamTimeData/timesTest.json";
     private final String JSON_REALTIME = "http://www.tam-direct.com/webservice/data.php?pattern=getDetails";
+    private final String JSON_REPORT = "http://tam.flyingrub.me/report.php?r=getJson";
     private ArrayList<Line> linesList;
     private ArrayList<Stop> stopList;
     private ArrayList<StopTimes> stpTimesList;
+    private ArrayList<Report> reportList;
 
     private static DataParser data;
 
@@ -46,6 +47,7 @@ public class DataParser {
         this.stopList = new ArrayList<>();
         this.linesList = new ArrayList<>();
         this.stpTimesList = new ArrayList<>();
+        this.reportList = new ArrayList<>();
         this.data = this;
     }
 
@@ -216,6 +218,25 @@ public class DataParser {
                 curntStpTim.setTheoTimes(stpTimJson.getJSONObject(i).getJSONArray("times"), date);
             }
         } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void setReport(JSONObject reportJson) {
+        for (Report r : this.reportList) {
+            r.removeFromStop();
+        }
+        this.reportList = new ArrayList<>();
+
+        Report rep;
+        try {
+            JSONArray reportListJson = reportJson.getJSONArray("report");
+
+            for (int i=0; i< reportListJson.length(); i++) {
+                rep = Report.factory(this, reportListJson.getJSONObject(i));
+                if (rep != null) this.reportList.add(rep);
+            }
+        } catch (JSONException e) {
             e.printStackTrace();
         }
     }
