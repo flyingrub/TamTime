@@ -1,25 +1,37 @@
 package flying.grub.tamtime.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.InputType;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.gc.materialdesign.views.ProgressBarCircularIndeterminate;
+
+import java.util.ArrayList;
 
 import de.greenrobot.event.EventBus;
 import flying.grub.tamtime.R;
 import flying.grub.tamtime.activity.MainActivity;
+import flying.grub.tamtime.activity.TheoriticalActivity;
 import flying.grub.tamtime.adapter.OneRouteAdapter;
 import flying.grub.tamtime.adapter.OneStopAdapter;
 import flying.grub.tamtime.data.DataParser;
 import flying.grub.tamtime.data.Line;
 import flying.grub.tamtime.data.MessageEvent;
+import flying.grub.tamtime.data.Report;
+import flying.grub.tamtime.data.ReportType;
 import flying.grub.tamtime.data.Stop;
 import flying.grub.tamtime.data.StopTimes;
 
@@ -27,6 +39,8 @@ import flying.grub.tamtime.data.StopTimes;
  * Created by fly on 9/19/15.
  */
 public class StopRouteFragment extends Fragment {
+
+    private static final String TAG = StopRouteFragment.class.getSimpleName();
 
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
@@ -54,6 +68,7 @@ public class StopRouteFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
         stop = DataParser.getDataParser().getStopByOurId(getArguments().getInt("stopId"));
         line = stop.getLines().get(getArguments().getInt("linePosition"));
     }
@@ -68,6 +83,17 @@ public class StopRouteFragment extends Fragment {
     public void onStop() {
         EventBus.getDefault().unregister(this);
         super.onStop();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.report:
+                createReportDialog();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     /**
@@ -112,6 +138,54 @@ public class StopRouteFragment extends Fragment {
         refreshLayout.setColorSchemeResources(R.color.primaryColor);
 
         return view;
+    }
+
+    private void createReportDialog() {
+        MaterialDialog dialog = new MaterialDialog.Builder(getActivity())
+                .title(R.string.choose_report_category)
+                .items(R.array.report_types)
+                .itemsCallback(new MaterialDialog.ListCallback() {
+                    @Override
+                    public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                        if (which == 3) {
+                            createInputDialog();
+                            return;
+                        }
+                        createConfimationDialog(which);
+                        dialog.dismiss();
+                    }
+                })
+                .build();
+        dialog.show();
+    }
+
+    private void createConfimationDialog(final int position) {
+        String content = String.format(getString(R.string.confirm_report), getResources().getStringArray(R.array.report_types)[position], line.getLineId());
+        MaterialDialog dialog = new MaterialDialog.Builder(getActivity())
+                .title(R.string.confirm_report_title)
+                .content(content)
+                .negativeText(R.string.no)
+                .positiveText(R.string.yes)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        DataParser.getDataParser().sendPost(getActivity(), new Report(stop, ReportType.reportFromNum(position), null)); // message == null for now;
+                        dialog.dismiss();
+                    }
+                }).build();
+        dialog.show();
+    }
+
+    private void createInputDialog() {
+        new MaterialDialog.Builder(getActivity())
+                .title(R.string.input_report)
+                .inputType(InputType.TYPE_CLASS_TEXT)
+                .input(R.string.none, R.string.none, new MaterialDialog.InputCallback() {
+                    @Override
+                    public void onInput(MaterialDialog dialog, CharSequence input) {
+                        createConfimationDialog(4);
+                    }
+                }).show();
     }
 
     public void onEvent(MessageEvent event){

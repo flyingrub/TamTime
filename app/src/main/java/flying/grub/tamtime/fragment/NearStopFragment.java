@@ -11,6 +11,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -24,7 +25,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.gc.materialdesign.views.ProgressBarCircularIndeterminate;
 import com.gc.materialdesign.widgets.Dialog;
 
@@ -56,6 +60,9 @@ public class NearStopFragment extends Fragment {
     private LocationManager locationManager;
     private LocationListener locationListener;
 
+    private Location lastKnownLocation;
+    private boolean gpsActivationCalled;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -74,6 +81,8 @@ public class NearStopFragment extends Fragment {
         recyclerView.setBackgroundColor(getResources().getColor(R.color.windowBackgroundCard));
 
         getActivity().setTitle(getString(R.string.nearby_stop));
+        gpsActivationCalled = false;
+
 
         return view;
     }
@@ -95,6 +104,7 @@ public class NearStopFragment extends Fragment {
         locationListener = new LocationListener() {
             public void onLocationChanged(Location location) {
                 Log.d(TAG, "new location");
+                lastKnownLocation = location;
                 new getAllDistance().execute(location);
             }
 
@@ -123,10 +133,16 @@ public class NearStopFragment extends Fragment {
 
     private void setupAdapter() {
         LinearLayout progress = (LinearLayout) getActivity().findViewById(R.id.progress);
+        TextView textView = (TextView) getActivity().findViewById(R.id.empty_view);
         if (progress != null) {
             progress.setVisibility(View.GONE);
         }
-
+        if (nearStops.size() == 0) {
+            textView.setVisibility(View.VISIBLE);
+            return;
+        } else {
+            textView.setVisibility(View.GONE);
+        }
         adapter = new NearStopAdapter(nearStops);
         recyclerView.swapAdapter(adapter, true);
         adapter.SetOnItemClickListener(new NearStopAdapter.OnItemClickListener() {
@@ -173,43 +189,44 @@ public class NearStopFragment extends Fragment {
         }
 
         if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-            showGpsDisabledDialog();
+            if (!gpsActivationCalled) {
+                showGpsDisabledDialog();
+            }
         }
-
-        Location lastKnownLocationNetwork = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-        Location lastKnownLocationGps = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        if (lastKnownLocationNetwork != null) {
-            new getAllDistance().execute(lastKnownLocationNetwork);
-        } else if (lastKnownLocationGps != null) {
-            new getAllDistance().execute(lastKnownLocationGps);
+        Location bestLocation = getBestLocation();
+        if (bestLocation != null) {
+            new getAllDistance().execute(bestLocation);
         }
     }
 
-    public void showGNoPermissionDialog(){
-        Dialog dialog = new Dialog(getActivity(), getResources().getString(R.string.no_perm_gps), getResources().getString(R.string.please_autorise_gps));
-
-        dialog.setOnAcceptButtonClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ActivityCompat.requestPermissions(getActivity(),
-                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                        PERMISSION);
-            }
-        });
-        dialog.show();
+    private Location getBestLocation() {
+        Location lastKnownLocationNetwork = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+        Location lastKnownLocationGps = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        if (lastKnownLocation != null) {
+            return lastKnownLocation;
+        }else if (lastKnownLocationGps != null) {
+            return lastKnownLocationGps;
+        } else if (lastKnownLocationNetwork != null) {
+            return lastKnownLocationNetwork;
+        }
+        return null;
     }
 
     public void showGpsDisabledDialog(){
-        Dialog dialog = new Dialog(getActivity(), getResources().getString(R.string.gps_disabled), getResources().getString(R.string.please_enable_gps));
-
-        dialog.setOnAcceptButtonClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                NavigationDrawerFragment.currentSelectedPosition.setI(0);
-                getActivity().getSupportFragmentManager().popBackStack();
-                startActivity(new Intent("android.settings.LOCATION_SOURCE_SETTINGS"));
-            }
-        });
+        MaterialDialog dialog = new MaterialDialog.Builder(getActivity())
+                .title(R.string.gps_disabled)
+                .content(R.string.please_enable_gps)
+                .positiveText(R.string.OK)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        gpsActivationCalled = true;
+                        NavigationDrawerFragment.currentSelectedPosition.setI(0);
+                        getActivity().getSupportFragmentManager().popBackStack();
+                        startActivity(new Intent("android.settings.LOCATION_SOURCE_SETTINGS"));
+                        dialog.dismiss();
+                    }
+                }).build();
         dialog.show();
     }
 

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.location.Location;
 import android.text.format.Time;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -22,8 +23,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 import de.greenrobot.event.EventBus;
@@ -36,6 +40,7 @@ public class DataParser {
     private final String JSON_THEOTIME = "http://www.bl00m.science/TamTimeData/timesTest.json";
     private final String JSON_REALTIME = "http://www.tam-direct.com/webservice/data.php?pattern=getDetails";
     private final String JSON_REPORT = "http://tam.flyingrub.me/report.php?r=getJson";
+    private final String POST_REPORT = "http://tam.flyingrub.me/report.php?r=newReport";
     private ArrayList<Line> linesList;
     private ArrayList<Stop> stopList;
     private ArrayList<StopTimes> stpTimesList;
@@ -54,6 +59,7 @@ public class DataParser {
     public void init(Context context) {
         setupMap(context);
         setupRealTimes(context);
+        setupReport(context);
         //setupTheoTimes(context);
     }
 
@@ -63,6 +69,54 @@ public class DataParser {
         } else {
             return data;
         }
+    }
+
+    // Adapt this method for android with Voley or whatever
+    public void sendPost(final Context context, final Report report) {
+        StringRequest sr = new StringRequest(Request.Method.POST, POST_REPORT, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.d(TAG, response);
+                Toast.makeText(context, response, Toast.LENGTH_SHORT).show();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d(TAG, "Error: " + error.getMessage());
+            }
+        }){
+            @Override
+            protected Map<String,String> getParams(){
+                Map<String,String> params = new HashMap<String, String>();
+                params.put("our_id ", report.getStop().getOurId() + "");
+                params.put("type", report.getType().getValue() + "");
+                params.put("msg", report.getMessage());
+
+                Log.d(TAG, params.toString());
+                return params;
+            }
+        };
+
+        VolleyApp.getInstance(context).addToRequestQueue(sr);
+    }
+
+    public void setupReport(Context context) {
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
+                JSON_REPORT, null,
+                new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        setReport(response);
+                    }
+                }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d(TAG, "Error: " + error.getMessage());
+            }
+        });
+        VolleyApp.getInstance(context).addToRequestQueue(jsonObjReq);
     }
 
     public void setupRealTimes(Context context) { // Real times
@@ -228,13 +282,27 @@ public class DataParser {
         }
         this.reportList = new ArrayList<>();
 
-        Report rep;
         try {
             JSONArray reportListJson = reportJson.getJSONArray("report");
 
             for (int i=0; i< reportListJson.length(); i++) {
-                rep = Report.factory(this, reportListJson.getJSONObject(i));
-                if (rep != null) this.reportList.add(rep);
+                JSONObject reportObjectJson = reportListJson.getJSONObject(i);
+                String msg = reportObjectJson.has("msg") ? reportObjectJson.getString("msg") : null;
+
+                Calendar date = Calendar.getInstance();
+                try {
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    date.setTime(sdf.parse(reportObjectJson.getString("date")));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                Stop stop = data.getStopByOurId(reportObjectJson.getInt("our_id"));
+
+                if (stop != null) {
+                    Report report = new Report(stop, ReportType.reportFromNum(reportObjectJson.getInt("type")), msg, date);
+                    this.reportList.add(report);
+                }
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -317,8 +385,8 @@ public class DataParser {
 
         return stpTimesTab.get(i);
     }
-
-        // Reset the real times for all StopTimes
+    
+    // Reset the real times for all StopTimes
     public void resetAllRealTimes() {
         for (StopTimes stp : stpTimesList) {
             stp.resetRealTimes();
@@ -328,7 +396,7 @@ public class DataParser {
     public ArrayList<Stop> getAllNearStops() {
         ArrayList<Stop> res = new ArrayList<>();
         for (Stop s : stopList) {
-            if (s.distanceFromUser <= 500) { // in meter
+            if (s.getDistanceFromUser() <= 500) { // in meter
                 res.add(s);
             }
         }

@@ -3,14 +3,13 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="30dp"
+    android:gravity="center"
     android:id="@+id/allLines">
 
 <View
     android:layout_width="fill_parent"
     android:layout_height="1px"
-    android:background="@color/separator"
-    android:layout_gravity="bottom"
-    android:layout_marginBottom="10dp">
+    android:background="@color/separator">
 
 </View>
 

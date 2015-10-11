@@ -78,7 +78,7 @@ public class OneStopActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.favorites_menu, menu);
+        getMenuInflater().inflate(R.menu.stop_menu, menu);
         MenuItem item = menu.getItem(0);
         if (favoriteStops.isInFav(stop)) {
             item.setIcon(R.drawable.ic_star_white_36dp);

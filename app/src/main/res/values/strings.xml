@@ -15,14 +15,22 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
-    <string name="waiting_for_network">Waiting for Network… Retry in a few moment.</string>
-    <string name="new_data">It\'s OK now :).</string>
-
     <string name="waiting_for_fix">En attente de données GPS …</string>
     <string name="gps_disabled">GPS désactivé</string>
     <string name="please_enable_gps">Pour vous permettre de connaitre les arrêts proches, veuillez activer le GPS.</string>
     <string name="no_perm_gps">Permission GPS refusée</string>
     <string name="please_autorise_gps">Pour vous permettre de connaitre les arrêts proches, veuillez nous accorder la permission d\'accéder au GPS.</string>
+    <string name="OK">OK</string>
+    <string name="no_nearby">Pas d\'arrêt à proximité.</string>
+
+    <string name="report">Signaler un évenement</string>
+    <string name="choose_report_category">Choisissez le type d\'évenement</string>
+    <string name="confirm_report_title">Confirmation</string>
+    <string name="confirm_report">Voulez vous vraiment signaler l\'evenement %1$s pour la ligne %2$s?</string>
+    <string name="input_report">Décrivez l\'évenement</string>
+    <string name="none"></string>
+    <string name="yes">OUI</string>
+    <string name="no">NON</string>
 
     <string name="settings">Paramètres</string>
     <string name="app_info">A propos</string>
