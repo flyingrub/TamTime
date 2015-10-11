@@ -6,4 +6,10 @@
         <item>Incident</item>
         <item>Autre</item>
     </string-array>
+
+    <string-array name="post_status">
+        <item>Votre requete a été prise en compte.</item>
+        <item>Veuillez patientez quelques instant avant de renvoyer une requete.</item>
+        <item>Une erreur est surevenue lors de l\'envoi.</item>
+    </string-array>
 </resources>

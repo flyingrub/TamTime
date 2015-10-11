@@ -151,7 +151,7 @@ public class StopRouteFragment extends Fragment {
                             createInputDialog();
                             return;
                         }
-                        createConfimationDialog(which);
+                        createConfimationDialog(which, null);
                         dialog.dismiss();
                     }
                 })
@@ -159,7 +159,7 @@ public class StopRouteFragment extends Fragment {
         dialog.show();
     }
 
-    private void createConfimationDialog(final int position) {
+    private void createConfimationDialog(final int position, final String message) {
         String content = String.format(getString(R.string.confirm_report), getResources().getStringArray(R.array.report_types)[position], line.getLineId());
         MaterialDialog dialog = new MaterialDialog.Builder(getActivity())
                 .title(R.string.confirm_report_title)
@@ -169,7 +169,7 @@ public class StopRouteFragment extends Fragment {
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        DataParser.getDataParser().sendPost(getActivity(), new Report(stop, ReportType.reportFromNum(position), null)); // message == null for now;
+                        DataParser.getDataParser().sendPost(getActivity(), new Report(stop, ReportType.reportFromNum(position), message));
                         dialog.dismiss();
                     }
                 }).build();
@@ -183,7 +183,7 @@ public class StopRouteFragment extends Fragment {
                 .input(R.string.none, R.string.none, new MaterialDialog.InputCallback() {
                     @Override
                     public void onInput(MaterialDialog dialog, CharSequence input) {
-                        createConfimationDialog(4);
+                        createConfimationDialog(3, input.toString());
                     }
                 }).show();
     }

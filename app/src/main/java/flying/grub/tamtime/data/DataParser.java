@@ -10,6 +10,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyLog;
+import com.android.volley.error.AuthFailureError;
 import com.android.volley.error.VolleyError;
 import com.android.volley.request.JsonObjectRequest;
 import com.android.volley.request.StringRequest;
@@ -73,30 +74,30 @@ public class DataParser {
 
     // Adapt this method for android with Voley or whatever
     public void sendPost(final Context context, final Report report) {
-        StringRequest sr = new StringRequest(Request.Method.POST, POST_REPORT, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                Log.d(TAG, response);
-                Toast.makeText(context, response, Toast.LENGTH_SHORT).show();
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.d(TAG, "Error: " + error.getMessage());
-            }
-        }){
-            @Override
-            protected Map<String,String> getParams(){
-                Map<String,String> params = new HashMap<String, String>();
-                params.put("our_id ", report.getStop().getOurId() + "");
-                params.put("type", report.getType().getValue() + "");
-                params.put("msg", report.getMessage());
+        Map<String,String> params = new HashMap<String, String>();
+        params.put("our_id", report.getStop().getOurId() + "");
+        params.put("type", report.getType().getValue() + "");
+        params.put("msg", report.getMessage());
 
-                Log.d(TAG, params.toString());
-                return params;
-            }
+        StringRequest sr = new StringRequest(
+                Request.Method.POST,
+                POST_REPORT,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Integer result = Integer.parseInt(response);
+                        Log.d(TAG, "REPONSE:" + response + "|");
+                        Toast.makeText(context, context.getResources().getStringArray(R.array.post_status)[result], Toast.LENGTH_SHORT).show();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d(TAG, "Error: " + error.getMessage());
+                    }
+                }) {
         };
-
+        sr.setParams(params);
         VolleyApp.getInstance(context).addToRequestQueue(sr);
     }
 
