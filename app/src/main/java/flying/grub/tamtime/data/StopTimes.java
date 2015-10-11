@@ -78,29 +78,9 @@ public class StopTimes {
     }
 
     // Get
-    public static String toTimeString(int timeInt) {
-        String timeStr;
-        int min = (timeInt / 60);
-
-        if (timeInt >= 10800) return "+ de 3h";
-
-        if (min >= 60) {
-            int hour = min /60;
-            min = min % 60;
-            timeStr = hour + "h" + min + "min";
-        } else if (min < 0 ) {
-            timeStr = "A quai";
-        } else if (min == 0 ) {
-            timeStr = "Proche";
-        } else {
-            timeStr = min + "min";
-        }
-        return timeStr;
-    }
-
     public String getTimes(int i) {
         try {
-            return toTimeString(this.realTimesList.get(i));
+            return Utils.toTimeString(this.realTimesList.get(i));
         } catch (IndexOutOfBoundsException e) {
             return "---";
         }
@@ -121,9 +101,9 @@ public class StopTimes {
                 theo = true;
             } else {
                 if (!theo) {
-                    res.add(toTimeString(t));
+                    res.add(Util.toTimeString(t));
                 } else {
-                    res.add(toTimeString(t) + "*");
+                    res.add(Util.toTimeString(t) + "*");
                 }
             }
 

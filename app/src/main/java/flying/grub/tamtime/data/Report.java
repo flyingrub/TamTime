@@ -39,6 +39,12 @@ public class Report {
         return type;
     }
 
+    public String getTime() {
+        Calendar now = Calendar.getInstance();
+        int inSec = now.compareTo(this.date) / 1000;
+        return Utils.toTimeString(inSec);
+    }
+
     public String getMessage() {
         return message;
     }
