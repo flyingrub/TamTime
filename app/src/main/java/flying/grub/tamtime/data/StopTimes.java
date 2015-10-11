@@ -101,9 +101,9 @@ public class StopTimes {
                 theo = true;
             } else {
                 if (!theo) {
-                    res.add(Util.toTimeString(t));
+                    res.add(Utils.toTimeString(t));
                 } else {
-                    res.add(Util.toTimeString(t) + "*");
+                    res.add(Utils.toTimeString(t) + "*");
                 }
             }
 

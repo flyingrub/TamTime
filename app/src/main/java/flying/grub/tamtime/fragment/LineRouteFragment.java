@@ -137,6 +137,7 @@ public class LineRouteFragment extends Fragment {
             @Override
             public void onRefresh() {
                 DataParser.getDataParser().setupRealTimes(getActivity());
+                DataParser.getDataParser().setupReport(getActivity());
             }
         });
         refreshLayout.setColorSchemeResources(R.color.primaryColor);
@@ -183,6 +184,7 @@ public class LineRouteFragment extends Fragment {
 
     public void onEvent(MessageEvent event){
         if (event.type == MessageEvent.Type.TIMESUPDATE) {
+            getActivity().invalidateOptionsMenu();
             refreshLayout.setRefreshing(false);
             recyclerView.swapAdapter(new OneRouteAdapter(route.getStpTimes()), false);
         }

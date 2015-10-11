@@ -11,9 +11,12 @@ import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -86,10 +89,22 @@ public class StopRouteFragment extends Fragment {
     }
 
     @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        if (stop.getReports().size() > 0) {
+            inflater.inflate(R.menu.alert_report_item, menu);
+        }
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.report:
                 createReportDialog();
+                return true;
+            case R.id.report_warn:
+                Log.d(TAG, stop.getReports().toString());
+                Toast.makeText(getActivity(), stop.getReports().get(0).toString(), Toast.LENGTH_SHORT).show();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -133,6 +148,7 @@ public class StopRouteFragment extends Fragment {
             @Override
             public void onRefresh() {
                 DataParser.getDataParser().setupRealTimes(getActivity());
+                DataParser.getDataParser().setupReport(getActivity());
             }
         });
         refreshLayout.setColorSchemeResources(R.color.primaryColor);
@@ -190,6 +206,7 @@ public class StopRouteFragment extends Fragment {
 
     public void onEvent(MessageEvent event){
         if (event.type == MessageEvent.Type.TIMESUPDATE) {
+            getActivity().invalidateOptionsMenu();
             refreshLayout.setRefreshing(false);
             stop = DataParser.getDataParser().getStopByOurId(getArguments().getInt("stopId"));
             line = stop.getLines().get(getArguments().getInt("linePosition"));

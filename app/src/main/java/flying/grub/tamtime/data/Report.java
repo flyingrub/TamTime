@@ -41,7 +41,7 @@ public class Report {
 
     public String getTime() {
         Calendar now = Calendar.getInstance();
-        int inSec = now.compareTo(this.date) / 1000;
+        int inSec = now.compareTo(this.date);
         return Utils.toTimeString(inSec);
     }
 
@@ -53,11 +53,40 @@ public class Report {
         return stop;
     }
 
+    @Override
     public boolean equals(Object o) {
-        return (((Report) o).stop == this.stop && ((Report) o).type == this.type && ((Report) o).message.equals(this.message) && ((Report) o).date.equals(this.date));
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Report report = (Report) o;
+
+        if (stop != null ? !stop.equals(report.stop) : report.stop != null) return false;
+        if (type != report.type) return false;
+        if (message != null ? !message.equals(report.message) : report.message != null)
+            return false;
+        return !(date != null ? !date.equals(report.date) : report.date != null);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = stop != null ? stop.hashCode() : 0;
+        result = 31 * result + (type != null ? type.hashCode() : 0);
+        result = 31 * result + (message != null ? message.hashCode() : 0);
+        result = 31 * result + (date != null ? date.hashCode() : 0);
+        return result;
     }
 
     public boolean isValid(Calendar now) {
         return this.date.compareTo(now) > -5400000;
+    }
+
+    @Override
+    public String toString() {
+        return "Report{" +
+                "message='" + message + '\'' +
+                ", type=" + type +
+                ", tps=" + getTime() +
+                '}';
     }
 }

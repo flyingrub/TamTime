@@ -81,9 +81,9 @@ public class OneStopActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.stop_menu, menu);
         MenuItem item = menu.getItem(0);
         if (favoriteStops.isInFav(stop)) {
-            item.setIcon(R.drawable.ic_star_white_36dp);
+            item.setIcon(R.drawable.ic_star_white_24dp);
         } else {
-            item.setIcon(R.drawable.ic_star_border_white_36dp);
+            item.setIcon(R.drawable.ic_star_border_white_24dp);
         }
         return super.onCreateOptionsMenu(menu);
     }
@@ -94,10 +94,10 @@ public class OneStopActivity extends AppCompatActivity {
             case R.id.action_favorite:
                 if (favoriteStops.isInFav(stop)) {
                     favoriteStops.remove(stop);
-                    item.setIcon(R.drawable.ic_star_border_white_36dp);
+                    item.setIcon(R.drawable.ic_star_border_white_24dp);
                 } else {
                     favoriteStops.add(stop);
-                    item.setIcon(R.drawable.ic_star_white_36dp);
+                    item.setIcon(R.drawable.ic_star_white_24dp);
                 }
                 return true;
             default:
