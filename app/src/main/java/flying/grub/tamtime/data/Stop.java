@@ -3,6 +3,7 @@ package flying.grub.tamtime.data;
 import android.location.Location;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 
 public class Stop {
@@ -10,9 +11,9 @@ public class Stop {
     private String name;
     private ArrayList<Line> linesList;
 
-    public Location location;
-    private Report report;
-    public float distanceFromUser;
+    private Location location;
+    private ArrayList<Report> reportList;
+    private float distanceFromUser;
 
     private ArrayList<StopTimes> stpTimList;
 
@@ -20,6 +21,7 @@ public class Stop {
     public Stop(String name, int ourId, double lat, double lon){
         this.linesList = new ArrayList<>();
         this.stpTimList = new ArrayList<>();
+        this.reportList = new ArrayList<>();
         this.name = name;
         this.ourId = ourId;
         this.location = new Location(name);
@@ -56,8 +58,21 @@ public class Stop {
     }
 
     // Add
-    public void setReport(Report report) {
-        this.report = report;
+    public void addReport(Report report) {
+        this.reportList.add(report);
+    }
+
+    public ArrayList<Report> getReports() {
+        ArrayList<Report> res = new ArrayList<>();
+        Calendar date = Calendar.getInstance();
+        for (Report r : this.reportList) {
+            if (r.isValid(date)) res.add(r);
+        }
+        return res;
+    }
+
+    public void removeReport(Report rep) {
+        this.reportList.remove(rep);
     }
 
     public void addLine(Line line){
