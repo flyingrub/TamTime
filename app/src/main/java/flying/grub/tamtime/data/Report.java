@@ -41,8 +41,8 @@ public class Report {
 
     public String getTime() {
         Calendar now = Calendar.getInstance();
-        int inSec = now.compareTo(this.date);
-        return "Postée il y a " + StopTimes.toTimeString(inSec);
+        int inSec = now.compareTo(this.date) / 1000;
+        return Utils.toTimeString(inSec);
     }
 
     public String getMessage() {
