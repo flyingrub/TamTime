@@ -28,8 +28,11 @@ import de.greenrobot.event.EventBus;
 import flying.grub.tamtime.R;
 import flying.grub.tamtime.activity.MainActivity;
 import flying.grub.tamtime.activity.TheoriticalActivity;
+import flying.grub.tamtime.adapter.AllLinesAdapter;
+import flying.grub.tamtime.adapter.DividerItemDecoration;
 import flying.grub.tamtime.adapter.OneRouteAdapter;
 import flying.grub.tamtime.adapter.OneStopAdapter;
+import flying.grub.tamtime.adapter.ReportAdapter;
 import flying.grub.tamtime.data.DataParser;
 import flying.grub.tamtime.data.Line;
 import flying.grub.tamtime.data.MessageEvent;
@@ -104,7 +107,7 @@ public class StopRouteFragment extends Fragment {
                 return true;
             case R.id.report_warn:
                 Log.d(TAG, stop.getReports().toString());
-                Toast.makeText(getActivity(), stop.getReports().get(0).toString(), Toast.LENGTH_SHORT).show();
+                createAllReportDialog();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -202,6 +205,43 @@ public class StopRouteFragment extends Fragment {
                         createConfimationDialog(3, input.toString());
                     }
                 }).show();
+    }
+
+    private void createAllReportDialog() {
+        boolean wrapInScrollView = false;
+        String title = getActivity().getResources().getQuantityString(R.plurals.report, stop.getReports().size());
+        MaterialDialog dialog = new MaterialDialog.Builder(getActivity())
+                .title(title)
+                .customView(R.layout.view_recycler, wrapInScrollView)
+                .positiveText(R.string.OK)
+                .build();
+
+        View view = dialog.getCustomView();
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
+
+        // use this setting to improve performance if you know that changes
+        // in content do not change the layout size of the RecyclerView
+        recyclerView.setHasFixedSize(true);
+
+        LinearLayoutManager layoutManager = new org.solovyev.android.views.llm.LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+
+        RecyclerView.ItemDecoration itemDecoration = new DividerItemDecoration(getActivity());
+        recyclerView.addItemDecoration(itemDecoration);
+        // specify an adapter (see also next example)
+
+        ReportAdapter adapter = new ReportAdapter(stop.getReports(), getActivity());
+        recyclerView.setAdapter(adapter);
+        adapter.SetOnItemClickListener(new ReportAdapter.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(View v, int position) {
+                //Report
+                //createConfimationDialog(stop);
+            }
+        });
+        dialog.show();
     }
 
     public void onEvent(MessageEvent event){

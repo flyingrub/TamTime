@@ -23,11 +23,16 @@
     <string name="OK">OK</string>
     <string name="no_nearby">Pas d\'arrêt à proximité.</string>
 
-    <string name="report">Signaler un évenement</string>
+    <string name="post_report">Signaler un évenement</string>
     <string name="choose_report_category">Choisissez le type d\'évenement</string>
     <string name="confirm_report_title">Confirmation</string>
     <string name="confirm_report">Voulez vous vraiment signaler l\'evenement %1$s pour la ligne %2$s?</string>
     <string name="input_report">Décrivez l\'évenement</string>
+    <plurals
+        name="report">
+        <item quantity="one">Evenement</item>
+        <item quantity="other">Evenements</item>
+    </plurals>
     <string name="none"></string>
     <string name="yes">OUI</string>
     <string name="no">NON</string>
