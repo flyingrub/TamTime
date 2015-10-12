@@ -35,14 +35,23 @@ public class Report {
     }
 
     // Get
+    public static String getTime(int timeInt) {
+        String timeStr;
+        int min = (timeInt / 60);
+
+        if (timeInt >= 10800) return "+ de 3h";
+
+        if (min >= 60) {
+            int hour = min /60;
+            min = min % 60;
+            timeStr = hour + "h" + min + "min";
+        } else {
+            timeStr = min + "min";
+        }
+        return timeStr;
+    }
     public ReportType getType() {
         return type;
-    }
-
-    public String getTime() {
-        Calendar now = Calendar.getInstance();
-        int inSec = now.compareTo(this.date);
-        return Utils.toTimeString(inSec);
     }
 
     public String getMessage() {
@@ -86,7 +95,7 @@ public class Report {
         return "Report{" +
                 "message='" + message + '\'' +
                 ", type=" + type +
-                ", tps=" + getTime() +
+                ", tps=" + toTimeString() +
                 '}';
     }
 }
