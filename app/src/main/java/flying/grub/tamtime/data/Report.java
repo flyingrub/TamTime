@@ -37,9 +37,10 @@ public class Report {
     // Get
     public static String getTime(int timeInt) {
         String timeStr;
-        int min = (timeInt / 60);
+        Calendar now = Calendar.getInstance();
+        int min = (int)((now.getTimeInMillis() - this.date.getTimeInMillis()) / 60000);
 
-        if (timeInt >= 10800) return "+ de 3h";
+        if (min >= 180) return "+ de 3h";
 
         if (min >= 60) {
             int hour = min /60;
