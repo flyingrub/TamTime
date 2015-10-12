@@ -13,7 +13,6 @@ public class Report {
     private ReportType type;
     private String message;
     private Calendar date;
-    private static final String SEND_REPORT = "http://tam.flyingrub.me/report.php?r=newReport";
 
     public Report(Stop stop, ReportType type, String message, Calendar date) {
         this.stop = stop;
