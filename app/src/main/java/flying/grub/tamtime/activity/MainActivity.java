@@ -69,6 +69,7 @@ public class MainActivity extends AppCompatActivity implements DrawerCallback {
     public void onDrawerClick(int position) {
         android.support.v4.app.FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         Fragment fragment;
+        Intent intent;
         switch (position) {
             case 0:
                 fragment = new AllLinesFragment();
@@ -102,7 +103,13 @@ public class MainActivity extends AppCompatActivity implements DrawerCallback {
                 break;
             case 6:
                 NavigationDrawerFragment.currentSelectedPosition.setI(0);
-                Intent intent = new Intent(this, SettingsActivity.class);
+                intent = new Intent(this, SettingsActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.slide_from_right, R.anim.fade_scale_out);
+                break;
+            case 7:
+                NavigationDrawerFragment.currentSelectedPosition.setI(0);
+                intent = new Intent(this, AboutActivity.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.slide_from_right, R.anim.fade_scale_out);
                 break;

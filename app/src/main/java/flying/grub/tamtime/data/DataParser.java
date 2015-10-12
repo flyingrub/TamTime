@@ -72,6 +72,11 @@ public class DataParser {
         }
     }
 
+    public void update(Context context) {
+        this.setupRealTimes(context);
+        this.setupReport(context);
+    }
+
     // Adapt this method for android with Voley or whatever
     public void sendPost(final Context context, final Report report) {
         Map<String,String> params = new HashMap<String, String>();

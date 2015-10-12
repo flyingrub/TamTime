@@ -4,6 +4,8 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@drawable/drawer_back"
+    android:clickable="true"
     android:minHeight="100dp"
     android:padding="20dp">
 

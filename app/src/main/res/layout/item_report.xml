@@ -5,6 +5,8 @@
     android:layout_height="70dp"
     android:id="@+id/element"
     android:gravity="center"
+    android:background="@drawable/drawer_back"
+    android:clickable="true"
     android:paddingLeft="20dp"
     android:paddingRight="20dp">
 

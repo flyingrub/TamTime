@@ -89,6 +89,7 @@ public class NavigationDrawerFragment extends Fragment {
         itemWithDrawables.add(new ItemWithDrawable(getString(R.string.maps), getResources().getDrawable(R.drawable.ic_map_black_36dp), false));
         itemWithDrawables.add(new ItemWithDrawable(null, null, true));
         itemWithDrawables.add(new ItemWithDrawable(getString(R.string.settings), getResources().getDrawable(R.drawable.ic_settings_black_36dp), false));
+        itemWithDrawables.add(new ItemWithDrawable(getString(R.string.app_info), getResources().getDrawable(R.drawable.ic_settings_black_36dp), false));
         return itemWithDrawables;
     }
 

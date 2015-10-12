@@ -150,8 +150,7 @@ public class StopRouteFragment extends Fragment {
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                DataParser.getDataParser().setupRealTimes(getActivity());
-                DataParser.getDataParser().setupReport(getActivity());
+                DataParser.getDataParser().update(getActivity());
             }
         });
         refreshLayout.setColorSchemeResources(R.color.primaryColor);
@@ -189,6 +188,7 @@ public class StopRouteFragment extends Fragment {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         DataParser.getDataParser().sendPost(getActivity(), new Report(stop, ReportType.reportFromNum(position), message));
+                        DataParser.getDataParser().update(getActivity());
                         dialog.dismiss();
                     }
                 }).build();

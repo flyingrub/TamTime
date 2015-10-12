@@ -12,4 +12,16 @@
         <item>Veuillez patientez quelques instant avant de renvoyer une requete.</item>
         <item>Une erreur est surevenue lors de l\'envoi.</item>
     </string-array>
+
+    <string-array name="about_title">
+        <item>Qui sommes nous ?</item>
+        <item>Pourquoi cet Application ?</item>
+        <item>Comment nous aider ?</item>
+    </string-array>
+
+    <string-array name="about_content">
+        <item>Nous sommes 3 étudiants de Montpellier en IUT Informatique. Cet app nous permet de mettre en pratique notre savoir.</item>
+        <item>Nous trouvions dommage le manque d\'application android pour les horaires de tram réel. Nous avons donc décidé de faire notre propre application. Plusieurs fonctions ce sont ajoutées ensuite.</item>
+        <item>Cet application est Open Source et gratuite. Malheuresement son fonctionnement dépends de serveurs payants. Vous pouvez aider a son bon fonctionnement en faisant un don.</item>
+    </string-array>
 </resources>

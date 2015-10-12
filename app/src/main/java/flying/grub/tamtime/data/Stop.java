@@ -4,6 +4,7 @@ import android.location.Location;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 
 
 public class Stop {
@@ -68,6 +69,7 @@ public class Stop {
         for (Report r : this.reportList) {
             if (r.isValid(date)) res.add(r);
         }
+        Collections.reverse(res); // the last is the oldest now.
         return res;
     }
 
