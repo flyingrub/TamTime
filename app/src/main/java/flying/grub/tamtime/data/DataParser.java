@@ -298,7 +298,7 @@ public class DataParser {
                     e.printStackTrace();
                 }
 
-                Stop stop = data.getStopByOurId(reportObjectJson.getInt("our_id"));
+                Stop stop = this.getStopByOurId(reportObjectJson.getInt("our_id"));
 
                 if (stop != null) {
                     Report report = new Report(stop, ReportType.reportFromNum(reportObjectJson.getInt("type")), msg, date);

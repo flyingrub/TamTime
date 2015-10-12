@@ -55,11 +55,11 @@ public class ReportAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             ViewHolderExtended hold = (ViewHolderExtended) holder;
             hold.title.setText(context.getResources().getStringArray(R.array.report_types)[report.getType().getValue()]);
             hold.content.setText(report.getMessage());
-            hold.time.setText(report.getTime());
+            hold.time.setText(String.format(context.getString(R.string.ago), report.getTime()));
         } else if (holder instanceof ViewHolderNormal && report.getType() != ReportType.AUTRE) {
             ViewHolderNormal hold = (ViewHolderNormal) holder;
             hold.title.setText(context.getResources().getStringArray(R.array.report_types)[report.getType().getValue()]);
-            hold.time.setText(report.getTime());
+            hold.time.setText(String.format(context.getString(R.string.ago), report.getTime()));
         }
     }
 

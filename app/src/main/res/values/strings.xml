@@ -28,6 +28,7 @@
     <string name="confirm_report_title">Confirmation</string>
     <string name="confirm_report">Voulez vous vraiment signaler l\'evenement %1$s pour la ligne %2$s?</string>
     <string name="input_report">Décrivez l\'évenement</string>
+    <string name="ago">il y a %s</string>
     <plurals
         name="report">
         <item quantity="one">Evenement</item>
