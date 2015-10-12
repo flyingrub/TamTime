@@ -96,7 +96,7 @@ public class Report {
         return "Report{" +
                 "message='" + message + '\'' +
                 ", type=" + type +
-                ", tps=" + toTimeString() +
+                ", tps=" + this.getTime() +
                 '}';
     }
 }
