@@ -21,6 +21,11 @@
             android:key="license"
             android:title="@string/license"
             android:summary="@string/license_type">
+
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="https://github.com/flyingrub/TamTime/blob/master/LICENSE"
+                />
         </Preference>
 
         <Preference
