@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="report_types">
-        <item>Controle à quai</item>
-        <item>Controle dans le Tram/Bus</item>
+        <item>Contrôle à quai</item>
+        <item>Contrôle dans le Tram/Bus</item>
         <item>Incident</item>
         <item>Autre</item>
     </string-array>
 
     <string-array name="post_status">
-        <item>Votre requete a été prise en compte.</item>
-        <item>Veuillez patientez quelques instant avant de renvoyer une requete.</item>
+        <item>Votre requête a été prise en compte.</item>
+        <item>Veuillez patienter quelques instant avant d'envoyer un nouveau signalement.</item>
         <item>Une erreur est surevenue lors de l\'envoi.</item>
     </string-array>
 
@@ -17,11 +17,13 @@
         <item>Qui sommes-nous ?</item>
         <item>Pourquoi cette application ?</item>
         <item>Comment nous aider ?</item>
+        <item>Une application libre !</item>
     </string-array>
 
     <string-array name="about_content">
-        <item>Nous sommes un groupe d\'étudiants de Montpellier, actuellement en IUT Informatique. Nous avons pour objectif d\'améliorer nos compétences et d\'acquérir de nouvelles compétences tout en faisant profiter les personnes autour de nous.</item>
-        <item>C\'est en entendant un groupe de personnes regretter le fait qu\'il faille passer par Internet pour accéder aux horaires du Tram sur Montpellier que nous avons décidé de combler ce vide. Cette application se veut intuitive et complète, bien plus que ne le sont les différents outils de la TAM. En regroupant plusieurs fonctionnalités utiles au même endroit, nous espérons vous faciliter la vie. </item>
-        <item>Utilisez l\'application. Partagez la. Profitez de la vie et des minutes qu\'elle vous fait gagner !\nVous pouvez aussi nous soutenir financièrement via paypal mais, ne perdez pas de vue que ça n\'est pas une application à but lucratif. Enfin, vos retours comptent énormément pour nous. N\'hésitez pas à noter cette application et nous envoyer vos remarques.</item>
+        <item>Nous sommes un groupe d\'étudiants de Montpellier, actuellement en IUT Informatique. Nous avons pour objectif d\'améliorer nos compétences tout en rendant service aux Montpellierains.</item>
+        <item>C\'est en entendant un groupe de personnes regretter le fait qu\'il soit compliqué d'accéder aux horaires des transports en commun de Montpellier depuis son smartphone que nous avons décidé de combler ce vide. Cette application se veut intuitive et complète, bien plus les différents outils de la TaM. En regroupant plusieurs fonctionnalités utiles au même endroit, nous espérons vous faciliter la vie. </item>
+        <item>Utilisez l\'application. Partagez la. Profitez de la vie et des minutes qu\'elle vous fait gagner !\nVous pouvez aussi nous remercier en nous payant une bière via le bouton de don ! Enfin, vos retours comptent énormément pour nous. N\'hésitez pas à noter cette application et nous envoyer vos remarques.</item>
+        <item>Cette application est un logiciel libre sous license GPLv2 et est disponnible sur GitHub. Si vous comprennez cette phrase, n'hésitez pas à participer au développement !</item>
     </string-array>
 </resources>
