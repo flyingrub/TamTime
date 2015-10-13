@@ -111,7 +111,6 @@ public class MainActivity extends AppCompatActivity implements DrawerCallback {
                 NavigationDrawerFragment.currentSelectedPosition.setI(0);
                 intent = new Intent(this, AboutActivity.class);
                 startActivity(intent);
-                overridePendingTransition(R.anim.slide_from_right, R.anim.fade_scale_out);
                 break;
         }
     }

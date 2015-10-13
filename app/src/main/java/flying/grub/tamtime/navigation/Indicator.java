@@ -60,7 +60,10 @@ public class Indicator extends View implements ViewPager.OnPageChangeListener  {
 
         float center = getWidth()/2;
         float height = getHeight();
-        float first = (center - pageNumber / 2 ) - (pageNumber % 2 * PADDING);
+        float first = center - ((int)pageNumber / 2 ) * PADDING;
+        if (pageNumber % 2 == 0) {
+            first += PADDING /2;
+        }
 
         Paint paint = new Paint();
         paint.setColor(context.getResources().getColor(R.color.windowBackground));

@@ -9,7 +9,7 @@
 
     <string-array name="post_status">
         <item>Votre requête a été prise en compte.</item>
-        <item>Veuillez patienter quelques instant avant d'envoyer un nouveau signalement.</item>
+        <item>Veuillez patienter quelques instant avant d\'envoyer un nouveau signalement.</item>
         <item>Une erreur est surevenue lors de l\'envoi.</item>
     </string-array>
 
@@ -22,8 +22,8 @@
 
     <string-array name="about_content">
         <item>Nous sommes un groupe d\'étudiants de Montpellier, actuellement en IUT Informatique. Nous avons pour objectif d\'améliorer nos compétences tout en rendant service aux Montpellierains.</item>
-        <item>C\'est en entendant un groupe de personnes regretter le fait qu\'il soit compliqué d'accéder aux horaires des transports en commun de Montpellier depuis son smartphone que nous avons décidé de combler ce vide. Cette application se veut intuitive et complète, bien plus les différents outils de la TaM. En regroupant plusieurs fonctionnalités utiles au même endroit, nous espérons vous faciliter la vie. </item>
+        <item>C\'est en entendant un groupe de personnes regretter le fait qu\'il soit compliqué d\'accéder aux horaires des transports en commun de Montpellier depuis son smartphone que nous avons décidé de combler ce vide. Cette application se veut intuitive et complète, bien plus les différents outils de la TaM. En regroupant plusieurs fonctionnalités utiles au même endroit, nous espérons vous faciliter la vie. </item>
         <item>Utilisez l\'application. Partagez la. Profitez de la vie et des minutes qu\'elle vous fait gagner !\nVous pouvez aussi nous remercier en nous payant une bière via le bouton de don ! Enfin, vos retours comptent énormément pour nous. N\'hésitez pas à noter cette application et nous envoyer vos remarques.</item>
-        <item>Cette application est un logiciel libre sous license GPLv2 et est disponnible sur GitHub. Si vous comprennez cette phrase, n'hésitez pas à participer au développement !</item>
+        <item>Cette application est un logiciel libre sous license GPLv2 et est disponnible sur GitHub. Si vous comprennez cette phrase, n\'hésitez pas à participer au développement !</item>
     </string-array>
 </resources>
