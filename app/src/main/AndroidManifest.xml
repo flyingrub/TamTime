@@ -56,6 +56,8 @@
             android:name=".activity.AboutActivity"
             android:label="@string/app_name" >
         </activity>
+
+        <service android:name=".data.DownloadService"/>
     </application>
 
 </manifest>

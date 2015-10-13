@@ -19,7 +19,7 @@
 
     <TextView
         android:id="@+id/content"
-        android:textSize="20sp"
+        android:textSize="18sp"
         android:textColor="@color/windowBackground"
         android:gravity="center"
         android:letterSpacing="0.05"

@@ -1,5 +1,6 @@
 package flying.grub.tamtime.activity;
 
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
@@ -9,6 +10,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
+
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 
 import flying.grub.tamtime.data.DataParser;
 import flying.grub.tamtime.data.FavoriteStops;
@@ -39,13 +43,9 @@ public class MainActivity extends AppCompatActivity implements DrawerCallback {
         DataParser dataParser = DataParser.getDataParser();
         dataParser.init(this);
 
+
         navigationDrawerFragment = (NavigationDrawerFragment) getFragmentManager().findFragmentById(R.id.fragment_drawer);
         navigationDrawerFragment.setup(R.id.fragment_drawer, (DrawerLayout) findViewById(R.id.drawer), mToolbar);
-    }
-
-
-    public NavigationDrawerFragment getNavigationDrawerFragment() {
-        return navigationDrawerFragment;
     }
 
     @Override

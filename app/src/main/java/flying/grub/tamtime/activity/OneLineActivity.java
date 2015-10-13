@@ -2,6 +2,7 @@ package flying.grub.tamtime.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -13,6 +14,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.nispok.snackbar.Snackbar;
 import com.nispok.snackbar.listeners.ActionClickListener;
 
@@ -67,7 +70,7 @@ public class OneLineActivity extends AppCompatActivity {
         slidingTabLayout.setDividerColors(getResources().getColor(R.color.primaryColor));
         slidingTabLayout.setViewPager(viewPager);
 
-        if (true) { // to be replaced
+        if (false) { // to be replaced
             showInfo("Preturbation en cours sur la ligne...");
         }
     }

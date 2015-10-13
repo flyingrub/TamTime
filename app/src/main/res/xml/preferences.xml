@@ -8,9 +8,9 @@
         android:key="pref_key_storage_settings">
 
         <Preference
-            android:key="nothing"
-            android:title="Rien ici pour le moment"
-            android:summary="....">
+            android:key="reload"
+            android:title="@string/force_dl"
+            android:summary="@string/force_dl_content">
         </Preference>
     </PreferenceCategory>
 

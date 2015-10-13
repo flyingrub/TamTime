@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 import android.support.v7.app.AppCompatActivity;
@@ -13,6 +14,7 @@ import android.view.View;
 
 import flying.grub.tamtime.BuildConfig;
 import flying.grub.tamtime.R;
+import flying.grub.tamtime.data.DataParser;
 
 /**
  * Created by fly on 9/23/15.
@@ -60,6 +62,13 @@ public class SettingsActivity extends AppCompatActivity {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.preferences);
             findPreference("version").setSummary(String.format("v%s (%d)", BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE));
+            findPreference("reload").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    DataParser.getDataParser().downloadAllTheo(getActivity());
+                    return true;
+                }
+            });
         }
     }
 }

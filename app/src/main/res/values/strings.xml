@@ -38,6 +38,13 @@
     <string name="yes">OUI</string>
     <string name="no">NON</string>
 
+    <string name="download_title">Téléchargement des horaires…</string>
+    <string name="ask_download_title">Téléchargement requis</string>
+    <string name="ask_download_content">Pour vous permettre d\'accèder au temps théoriques, nous avons besoin de télécharger des données supplémentaires.\nVeuillez vous assurez d\'avoir une connection stable avant de lancer le téléchargement.</string>
+
+    <string name="force_dl">Télécharger les horaires théoriques.</string>
+    <string name="force_dl_content">Permet de lancer le téléchargement des horaires.</string>
+
     <string name="settings">Paramètres</string>
     <string name="app_info">A propos</string>
 

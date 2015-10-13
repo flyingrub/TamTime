@@ -1,6 +1,7 @@
 package flying.grub.tamtime.data;
 
 import android.content.Context;
+import android.content.Intent;
 import android.location.Location;
 import android.text.format.Time;
 import android.util.Log;
@@ -16,6 +17,7 @@ import com.android.volley.request.JsonObjectRequest;
 import com.android.volley.request.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -75,6 +77,22 @@ public class DataParser {
     public void update(Context context) {
         this.setupRealTimes(context);
         this.setupReport(context);
+    }
+
+    public void downloadAllTheo(Context context) {
+        Intent intent = new Intent(context, DownloadService.class);
+        intent.putExtra("url", JSON_THEOTIME);
+        context.startService(intent);
+    }
+
+    public boolean asTheo(Context context) {
+        File file = context.getFileStreamPath("theo.json");
+        return file.isFile();
+    }
+
+    public boolean needTheoUpdate(Context context) {
+        Log.d(TAG, asTheo(context) + "");
+        return !asTheo(context); //TO DO (MD5)
     }
 
     // Adapt this method for android with Voley or whatever

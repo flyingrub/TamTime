@@ -1,6 +1,7 @@
 package flying.grub.tamtime.fragment;
 
 import android.app.Activity;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,6 +12,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 
 import java.util.ArrayList;
 
@@ -95,12 +99,32 @@ public class AllLinesFragment extends Fragment {
     }
 
     public void selectitem(int i){
+        if (i > 19) {
+            createAskDialog();
+        }
         Intent intent = new Intent(getActivity(), OneLineActivity.class);
         Bundle bundle = new Bundle();
         bundle.putInt("id", i);
         intent.putExtras(bundle);
         startActivity(intent);
         getActivity().overridePendingTransition(R.anim.slide_from_right, R.anim.fade_scale_out);
+    }
+
+    public void createAskDialog() {
+        if (DataParser.getDataParser().needTheoUpdate(getActivity().getBaseContext())) {
+            MaterialDialog dialog = new MaterialDialog.Builder(getActivity()).title(R.string.ask_download_title)
+                    .content(R.string.ask_download_content)
+                    .negativeText(R.string.no)
+                    .positiveText(R.string.yes)
+                    .onPositive(new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                            DataParser.getDataParser().downloadAllTheo(getActivity());
+                            dialog.dismiss();
+                        }
+                    }).build();
+            dialog.show();
+        }
     }
 
     public void onEvent(MessageEvent event){
