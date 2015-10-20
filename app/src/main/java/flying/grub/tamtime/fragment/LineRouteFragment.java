@@ -8,6 +8,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -185,8 +186,16 @@ public class LineRouteFragment extends Fragment {
     public void onEvent(MessageEvent event){
         if (event.type == MessageEvent.Type.TIMESUPDATE) {
             getActivity().invalidateOptionsMenu();
+            route = DataParser.getDataParser().getLine(linePosition).getRoutes().get(routePosition);
+            adapter = new OneRouteAdapter(route.getStpTimes(), isTheoritical);
+            adapter.SetOnItemClickListener(new OneRouteAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(View v, int position) {
+                    selectitem(position);
+                }
+            });
             refreshLayout.setRefreshing(false);
-            recyclerView.swapAdapter(new OneRouteAdapter(route.getStpTimes()), false);
+            recyclerView.swapAdapter(adapter, true);
         }
     }
 
