@@ -40,6 +40,7 @@ import flying.grub.tamtime.data.Report;
 import flying.grub.tamtime.data.ReportType;
 import flying.grub.tamtime.data.Stop;
 import flying.grub.tamtime.data.StopTimes;
+import flying.grub.tamtime.data.UpdateRunnable;
 
 /**
  * Created by fly on 9/19/15.
@@ -56,6 +57,8 @@ public class StopRouteFragment extends Fragment {
 
     private Stop stop;
     private Line line;
+
+    private UpdateRunnable updateRunnable;
 
     public static Fragment newInstance(Integer stopId, int linePosition) {
         StopRouteFragment f = new StopRouteFragment();
@@ -83,6 +86,14 @@ public class StopRouteFragment extends Fragment {
     public void onResume(){
         super.onResume();
         EventBus.getDefault().register(this);
+        updateRunnable = new UpdateRunnable(getContext());
+        updateRunnable.run();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        updateRunnable.stop();
     }
 
     @Override

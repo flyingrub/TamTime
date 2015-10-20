@@ -20,6 +20,8 @@ import android.widget.Toast;
 import com.gc.materialdesign.views.ProgressBarCircularIndeterminate;
 
 
+import android.os.Handler;
+
 import de.greenrobot.event.EventBus;
 import flying.grub.tamtime.activity.OneStopActivity;
 import flying.grub.tamtime.activity.TheoriticalActivity;
@@ -30,6 +32,7 @@ import flying.grub.tamtime.adapter.OneRouteAdapter;
 import flying.grub.tamtime.data.DataParser;
 import flying.grub.tamtime.data.MessageEvent;
 import flying.grub.tamtime.data.Route;
+import flying.grub.tamtime.data.UpdateRunnable;
 
 /**
  * Created by fly on 25/03/15.
@@ -47,6 +50,8 @@ public class LineRouteFragment extends Fragment {
     private Route route;
 
     private boolean isTheoritical;
+
+    private UpdateRunnable updateRunnable;
 
     private static final String TAG = LineRouteFragment.class.getSimpleName();
 
@@ -86,6 +91,14 @@ public class LineRouteFragment extends Fragment {
     public void onResume(){
         super.onResume();
         EventBus.getDefault().register(this);
+        updateRunnable = new UpdateRunnable(getContext());
+        updateRunnable.run();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        updateRunnable.stop();
     }
 
     @Override
