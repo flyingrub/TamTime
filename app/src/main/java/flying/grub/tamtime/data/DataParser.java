@@ -79,107 +79,9 @@ public class DataParser {
         this.setupReport(context);
     }
 
-    public void downloadAllTheo(Context context) {
-        Intent intent = new Intent(context, DownloadService.class);
-        intent.putExtra("url", JSON_THEOTIME);
-        context.startService(intent);
-    }
-
-    public boolean asTheo(Context context) {
-        File file = context.getFileStreamPath("theo.json");
-        return file.isFile();
-    }
-
-    public boolean needTheoUpdate(Context context) {
-        Log.d(TAG, asTheo(context) + "");
-        return !asTheo(context); //TO DO (MD5)
-    }
-
-    // Adapt this method for android with Voley or whatever
-    public void sendPost(final Context context, final Report report) {
-        Map<String,String> params = new HashMap<String, String>();
-        params.put("our_id", report.getStop().getOurId() + "");
-        params.put("type", report.getType().getValue() + "");
-        params.put("msg", report.getMessage());
-
-        StringRequest sr = new StringRequest(
-                Request.Method.POST,
-                POST_REPORT,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        Integer result = Integer.parseInt(response);
-                        Log.d(TAG, "REPONSE:" + response + "|");
-                        Toast.makeText(context, context.getResources().getStringArray(R.array.post_status)[result], Toast.LENGTH_SHORT).show();
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.d(TAG, "Error: " + error.getMessage());
-                    }
-                }) {
-        };
-        sr.setParams(params);
-        VolleyApp.getInstance(context).addToRequestQueue(sr);
-    }
-
-    public void setupReport(Context context) {
-        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
-                JSON_REPORT, null,
-                new Response.Listener<JSONObject>() {
-
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        setReport(response);
-                    }
-                }, new Response.ErrorListener() {
-
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.d(TAG, "Error: " + error.getMessage());
-            }
-        });
-        VolleyApp.getInstance(context).addToRequestQueue(jsonObjReq);
-    }
-
-    public void setupRealTimes(Context context) { // Real times
-        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
-                JSON_REALTIME, null,
-                new Response.Listener<JSONObject>() {
-
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        setRealTimes(response);
-                    }
-                }, new Response.ErrorListener() {
-
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.d(TAG, "Error: " + error.getMessage());
-            }
-        });
-        VolleyApp.getInstance(context).addToRequestQueue(jsonObjReq);
-    }
-
-    public void setupTheoTimes(Context context) { // Theoric times
-        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
-                JSON_THEOTIME, null,
-                new Response.Listener<JSONObject>() {
-
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        setTheoTimes(response);
-                    }
-                }, new Response.ErrorListener() {
-
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.d(TAG, "Error: " + error.getMessage());
-            }
-        });
-        VolleyApp.getInstance(context).addToRequestQueue(jsonObjReq);
-    }
+//////////////////////
+// Map Construction //
+//////////////////////
 
     public void setupMap(Context context) {
         String json = null;
@@ -254,6 +156,29 @@ public class DataParser {
         }
     }
 
+////////////////
+// Real Times //
+////////////////
+
+    public void setupRealTimes(Context context) { // Real times
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
+                JSON_REALTIME, null,
+                new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        setRealTimes(response);
+                    }
+                }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d(TAG, "Error: " + error.getMessage());
+            }
+        });
+        VolleyApp.getInstance(context).addToRequestQueue(jsonObjReq);
+    }
+
     public void setRealTimes(JSONObject timesJson) {
         StopTimes stpTimes;
 
@@ -285,19 +210,122 @@ public class DataParser {
         EventBus.getDefault().post(new MessageEvent(MessageEvent.Type.TIMESUPDATE));
     }
 
+///////////////////
+// Theoric Times //
+///////////////////
+
+    public void downloadAllTheo(Context context) {
+        Intent intent = new Intent(context, DownloadService.class);
+        intent.putExtra("url", JSON_THEOTIME);
+        context.startService(intent);
+    }
+
+    public boolean asTheo(Context context) {
+        File file = context.getFileStreamPath("theo.json");
+        return file.isFile();
+    }
+
+    public boolean needTheoUpdate(Context context) {
+        Log.d(TAG, asTheo(context) + "");
+        return !asTheo(context); //TO DO (MD5)
+    }
+
+    public void setupTheoTimes(Context context) { // Theoric times
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
+                JSON_THEOTIME, null,
+                new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        setTheoTimes(response);
+                    }
+                }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d(TAG, "Error: " + error.getMessage());
+            }
+        });
+        VolleyApp.getInstance(context).addToRequestQueue(jsonObjReq);
+    }
+
     public void setTheoTimes(JSONObject theoTimesJson) {
         StopTimes curntStpTim;
+        JSONObject curntDay;
+        String curntStopKey, curntDayKey;
         try {
-            JSONArray stpTimJson = theoTimesJson.getJSONArray("stops");
+            JSONObject stpTimJson = theoTimesJson.getJSONObject("stops");
             String date = theoTimesJson.getString("date");
 
-            for (int i=0; i < stpTimJson.length(); i++) {
-                curntStpTim = this.getStopTimesByOurId(stpTimJson.getJSONObject(i).getInt("our_id"));
-                curntStpTim.setTheoTimes(stpTimJson.getJSONObject(i).getJSONArray("times"), date);
+            Iterator stopKey = stpTimJson.keys();
+
+            while (stopKey.hasNext()) {
+                curntStopKey = (String)stopKey.next();
+                curntStpTim = this.getStopTimesByOurId(curntStopKey);
+                curntStpTim.resetTheoTimes();
+
+                curntDay = stpTimJson.getJSONObject(curntStopKey);
+                Iterator stopDay = curntDay.keys();
+                while (stopDay.hasNext()) {
+                    curntDayKey = (String)stopDay.next();
+                    curntStpTim.addTheoTimes(curntDay.getJSONArray(curntDayKey), date, Integer.parseInt(curntDayKey));
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+/////////////////
+// User Report //
+/////////////////
+
+    // Adapt this method for android with Voley or whatever
+    public void sendReport(final Context context, final Report report) {
+        Map<String,String> params = new HashMap<String, String>();
+        params.put("our_id", report.getStop().getOurId() + "");
+        params.put("type", report.getType().getValue() + "");
+        params.put("msg", report.getMessage());
+
+        StringRequest sr = new StringRequest(
+                Request.Method.POST,
+                POST_REPORT,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Integer result = Integer.parseInt(response);
+                        Log.d(TAG, "REPONSE:" + response + "|");
+                        Toast.makeText(context, context.getResources().getStringArray(R.array.post_status)[result], Toast.LENGTH_SHORT).show();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d(TAG, "Error: " + error.getMessage());
+                    }
+                }) {
+        };
+        sr.setParams(params);
+        VolleyApp.getInstance(context).addToRequestQueue(sr);
+    }
+
+    public void setupReport(Context context) {
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
+                JSON_REPORT, null,
+                new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        setReport(response);
+                    }
+                }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d(TAG, "Error: " + error.getMessage());
+            }
+        });
+        VolleyApp.getInstance(context).addToRequestQueue(jsonObjReq);
     }
 
     public void setReport(JSONObject reportJson) {
@@ -330,6 +358,124 @@ public class DataParser {
             }
         } catch (JSONException e) {
             e.printStackTrace();
+        }
+    }
+
+///////////////////////////
+// CityWay Distupt Event //
+///////////////////////////
+
+    public ArrayList<JSONObject> getDisruptEventList() throws Exception {
+        ArrayList<JSONObject> res = new ArrayList<>();
+        URL request = new URL(JSON_ALL_DISRUPT);
+        Scanner scanner = new Scanner(request.openStream());
+        String response = scanner.useDelimiter("\\Z").next();
+        scanner.close();
+        JSONArray list = (new JSONObject(response)).getJSONObject("DisruptionServiceObj").getJSONArray("Line");
+        for (int i=0; i<list.length(); i++) {
+            try {
+                res.addAll(this.getLineDisruptEvent(list.getJSONObject(i).getInt("id")));
+            } catch (Exception e) {
+                System.err.println(JSON_LINE_DISRUPT + list.getJSONObject(i).getInt("id"));
+                e.printStackTrace();
+            }
+        }
+        return res;
+    }
+
+    public ArrayList<JSONObject> getLineDisruptEvent(int linkId) throws Exception {
+        URL request = new URL(JSON_LINE_DISRUPT + linkId);
+        Scanner scanner = new Scanner(request.openStream());
+        String response = scanner.useDelimiter("\\Z").next();
+        scanner.close();
+        JSONObject all = new JSONObject(response);
+        JSONArray resJson = all.getJSONObject("DisruptionServiceObj").optJSONArray("Disruption");
+        ArrayList<JSONObject> res = new ArrayList<JSONObject>();
+        if (resJson != null) {
+            for (int i=0; i<resJson.length(); i++) res.add(resJson.getJSONObject(i));
+        } else {
+            res.add(all.getJSONObject("DisruptionServiceObj").getJSONObject("Disruption"));
+        }
+        return res;
+    }
+
+    public void setDisruptEvent(ArrayList<JSONObject> jsonEventList) {
+        Line line;
+        String title;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+        while (this.disruptList.size() > 0) this.disruptList.get(0).destroy(); // Clear all the disrupt event
+        for (JSONObject eventJson : jsonEventList) {
+            line = getLineByNum(eventJson.getJSONObject("DisruptedLine").getInt("number"));
+            Calendar beginDate = Calendar.getInstance();
+            Calendar endDate = Calendar.getInstance();
+            try {
+                beginDate.setTime(sdf.parse(eventJson.getString("beginValidityDate").replace("T", " ")));
+                endDate.setTime(sdf.parse(eventJson.getString("endValidityDate").replace("T", " ")));
+                title = eventJson.getString("title");
+                new DisruptEvent(this, line, beginDate, endDate, title); //The event put himself in Data & Line ArrayList
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+///////////////////////////
+// CityWay Distupt Event //
+///////////////////////////
+
+    public ArrayList<JSONObject> getDisruptEventList() throws Exception {
+        ArrayList<JSONObject> res = new ArrayList<>();
+        URL request = new URL(JSON_ALL_DISRUPT);
+        Scanner scanner = new Scanner(request.openStream());
+        String response = scanner.useDelimiter("\\Z").next();
+        scanner.close();
+        JSONArray list = (new JSONObject(response)).getJSONObject("DisruptionServiceObj").getJSONArray("Line");
+        for (int i=0; i<list.length(); i++) {
+            try {
+                res.addAll(this.getLineDisruptEvent(list.getJSONObject(i).getInt("id")));
+            } catch (Exception e) {
+                System.err.println(JSON_LINE_DISRUPT + list.getJSONObject(i).getInt("id"));
+                e.printStackTrace();
+            }
+        }
+        return res;
+    }
+
+    public ArrayList<JSONObject> getLineDisruptEvent(int linkId) throws Exception {
+        URL request = new URL(JSON_LINE_DISRUPT + linkId);
+        Scanner scanner = new Scanner(request.openStream());
+        String response = scanner.useDelimiter("\\Z").next();
+        scanner.close();
+        JSONObject all = new JSONObject(response);
+        JSONArray resJson = all.getJSONObject("DisruptionServiceObj").optJSONArray("Disruption");
+        ArrayList<JSONObject> res = new ArrayList<JSONObject>();
+        if (resJson != null) {
+            for (int i=0; i<resJson.length(); i++) res.add(resJson.getJSONObject(i));
+        } else {
+            res.add(all.getJSONObject("DisruptionServiceObj").getJSONObject("Disruption"));
+        }
+        return res;
+    }
+
+    public void setDisruptEvent(ArrayList<JSONObject> jsonEventList) {
+        Line line;
+        String title;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+        while (this.disruptList.size() > 0) this.disruptList.get(0).destroy(); // Clear all the disrupt event
+        for (JSONObject eventJson : jsonEventList) {
+            line = getLineByNum(eventJson.getJSONObject("DisruptedLine").getInt("number"));
+            Calendar beginDate = Calendar.getInstance();
+            Calendar endDate = Calendar.getInstance();
+            try {
+                beginDate.setTime(sdf.parse(eventJson.getString("beginValidityDate").replace("T", " ")));
+                endDate.setTime(sdf.parse(eventJson.getString("endValidityDate").replace("T", " ")));
+                title = eventJson.getString("title");
+                new DisruptEvent(this, line, beginDate, endDate, title); //The event put himself in Data & Line ArrayList
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 

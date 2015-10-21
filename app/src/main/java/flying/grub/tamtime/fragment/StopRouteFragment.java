@@ -198,7 +198,7 @@ public class StopRouteFragment extends Fragment {
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        DataParser.getDataParser().sendPost(getActivity(), new Report(stop, ReportType.reportFromNum(position), message));
+                        DataParser.getDataParser().sendReport(getActivity(), new Report(stop, ReportType.reportFromNum(position), message));
                         DataParser.getDataParser().update(getActivity());
                         dialog.dismiss();
                     }

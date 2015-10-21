@@ -14,8 +14,8 @@ public class StopTimes {
     private Line line;
     private int stopId;
     private int ourId;
-    private ArrayList<Calendar> timesList; // Real Times
-    private ArrayList<Integer> realTimesList; // Theoric Times
+    private OrderedTimes timesList; // Theoric Times
+    private ArrayList<Integer> realTimesList; // Real Times
 
     public StopTimes(Route route, Stop stop, Line line, int stopId) {
         this.route = route;
@@ -23,7 +23,6 @@ public class StopTimes {
         this.line = line;
         this.stopId = stopId;
         this.ourId = Integer.parseInt("" + this.line.getLineNum() + this.route.getDirNum() + this.stop.getOurId());
-        this.timesList = new ArrayList<Calendar>();
         this.realTimesList = new ArrayList<Integer>();
         stop.addStpTim(this);
     }
@@ -32,49 +31,28 @@ public class StopTimes {
         this(route, stop, line, 0);
     }
 
-    // end must be on the same route as this
-    public int howManyTimesTo(StopTimes end) {
-        int res = this.timesList.get(1).compareTo(end.timesList.get(1));
-        return res / 1000 / 60;
-    }
 
     public void resetRealTimes() {
         this.realTimesList = new ArrayList<Integer>();
     }
 
     // Add
-    private void addTheoTime(String time, String date, int day) throws Exception {
-        Calendar res = Calendar.getInstance();
-
-        if (time.contains("*")) time.replace("*", ""); // Handle * (This line may need reservation)
-
-        if (!time.equals("|")) {
-            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy HH:mm");
-            res.setTime(sdf.parse(date + " " + time));
-            res.add(Calendar.DAY_OF_MONTH, day);
-        } else res = null; // | or null means that the tram/bus don't stop this time
-
-        this.timesList.add(res);
-    }
-
     public void addRealTime(int time){
         if (time >= 86400) time -= 86400;
         this.realTimesList.add(time);
         Collections.sort(this.realTimesList);
     }
 
-    public void setTheoTimes(JSONArray timesJson, String date) throws Exception {
-        this.timesList.clear(); // reset the theoric times List
-        JSONArray curnTab;
-
-        for (int i=0; i<timesJson.length(); i++) {
-            curnTab = timesJson.getJSONArray(i);
-
-            for (int j=0; j<curnTab.length(); j++) {
-                this.addTheoTime(curnTab.getString(j), date, i);
-            }
-
+    public void addTheoTimes(JSONArray timesJson, String date, int jumpDay) throws Exception {
+        if (this.timesList != null) {
+            this.timesList.addToEnd(OrderedTimes.getOrderedTimesFromJson(date, jumpDay, timesJson));
+        } else {
+            this.timesList = OrderedTimes.getOrderedTimesFromJson(date, jumpDay, timesJson);
         }
+    }
+
+    public void resetTheoTimes() {
+        this.timesList = null;
     }
 
     // Get
@@ -153,23 +131,26 @@ public class StopTimes {
 
         // Work with getNextTimes (theoric part)
     private void getNextTheoricTimes(int nbr, int jumpN, ArrayList<Integer> res) {
-        Calendar curntDate = Calendar.getInstance();
+        Calendar now = Calendar.getInstance();
         int i=0, j=0;
         int inMsec;
 
-        while (i<this.timesList.size() && !curntDate.before(this.timesList.get(i))) {
+        OrderedTimes oT;
+        if (this.timesList != null) oT = this.timesList.getFirstValidDate();
+        else oT = null;
+
+        i=0;
+        while (i<jumpN && oT != null) {
+            oT = oT.getNext();
             i++;
         }
 
-        int k = i+jumpN;
-
-        while (k<this.timesList.size() && j<=nbr) {
-            if (this.timesList.get(k) != null) {
-                inMsec = (int)(this.timesList.get(k).getTimeInMillis() - curntDate.getTimeInMillis());
-                res.add(inMsec/1000); // Add times left in second
-                j++;
-            }
-            k++;
+        i=0;
+        while (i<nbr && oT != null) {
+            inMsec = (int)(oT.getDate().getTimeInMillis() - now.getTimeInMillis());
+            res.add(inMsec/1000); // Add times left in second
+            oT = oT.getNext();
+            i++;
         }
     }
 
