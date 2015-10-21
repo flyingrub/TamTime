@@ -420,65 +420,6 @@ public class DataParser {
         }
     }
 
-///////////////////////////
-// CityWay Distupt Event //
-///////////////////////////
-
-    public ArrayList<JSONObject> getDisruptEventList() throws Exception {
-        ArrayList<JSONObject> res = new ArrayList<>();
-        URL request = new URL(JSON_ALL_DISRUPT);
-        Scanner scanner = new Scanner(request.openStream());
-        String response = scanner.useDelimiter("\\Z").next();
-        scanner.close();
-        JSONArray list = (new JSONObject(response)).getJSONObject("DisruptionServiceObj").getJSONArray("Line");
-        for (int i=0; i<list.length(); i++) {
-            try {
-                res.addAll(this.getLineDisruptEvent(list.getJSONObject(i).getInt("id")));
-            } catch (Exception e) {
-                System.err.println(JSON_LINE_DISRUPT + list.getJSONObject(i).getInt("id"));
-                e.printStackTrace();
-            }
-        }
-        return res;
-    }
-
-    public ArrayList<JSONObject> getLineDisruptEvent(int linkId) throws Exception {
-        URL request = new URL(JSON_LINE_DISRUPT + linkId);
-        Scanner scanner = new Scanner(request.openStream());
-        String response = scanner.useDelimiter("\\Z").next();
-        scanner.close();
-        JSONObject all = new JSONObject(response);
-        JSONArray resJson = all.getJSONObject("DisruptionServiceObj").optJSONArray("Disruption");
-        ArrayList<JSONObject> res = new ArrayList<JSONObject>();
-        if (resJson != null) {
-            for (int i=0; i<resJson.length(); i++) res.add(resJson.getJSONObject(i));
-        } else {
-            res.add(all.getJSONObject("DisruptionServiceObj").getJSONObject("Disruption"));
-        }
-        return res;
-    }
-
-    public void setDisruptEvent(ArrayList<JSONObject> jsonEventList) {
-        Line line;
-        String title;
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
-        while (this.disruptList.size() > 0) this.disruptList.get(0).destroy(); // Clear all the disrupt event
-        for (JSONObject eventJson : jsonEventList) {
-            line = getLineByNum(eventJson.getJSONObject("DisruptedLine").getInt("number"));
-            Calendar beginDate = Calendar.getInstance();
-            Calendar endDate = Calendar.getInstance();
-            try {
-                beginDate.setTime(sdf.parse(eventJson.getString("beginValidityDate").replace("T", " ")));
-                endDate.setTime(sdf.parse(eventJson.getString("endValidityDate").replace("T", " ")));
-                title = eventJson.getString("title");
-                new DisruptEvent(this, line, beginDate, endDate, title); //The event put himself in Data & Line ArrayList
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
     public void setAlldistance(Location user) {
         for (Stop stop : stopList) {
             stop.calcDistanceFromUser(user);
