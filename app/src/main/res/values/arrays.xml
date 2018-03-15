@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="report_types">
+        <item>Contrôle à quai</item>
+        <item>Contrôle dans le Tram/Bus</item>
+        <item>Incident</item>
+        <item>Autre</item>
+    </string-array>
+
+    <string-array name="post_status">
+        <item>Votre requête a été prise en compte.</item>
+        <item>Veuillez patienter quelques instant avant d\'envoyer un nouveau signalement.</item>
+        <item>Une erreur est surevenue lors de l\'envoi.</item>
+    </string-array>
+
+    <string-array name="confirm_status">
+        <item>Votre requête a été prise en compte.</item>
+        <item>Vous avez déjà confirmé cet évenement.</item>
+        <item>Une erreur est surevenue lors de l\'envoi.</item>
+    </string-array>
+
+    <string-array name="about_title">
+        <item>Qui sommes-nous ?</item>
+        <item>Pourquoi cette application ?</item>
+        <item>Comment nous aider ?</item>
+        <item>Une application libre !</item>
+    </string-array>
+
+    <string-array name="about_content">
+        <item>Nous sommes un groupe d\'étudiants de Montpellier. Nous avons pour objectif d\'améliorer nos compétences tout en rendant service aux Montpellierains.</item>
+        <item>C\'est en étant confronté tout les jours a la difficulté de l\'accès aux horaires de la TaM que nous avons décidé de combler ce vide.
+Cette application se veut intuitive et complète, bien plus que les différent outils de la TaM.
+En regroupant plusieurs fonctionnalitées utiles au même endroit, nous espèrons vous faciliter la vie.</item>
+        <item>Utilisez l\'application. Partagez la. Profitez de la vie et des minutes qu\'elle vous fait gagner !\nVous pouvez aussi nous remercier en nous payant une bière via le bouton de don ! Enfin, vos retours comptent énormément pour nous. N\'hésitez pas à noter cette application et nous envoyer vos remarques.</item>
+        <item>Cette application est un logiciel libre sous license GPLv2 et est disponnible sur GitHub. Si vous comprenez cette phrase, n\'hésitez pas à participer au développement !</item>
+    </string-array>
+
+    <string-array name="the_cert">
+        <item>faible</item>
+        <item>moyenne</item>
+        <item>forte</item>
+    </string-array>
+</resources>

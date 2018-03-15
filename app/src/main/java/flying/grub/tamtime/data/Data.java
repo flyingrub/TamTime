@@ -1,0 +1,75 @@
+package flying.grub.tamtime.data;
+
+import android.content.Context;
+import android.util.Log;
+
+import flying.grub.tamtime.data.datahandler.DisruptEventHandler;
+import flying.grub.tamtime.data.real_time.RealTimeToUpdate;
+import flying.grub.tamtime.data.real_time.RealTimes;
+import flying.grub.tamtime.data.datahandler.ReportEvent;
+import flying.grub.tamtime.data.map.TamMap;
+
+public class Data {
+
+    private static final String TAG = Data.class.getSimpleName();
+
+    private DisruptEventHandler disruptEventHandler;
+    private ReportEvent reportEvent;
+    private RealTimes realTimes;
+    private TamMap map;
+    private RealTimeToUpdate toUpdate;
+
+    private static Data data;
+
+    private Data() {
+        data = this;
+    }
+
+    public void init(Context context) {
+        reportEvent = new ReportEvent(context);
+        disruptEventHandler = new DisruptEventHandler(context);
+        realTimes = new RealTimes(context);
+        map = new TamMap(context);
+    }
+
+    public static synchronized Data getData() {
+        if (data == null) {
+            return new Data();
+        } else {
+            return data;
+        }
+    }
+
+    public void update() {
+        if (toUpdate != null) {
+            if (toUpdate.isLine()) {
+                realTimes.updateLine(toUpdate.getLine());
+            } else {
+                realTimes.updateStops(toUpdate.getStops());
+            }
+        }
+        //reportEvent.update();
+        //disruptEventHandler.update();
+    }
+
+    public DisruptEventHandler getDisruptEventHandler() {
+        return disruptEventHandler;
+    }
+
+    public TamMap getMap() {
+        return map;
+    }
+
+    public void setToUpdate(RealTimeToUpdate toUpdate) {
+        this.toUpdate = toUpdate;
+        update();
+    }
+
+    public RealTimes getRealTimes() {
+        return realTimes;
+    }
+
+    public ReportEvent getReportEvent() {
+        return reportEvent;
+    }
+}

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp">
+    <!-- A CardView that contains a TextView -->
+    <android.support.v7.widget.CardView
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/card_view"
+        android:layout_gravity="start"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:elevation="5dp"
+        android:background="@android:color/transparent"
+        android:animateLayoutChanges="true"
+        android:focusable="true"
+        card_view:cardCornerRadius="2dp"
+        card_view:cardUseCompatPadding="true">
+
+        <RelativeLayout
+            android:id="@+id/title_wrapper"
+            android:layout_width="match_parent"
+            android:background="@android:color/transparent"
+            android:layout_height="60dp">
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:textSize="18sp"
+                android:layout_marginStart="20dp"
+                android:layout_marginLeft="20dp"
+                android:textColor="@color/black"
+                android:text="@string/fav_stops"
+                />
+
+            <ImageView
+                android:src="@drawable/ic_more_vert_black_36dp"
+                android:id="@+id/menu"
+                android:background="@drawable/background_color"
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:padding="13dp"/>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_alignParentBottom="true"
+                android:layout_height="1px"
+                android:background="@color/ripple"></View>
+        </RelativeLayout>
+
+        <include
+            android:layout_marginTop="60dp"
+            android:id="@+id/times"
+            layout="@layout/view_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </android.support.v7.widget.CardView>
+
+</LinearLayout>
