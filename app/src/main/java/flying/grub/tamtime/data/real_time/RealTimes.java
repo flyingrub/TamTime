@@ -95,6 +95,7 @@ public class RealTimes {
                             }
 
                         }
+                        EventBus.getDefault().post(new MessageUpdate(MessageUpdate.Type.TIMES_UPDATE));
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -136,6 +137,7 @@ public class RealTimes {
                             }
 
                         }
+                        EventBus.getDefault().post(new MessageUpdate(MessageUpdate.Type.TIMES_UPDATE));
                     }
                 }, new Response.ErrorListener() {
             @Override

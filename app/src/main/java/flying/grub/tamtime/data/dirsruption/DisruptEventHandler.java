@@ -1,4 +1,4 @@
-package flying.grub.tamtime.data.datahandler;
+package flying.grub.tamtime.data.dirsruption;
 
 import android.content.Context;
 import android.os.AsyncTask;
@@ -25,7 +25,6 @@ import java.util.Calendar;
 
 import de.greenrobot.event.EventBus;
 import flying.grub.tamtime.data.Data;
-import flying.grub.tamtime.data.DisruptEvent;
 import flying.grub.tamtime.data.map.Line;
 import flying.grub.tamtime.data.update.MessageUpdate;
 import flying.grub.tamtime.data.connection.VolleyApp;

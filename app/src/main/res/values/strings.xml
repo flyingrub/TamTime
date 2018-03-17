@@ -47,6 +47,12 @@
     <string name="yes">OUI</string>
     <string name="no">NON</string>
 
+    <string name="request_sucessful">Votre requête a été prise en compte.</string>
+    <string name="request_unsucessful">Une erreur est surevenue lors de l\'envoi.</string>
+    <string name="request_already_confirmed">Vous avez déjà confirmé cet évenement.</string>
+    <string name="request_throttled">Veuillez patienter quelques instant avant d\'envoyer un nouveau signalement.</string>
+
+
     <string name="download_title">Téléchargement des horaires…</string>
     <string name="ask_download_title">Téléchargement requis</string>
     <string name="ask_download_content">Pour vous permettre d\'accèder au temps théoriques, nous avons besoin de télécharger des données supplémentaires.\nVeuillez vous assurez d\'avoir une connection stable avant de lancer le téléchargement.</string>

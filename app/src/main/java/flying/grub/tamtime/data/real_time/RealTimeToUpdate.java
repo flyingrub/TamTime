@@ -12,6 +12,8 @@ import flying.grub.tamtime.data.map.Stop;
 public class RealTimeToUpdate {
     private boolean isLine;
     private Line line;
+    private ArrayList<Stop> stops;
+
 
     public boolean isLine() {
         return isLine;
@@ -25,7 +27,6 @@ public class RealTimeToUpdate {
         return stops;
     }
 
-    private ArrayList<Stop> stops;
 
     public RealTimeToUpdate(ArrayList<Stop> stops) {
         this.stops = stops;

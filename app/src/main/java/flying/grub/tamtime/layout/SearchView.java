@@ -98,7 +98,7 @@ public class SearchView {
     public void selectitem(StopZone s){
         Intent intent = new Intent(context, OneStopActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putInt("stopId", s.getID());
+        bundle.putInt("stop_zone_id", s.getID());
         intent.putExtras(bundle);
         context.startActivity(intent);
         context.overridePendingTransition(R.anim.slide_from_right, R.anim.fade_scale_out);
@@ -112,7 +112,6 @@ public class SearchView {
 
         protected void onPostExecute(ArrayList<StopZone> stops) {
             searchStop = stops;
-            Log.d(TAG, stops.toString());
             researchAdapter = new SeachResultAdapter(searchStop);
             researchAdapter.SetOnItemClickListener(new SeachResultAdapter.OnItemClickListener() {
                 @Override

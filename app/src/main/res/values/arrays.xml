@@ -8,14 +8,7 @@
     </string-array>
 
     <string-array name="post_status">
-        <item>Votre requête a été prise en compte.</item>
         <item>Veuillez patienter quelques instant avant d\'envoyer un nouveau signalement.</item>
-        <item>Une erreur est surevenue lors de l\'envoi.</item>
-    </string-array>
-
-    <string-array name="confirm_status">
-        <item>Votre requête a été prise en compte.</item>
-        <item>Vous avez déjà confirmé cet évenement.</item>
         <item>Une erreur est surevenue lors de l\'envoi.</item>
     </string-array>
 

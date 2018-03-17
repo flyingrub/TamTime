@@ -1,12 +1,11 @@
 package flying.grub.tamtime.data;
 
 import android.content.Context;
-import android.util.Log;
 
-import flying.grub.tamtime.data.datahandler.DisruptEventHandler;
+import flying.grub.tamtime.data.dirsruption.DisruptEventHandler;
 import flying.grub.tamtime.data.real_time.RealTimeToUpdate;
 import flying.grub.tamtime.data.real_time.RealTimes;
-import flying.grub.tamtime.data.datahandler.ReportEvent;
+import flying.grub.tamtime.data.report.ReportEvent;
 import flying.grub.tamtime.data.map.TamMap;
 
 public class Data {
@@ -48,8 +47,8 @@ public class Data {
                 realTimes.updateStops(toUpdate.getStops());
             }
         }
-        //reportEvent.update();
-        //disruptEventHandler.update();
+        reportEvent.getReports();
+        //disruptEventHandler.getReports();
     }
 
     public DisruptEventHandler getDisruptEventHandler() {

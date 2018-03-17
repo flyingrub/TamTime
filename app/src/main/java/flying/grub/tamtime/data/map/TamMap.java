@@ -113,7 +113,6 @@ public class TamMap {
     }
 
     public void addTimeToStop(int stop_id, ArrayList<Time> times) {
-        EventBus.getDefault().post(new MessageUpdate(MessageUpdate.Type.TIMES_UPDATE));
         for (int i = 0; i < Data.getData().getMap().getStops().size(); i++) {
             if (stops.get(i).getCityway_id() == stop_id) {
                 stops.get(i).setTimes(times);

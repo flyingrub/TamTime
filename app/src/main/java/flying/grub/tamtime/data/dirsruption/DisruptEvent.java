@@ -1,7 +1,8 @@
-package flying.grub.tamtime.data;
+package flying.grub.tamtime.data.dirsruption;
 
 import java.util.Calendar;
 
+import flying.grub.tamtime.data.Data;
 import flying.grub.tamtime.data.map.Line;
 
 public class DisruptEvent {

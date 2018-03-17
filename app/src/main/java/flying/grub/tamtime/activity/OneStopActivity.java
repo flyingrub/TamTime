@@ -19,6 +19,7 @@ import android.view.View;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.gc.materialdesign.widgets.Dialog;
 
 import java.util.ArrayList;
 
@@ -54,6 +55,7 @@ public class OneStopActivity extends AppCompatActivity {
     private StopZone stop;
 
     private UpdateRunnable updateRunnable;
+    private MaterialDialog current_dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -238,15 +240,31 @@ public class OneStopActivity extends AppCompatActivity {
                 }).show();
     }
 
+    private void updateAllReportDialog() {
+        if (current_dialog != null && current_dialog.isShowing()) {
+            View view = current_dialog.getCustomView();
+            RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
+            ReportAdapter adapter = new ReportAdapter(stop.getReports(), getBaseContext());
+            recyclerView.setAdapter(adapter);
+            adapter.SetOnItemClickListener(new ReportAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(View v, int position) {
+                    confirmDialog(position);
+                }
+            });
+        }
+    }
+
     private void createAllReportDialog() {
+
         String title = getBaseContext().getResources().getQuantityString(R.plurals.report, stop.getReports().size());
-        MaterialDialog dialog = new MaterialDialog.Builder(this)
+        current_dialog = new MaterialDialog.Builder(this)
                 .title(title)
                 .customView(R.layout.view_recycler, false)
                 .positiveText(R.string.OK)
                 .build();
 
-        View view = dialog.getCustomView();
+        View view = current_dialog.getCustomView();
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
 
         recyclerView.setHasFixedSize(true);
@@ -267,12 +285,13 @@ public class OneStopActivity extends AppCompatActivity {
                 confirmDialog(position);
             }
         });
-        dialog.show();
+        current_dialog.show();
     }
 
     public void onEvent(MessageUpdate event){
         if (event.type == MessageUpdate.Type.REPORT_UPDATE) {
             invalidateOptionsMenu();
+            updateAllReportDialog();
         }
     }
 

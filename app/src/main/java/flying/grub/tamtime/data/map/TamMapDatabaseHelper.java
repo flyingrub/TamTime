@@ -62,7 +62,6 @@ public class TamMapDatabaseHelper {
             output.close();
             input.close();
         }
-        Log.d("test", outputFile.getPath());
     }
 
     public ArrayList<Line> getLines() {

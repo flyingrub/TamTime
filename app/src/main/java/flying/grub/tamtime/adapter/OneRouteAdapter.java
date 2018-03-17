@@ -72,7 +72,6 @@ public class OneRouteAdapter extends RecyclerView.Adapter<OneRouteAdapter.ViewHo
         holder.tps3.setText(times.get(2).getWaitingTime());
 
         if (stop.getStopZone().getReports().size() > 0) {
-            Log.d(TAG, stop.getStopZone().getName() + "||" + stop.getStopZone().getReports().size());
             Drawable draw = context.getResources().getDrawable(R.drawable.ic_warning_black_18dp).getConstantState().newDrawable().mutate();
             draw.setColorFilter(Color.parseColor("#616161"), PorterDuff.Mode.SRC_ATOP);
             holder.icon.setImageDrawable(draw);

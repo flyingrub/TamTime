@@ -2,7 +2,7 @@ package flying.grub.tamtime.data.map;
 
 import java.util.ArrayList;
 
-import flying.grub.tamtime.data.DisruptEvent;
+import flying.grub.tamtime.data.dirsruption.DisruptEvent;
 
 
 public class Line {
