@@ -7,11 +7,6 @@
         <item>Autre</item>
     </string-array>
 
-    <string-array name="post_status">
-        <item>Veuillez patienter quelques instant avant d\'envoyer un nouveau signalement.</item>
-        <item>Une erreur est surevenue lors de l\'envoi.</item>
-    </string-array>
-
     <string-array name="about_title">
         <item>Qui sommes-nous ?</item>
         <item>Pourquoi cette application ?</item>

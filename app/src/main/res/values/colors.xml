@@ -12,11 +12,9 @@
     <color name="primaryDarkColor">#1976d2</color>
     <color name="accentColor">#00bcd4</color>
 
-    <color name="drawerBackground">#fafafa</color>
     <color name="drawerBackgroundSelected">#eeeeee</color>
     <color name="windowBackground">#fafafa</color>
     <color name="windowBackgroundCard">#f8f8f8</color>
-    <color name="windowBackgroundSelected">#e0e0e0</color>
     <color name="textClearColor">#fafafa</color>
     <color name="textDarkColor">#212121</color>
     <color name="textDarkClearColor">#757575</color>
@@ -27,5 +25,4 @@
     <color name="ripple">#20000000</color>c
 
     <color name="separator">#bdbdbd</color>
-    <color name="selected_gray">#ffdbdbdb</color>
 </resources>

@@ -2,10 +2,8 @@
     <string name="app_name">TamTime</string>
 
     <string name="home">Accueil</string>
-    <string name="all_infos">Infos</string>
     <string name="all_lines">Lignes</string>
     <string name="all_stops">Arrêts</string>
-    <string name="all_itinary_favs">Mes Trajets</string>
     <string name="all_stops_favs">Mes Arrêts</string>
     <string name="nearby_stop">Arrêts Proches</string>
     <string name="maps">La Carte</string>
@@ -16,17 +14,12 @@
     
     <string name="hint_search_welcome">Rechercher un arrêt</string>
 
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-
     <string name="fav_stops">Arrêts Favoris</string>
     <string name="line_choice">Choisissez une ligne</string>
 
     <string name="waiting_for_fix">En attente de données GPS …</string>
     <string name="gps_disabled">GPS désactivé</string>
     <string name="please_enable_gps">Pour vous permettre de connaitre les arrêts proches, veuillez activer le GPS.</string>
-    <string name="no_perm_gps">Permission GPS refusée</string>
-    <string name="please_autorise_gps">Pour vous permettre de connaitre les arrêts proches, veuillez nous accorder la permission d\'accéder au GPS.</string>
     <string name="OK">OK</string>
     <string name="no_nearby">Pas d\'arrêt à proximité.</string>
 
@@ -46,11 +39,6 @@
     <string name="none"></string>
     <string name="yes">OUI</string>
     <string name="no">NON</string>
-
-    <string name="request_sucessful">Votre requête a été prise en compte.</string>
-    <string name="request_unsucessful">Une erreur est surevenue lors de l\'envoi.</string>
-    <string name="request_already_confirmed">Vous avez déjà confirmé cet évenement.</string>
-    <string name="request_throttled">Veuillez patienter quelques instant avant d\'envoyer un nouveau signalement.</string>
 
 
     <string name="download_title">Téléchargement des horaires…</string>
