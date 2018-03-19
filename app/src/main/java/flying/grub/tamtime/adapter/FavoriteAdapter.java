@@ -13,9 +13,6 @@ import java.util.ArrayList;
 import flying.grub.tamtime.R;
 import flying.grub.tamtime.data.map.StopZone;
 
-/**
- * Created by fly on 9/21/15.
- */
 public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHolder> {
 
     public OnItemClickListener itemClickListener;

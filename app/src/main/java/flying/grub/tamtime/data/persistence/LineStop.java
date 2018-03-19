@@ -3,9 +3,6 @@ package flying.grub.tamtime.data.persistence;
 import flying.grub.tamtime.data.map.Line;
 import flying.grub.tamtime.data.map.StopZone;
 
-/**
- * Created by fly on 11/29/15.
- */
 public class LineStop {
     private StopZone stop;
     private Line line;

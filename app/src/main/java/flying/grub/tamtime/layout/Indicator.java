@@ -1,21 +1,14 @@
 package flying.grub.tamtime.layout;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
-import android.os.Build;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 
 import flying.grub.tamtime.R;
 
-/**
- * Created by fly on 10/12/15.
- */
 public class Indicator extends View implements ViewPager.OnPageChangeListener  {
     private Context context;
     private float pageNumber;

@@ -9,7 +9,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,9 +25,6 @@ import flying.grub.tamtime.adapter.SeachResultAdapter;
 import flying.grub.tamtime.data.Data;
 import flying.grub.tamtime.data.map.StopZone;
 
-/**
- * Created by fly on 11/29/15.
- */
 public class SearchView {
 
     private static final String TAG = SearchView.class.getSimpleName();

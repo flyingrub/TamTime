@@ -4,9 +4,6 @@ import android.os.Handler;
 
 import flying.grub.tamtime.data.Data;
 
-/**
- * Created by fly on 10/20/15.
- */
 public class UpdateRunnable implements Runnable {
 
     private Handler handler = new Handler();

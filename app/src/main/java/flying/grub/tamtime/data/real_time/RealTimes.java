@@ -3,11 +3,9 @@ package flying.grub.tamtime.data.real_time;
 import android.content.Context;
 import android.util.Log;
 
-import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -24,9 +22,6 @@ import flying.grub.tamtime.data.map.Line;
 import flying.grub.tamtime.data.map.Stop;
 import flying.grub.tamtime.data.update.MessageUpdate;
 
-/**
- * Created by fly on 11/9/15.
- */
 public class RealTimes {
 
     private static final String TAG = RealTimes.class.getSimpleName();

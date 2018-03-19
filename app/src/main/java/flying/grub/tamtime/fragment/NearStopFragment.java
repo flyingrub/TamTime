@@ -34,9 +34,6 @@ import flying.grub.tamtime.adapter.NearStopAdapter;
 import flying.grub.tamtime.data.Data;
 import flying.grub.tamtime.data.map.StopZone;
 
-/**
- * Created by fly on 10/9/15.
- */
 public class NearStopFragment extends Fragment {
 
     private static final String TAG = NearStopFragment.class.getSimpleName();

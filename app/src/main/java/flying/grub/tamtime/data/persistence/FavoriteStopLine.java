@@ -11,9 +11,6 @@ import flying.grub.tamtime.data.Data;
 import flying.grub.tamtime.data.map.Line;
 import flying.grub.tamtime.data.map.StopZone;
 
-/**
- * Created by fly on 11/30/15.
- */
 public class FavoriteStopLine {
 
     private static final String TAG = FavoriteStopLine.class.getSimpleName();

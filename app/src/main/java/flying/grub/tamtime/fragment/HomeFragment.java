@@ -22,9 +22,6 @@ import flying.grub.tamtime.data.update.UpdateRunnable;
 import flying.grub.tamtime.layout.FavHomeView;
 import flying.grub.tamtime.layout.SearchView;
 
-/**
- * Created by fly on 11/26/15.
- */
 public class HomeFragment extends Fragment {
 
     private static final String TAG = HomeFragment.class.getSimpleName();

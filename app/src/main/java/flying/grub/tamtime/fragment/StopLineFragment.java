@@ -6,7 +6,6 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,9 +20,6 @@ import flying.grub.tamtime.data.map.Line;
 import flying.grub.tamtime.data.map.StopZone;
 import flying.grub.tamtime.data.update.MessageUpdate;
 
-/**
- * Created by fly on 9/19/15.
- */
 public class StopLineFragment extends Fragment {
 
     private static final String TAG = StopLineFragment.class.getSimpleName();

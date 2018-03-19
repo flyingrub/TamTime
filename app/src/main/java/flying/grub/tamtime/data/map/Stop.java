@@ -4,10 +4,6 @@ import java.util.ArrayList;
 
 import flying.grub.tamtime.data.real_time.Time;
 
-/**
- * Created by fly on 3/13/18.
- */
-
 public class Stop {
     private int _id;
     private int cityway_id;

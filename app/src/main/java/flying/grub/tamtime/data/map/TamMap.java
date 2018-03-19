@@ -2,19 +2,13 @@ package flying.grub.tamtime.data.map;
 
 import android.content.Context;
 import android.location.Location;
-import android.util.Log;
 
 import java.text.Normalizer;
 import java.util.ArrayList;
 
-import de.greenrobot.event.EventBus;
 import flying.grub.tamtime.data.Data;
 import flying.grub.tamtime.data.real_time.Time;
-import flying.grub.tamtime.data.update.MessageUpdate;
 
-/**
- * Created by fly on 11/9/15.
- */
 public class TamMap {
 
     private static final String TAG = TamMap.class.getSimpleName();

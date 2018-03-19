@@ -1,8 +1,5 @@
 package flying.grub.tamtime.data;
 
-/**
- * Created by fly on 10/9/15.
- */
 public class IntRef {
     private int i;
 

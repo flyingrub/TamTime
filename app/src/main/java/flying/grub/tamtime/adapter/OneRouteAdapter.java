@@ -5,7 +5,6 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,9 +18,6 @@ import flying.grub.tamtime.R;
 import flying.grub.tamtime.data.map.Stop;
 import flying.grub.tamtime.data.real_time.Time;
 
-/**
- * Created by fly on 10/02/15.
- */
 public class OneRouteAdapter extends RecyclerView.Adapter<OneRouteAdapter.ViewHolder> {
 
     private static final String TAG = OneRouteAdapter.class.getSimpleName();

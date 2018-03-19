@@ -1,8 +1,5 @@
 package flying.grub.tamtime.data.update;
 
-/**
- * Created by fly on 9/25/15.
- */
 public class MessageUpdate {
     public enum Type {
         TIMES_UPDATE,
