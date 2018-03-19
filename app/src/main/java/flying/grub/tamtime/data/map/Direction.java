@@ -2,10 +2,6 @@ package flying.grub.tamtime.data.map;
 
 import java.util.ArrayList;
 
-/**
- * Created by fly on 3/13/18.
- */
-
 public class Direction {
     private String name;
     private Line line;

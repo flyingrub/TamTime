@@ -26,9 +26,6 @@ import flying.grub.tamtime.adapter.DividerItemDecoration;
 import flying.grub.tamtime.data.Data;
 import flying.grub.tamtime.data.map.StopZone;
 
-/**
- * Created by fly on 09/02/15.
- */
 public class AllStopFragment extends Fragment {
 
     private RecyclerView recyclerView;

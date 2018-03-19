@@ -8,7 +8,6 @@ import java.util.Collections;
 
 import flying.grub.tamtime.data.report.Report;
 
-
 public class StopZone {
     private int _id;
     private int cityway_id;

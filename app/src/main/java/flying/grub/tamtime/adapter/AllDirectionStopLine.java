@@ -14,9 +14,6 @@ import flying.grub.tamtime.R;
 import flying.grub.tamtime.data.map.Stop;
 import flying.grub.tamtime.data.real_time.Time;
 
-/**
- * Created by fly on 11/28/15.
- */
 public class AllDirectionStopLine extends RecyclerView.Adapter<AllDirectionStopLine.ViewHolder> {
 
     private static final String TAG = OneRouteAdapter.class.getSimpleName();

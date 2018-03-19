@@ -24,9 +24,6 @@ import flying.grub.tamtime.data.Data;
 import flying.grub.tamtime.data.map.Direction;
 import flying.grub.tamtime.data.update.MessageUpdate;
 
-/**
- * Created by fly on 25/03/15.
- */
 public class LineRouteFragment extends Fragment {
 
     private RecyclerView recyclerView;

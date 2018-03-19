@@ -20,9 +20,6 @@ import flying.grub.tamtime.adapter.AllStopReportAdapter;
 import flying.grub.tamtime.data.Data;
 import flying.grub.tamtime.data.map.StopZone;
 
-/**
- * Created by fly on 10/22/15.
- */
 public class AllStopReportFragment extends Fragment {
 
     private RecyclerView recyclerView;

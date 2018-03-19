@@ -40,9 +40,6 @@ import flying.grub.tamtime.data.update.UpdateRunnable;
 import flying.grub.tamtime.fragment.StopLineFragment;
 import flying.grub.tamtime.slidingTab.SlidingTabLayout;
 
-/**
- * Created by fly on 9/19/15.
- */
 public class OneStopActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private ViewPager viewPager;

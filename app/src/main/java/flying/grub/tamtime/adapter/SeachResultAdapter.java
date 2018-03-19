@@ -12,9 +12,6 @@ import java.util.ArrayList;
 import flying.grub.tamtime.R;
 import flying.grub.tamtime.data.map.StopZone;
 
-/**
- * Created by fly on 11/26/15.
- */
 public class SeachResultAdapter extends RecyclerView.Adapter<SeachResultAdapter.ViewHolder> {
 
     public OnItemClickListener mItemClickListener;
