@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import flying.grub.tamtime.data.dirsruption.DisruptEvent;
 
-
 public class Line {
     private String shortName;
     private int id;
