@@ -21,9 +21,6 @@ import flying.grub.tamtime.data.map.Line;
 import flying.grub.tamtime.data.map.StopZone;
 import flying.grub.tamtime.data.update.MessageUpdate;
 
-/**
- * Created by fly on 9/19/15.
- */
 public class StopLineFragment extends Fragment {
 
     private static final String TAG = StopLineFragment.class.getSimpleName();

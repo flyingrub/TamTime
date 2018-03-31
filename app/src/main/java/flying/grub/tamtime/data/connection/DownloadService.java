@@ -28,9 +28,7 @@ import java.net.URLConnection;
 
 import flying.grub.tamtime.R;
 
-/**
- * Created by fly on 10/13/15.
- */
+
 public class DownloadService extends IntentService {
 
     public static final int ID = 8344;

@@ -1,9 +1,5 @@
 package flying.grub.tamtime.data.real_time;
 
-/**
- * Created by fly on 3/13/18.
- */
-
 public class Time {
     String waitingTime;
     int hour;
@@ -16,6 +12,6 @@ public class Time {
     }
 
     public String getWaitingTime() {
-        return waitingTime;
+        return waitingTime + " (" + hour + ":" + minute + ")";
     }
 }

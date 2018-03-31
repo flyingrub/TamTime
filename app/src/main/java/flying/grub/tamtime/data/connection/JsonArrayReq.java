@@ -13,10 +13,6 @@ import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 
-/**
- * Created by fly on 3/14/18.
- */
-
 public class JsonArrayReq extends JsonRequest {
     public JsonArrayReq(int method, String url, JSONObject jsonRequest,
                         Response.Listener<JSONArray> listener, Response.ErrorListener errorListener) {

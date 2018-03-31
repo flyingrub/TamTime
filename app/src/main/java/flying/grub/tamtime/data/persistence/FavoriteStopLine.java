@@ -9,11 +9,10 @@ import java.util.HashSet;
 
 import flying.grub.tamtime.data.Data;
 import flying.grub.tamtime.data.map.Line;
+import flying.grub.tamtime.data.map.Stop;
 import flying.grub.tamtime.data.map.StopZone;
 
-/**
- * Created by fly on 11/30/15.
- */
+
 public class FavoriteStopLine {
 
     private static final String TAG = FavoriteStopLine.class.getSimpleName();
@@ -53,6 +52,14 @@ public class FavoriteStopLine {
     public ArrayList<LineStop> getFavStopLines() {
         getFromPref();
         return new ArrayList<>(favoriteStopLine);
+    }
+
+    public ArrayList<Stop> getToUpdate() {
+        ArrayList<Stop> toUpdate = new ArrayList<>();
+        for (LineStop lineStop : getFavStopLines()) {
+            toUpdate.addAll(lineStop.getStops());
+        }
+        return toUpdate;
     }
 
     private void sortAndPush() {

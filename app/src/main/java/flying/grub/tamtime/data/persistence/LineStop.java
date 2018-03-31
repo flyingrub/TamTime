@@ -1,11 +1,12 @@
 package flying.grub.tamtime.data.persistence;
 
+import java.util.ArrayList;
+
 import flying.grub.tamtime.data.map.Line;
+import flying.grub.tamtime.data.map.Stop;
 import flying.grub.tamtime.data.map.StopZone;
 
-/**
- * Created by fly on 11/29/15.
- */
+
 public class LineStop {
     private StopZone stop;
     private Line line;
@@ -13,6 +14,10 @@ public class LineStop {
     public LineStop(StopZone stop, Line line) {
         this.stop = stop;
         this.line = line;
+    }
+
+    public ArrayList<Stop> getStops() {
+        return stop.getStops(line);
     }
 
     public StopZone getStopZone() {

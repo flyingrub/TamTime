@@ -25,9 +25,7 @@ import flying.grub.tamtime.data.persistence.FavoriteStops;
 import flying.grub.tamtime.data.map.Line;
 import flying.grub.tamtime.data.map.StopZone;
 
-/**
- * Created by fly on 11/29/15.
- */
+
 public class FavHomeView {
 
     private LinearLayout favLayout;

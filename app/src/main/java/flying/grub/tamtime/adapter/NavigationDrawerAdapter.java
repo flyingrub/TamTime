@@ -22,9 +22,7 @@ import flying.grub.tamtime.data.IntRef;
 import flying.grub.tamtime.fragment.NavigationDrawerFragment;
 import flying.grub.tamtime.navigation.ItemWithDrawable;
 
-/**
- * Created by fly on 9/20/15.
- */
+
 public class NavigationDrawerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
     public OnItemClickListener itemClickListener;

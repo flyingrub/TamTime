@@ -13,9 +13,7 @@ import flying.grub.tamtime.BuildConfig;
 import flying.grub.tamtime.R;
 import flying.grub.tamtime.data.Data;
 
-/**
- * Created by fly on 9/23/15.
- */
+
 public class SettingsActivity extends AppCompatActivity {
 
     private Toolbar toolbar;

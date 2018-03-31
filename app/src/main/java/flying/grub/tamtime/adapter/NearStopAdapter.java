@@ -14,9 +14,7 @@ import java.util.Comparator;
 import flying.grub.tamtime.R;
 import flying.grub.tamtime.data.map.StopZone;
 
-/**
- * Created by fly on 10/9/15.
- */
+
 public class NearStopAdapter extends RecyclerView.Adapter<NearStopAdapter.ViewHolder> {
 
     public OnItemClickListener itemClickListener;

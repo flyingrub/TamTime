@@ -6,6 +6,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,17 +15,17 @@ import android.view.ViewGroup;
 import de.greenrobot.event.EventBus;
 import flying.grub.tamtime.R;
 import flying.grub.tamtime.adapter.HomeAdapter;
+import flying.grub.tamtime.data.Data;
 import flying.grub.tamtime.data.persistence.FavoriteStopLine;
 import flying.grub.tamtime.data.map.Line;
+import flying.grub.tamtime.data.real_time.RealTimeToUpdate;
 import flying.grub.tamtime.data.update.MessageUpdate;
 import flying.grub.tamtime.data.map.StopZone;
 import flying.grub.tamtime.data.update.UpdateRunnable;
 import flying.grub.tamtime.layout.FavHomeView;
 import flying.grub.tamtime.layout.SearchView;
 
-/**
- * Created by fly on 11/26/15.
- */
+
 public class HomeFragment extends Fragment {
 
     private static final String TAG = HomeFragment.class.getSimpleName();
@@ -92,16 +93,17 @@ public class HomeFragment extends Fragment {
                 popup.show();
             }
         });
-        favStopLinesRecycler.swapAdapter(homeAdapter, true);
+        favStopLinesRecycler.swapAdapter(homeAdapter, false);
     }
 
     @Override
     public void onResume(){
         super.onResume();
+        Data.getData().setToUpdate(new RealTimeToUpdate(favoriteStopLine.getToUpdate()));
         EventBus.getDefault().register(this);
         updateRunnable = new UpdateRunnable();
         updateRunnable.run();
-
+        Data.getData().update();
     }
 
     @Override

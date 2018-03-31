@@ -5,10 +5,6 @@ import java.util.ArrayList;
 import flying.grub.tamtime.data.map.Line;
 import flying.grub.tamtime.data.map.Stop;
 
-/**
- * Created by fly on 3/15/18.
- */
-
 public class RealTimeToUpdate {
     private boolean isLine;
     private Line line;

@@ -23,9 +23,7 @@ import flying.grub.tamtime.data.map.StopZone;
 import flying.grub.tamtime.layout.FavHomeView;
 import flying.grub.tamtime.layout.SearchView;
 
-/**
- * Created by fly on 11/28/15.
- */
+
 public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private static final String TAG = HomeAdapter.class.getSimpleName();

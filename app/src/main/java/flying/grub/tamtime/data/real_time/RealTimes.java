@@ -24,9 +24,7 @@ import flying.grub.tamtime.data.map.Line;
 import flying.grub.tamtime.data.map.Stop;
 import flying.grub.tamtime.data.update.MessageUpdate;
 
-/**
- * Created by fly on 11/9/15.
- */
+
 public class RealTimes {
 
     private static final String TAG = RealTimes.class.getSimpleName();

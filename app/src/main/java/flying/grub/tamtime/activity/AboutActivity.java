@@ -14,9 +14,7 @@ import android.widget.TextView;
 import flying.grub.tamtime.R;
 import flying.grub.tamtime.layout.Indicator;
 
-/**
- * Created by fly on 10/12/15.
- */
+
 public class AboutActivity extends AppCompatActivity {
 
     private ViewPager viewPager;

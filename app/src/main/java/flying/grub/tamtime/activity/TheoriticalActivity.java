@@ -12,9 +12,7 @@ import android.widget.ImageView;
 import flying.grub.tamtime.R;
 import flying.grub.tamtime.fragment.LineRouteFragment;
 
-/**
- * Created by fly on 10/4/15.
- */
+
 public class TheoriticalActivity extends AppCompatActivity {
 
     private Toolbar toolbar;

@@ -13,11 +13,6 @@ import java.util.ArrayList;
 
 import flying.grub.tamtime.R;
 
-
-/**
- * Created by fly on 2/21/18.
- */
-
 public class TamMapDatabaseHelper {
 
     private static final String NAME = "referential_android.sqlite";

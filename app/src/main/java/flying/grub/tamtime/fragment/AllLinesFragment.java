@@ -22,9 +22,7 @@ import flying.grub.tamtime.data.map.Line;
 import flying.grub.tamtime.data.update.MessageUpdate;
 import flying.grub.tamtime.R;
 
-/**
- * Created by fly on 09/02/15.
- */
+
 public class AllLinesFragment extends Fragment {
 
     private RecyclerView recyclerView;

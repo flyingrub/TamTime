@@ -29,9 +29,7 @@ import flying.grub.tamtime.data.map.Line;
 import flying.grub.tamtime.data.update.MessageUpdate;
 import flying.grub.tamtime.data.connection.VolleyApp;
 
-/**
- * Created by fly on 10/26/15.
- */
+
 public class DisruptEventHandler {
 
     private static final String TAG = DisruptEventHandler.class.getSimpleName();

@@ -26,9 +26,7 @@ import flying.grub.tamtime.adapter.SeachResultAdapter;
 import flying.grub.tamtime.data.Data;
 import flying.grub.tamtime.data.map.StopZone;
 
-/**
- * Created by fly on 11/29/15.
- */
+
 public class SearchView {
 
     private static final String TAG = SearchView.class.getSimpleName();

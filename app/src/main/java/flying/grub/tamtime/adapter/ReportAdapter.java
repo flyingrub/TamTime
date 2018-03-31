@@ -14,9 +14,6 @@ import flying.grub.tamtime.R;
 import flying.grub.tamtime.data.report.Report;
 import flying.grub.tamtime.data.report.ReportType;
 
-/**
- * Created by fly on 10/12/15.
- */
 public class ReportAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
     public OnItemClickListener itemClickListener;

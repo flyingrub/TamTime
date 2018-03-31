@@ -13,9 +13,7 @@ import android.view.View;
 
 import flying.grub.tamtime.R;
 
-/**
- * Created by fly on 10/12/15.
- */
+
 public class Indicator extends View implements ViewPager.OnPageChangeListener  {
     private Context context;
     private float pageNumber;

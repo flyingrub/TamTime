@@ -14,9 +14,7 @@ import flying.grub.tamtime.R;
 import flying.grub.tamtime.data.map.Stop;
 import flying.grub.tamtime.data.real_time.Time;
 
-/**
- * Created by fly on 9/20/15.
- */
+
 public class OneStopAdapter extends RecyclerView.Adapter<OneStopAdapter.ViewHolder> {
 
     public OnItemClickListener mItemClickListener;

@@ -28,9 +28,7 @@ import flying.grub.tamtime.data.map.StopZone;
 import flying.grub.tamtime.data.update.MessageUpdate;
 import flying.grub.tamtime.data.connection.VolleyApp;
 
-/**
- * Created by fly on 11/9/15.
- */
+
 public class ReportEvent {
 
     private static final String TAG = ReportEvent.class.getSimpleName();

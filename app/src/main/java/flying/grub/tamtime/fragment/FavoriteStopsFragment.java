@@ -20,9 +20,7 @@ import flying.grub.tamtime.adapter.FavoriteAdapter;
 import flying.grub.tamtime.data.persistence.FavoriteStops;
 import flying.grub.tamtime.data.map.StopZone;
 
-/**
- * Created by fly on 9/21/15.
- */
+
 public class FavoriteStopsFragment extends Fragment {
 
     private RecyclerView recyclerView;
