@@ -22,6 +22,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.gc.materialdesign.widgets.Dialog;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 import de.greenrobot.event.EventBus;
 import flying.grub.tamtime.R;
@@ -164,6 +165,27 @@ public class OneStopActivity extends AppCompatActivity {
                             }
                         }).build();
                 dialog.show();
+                return true;
+
+            case R.id.action_mark_stop:
+                int t_mark_limit = 5;
+                Collection<CharSequence> marks = new ArrayList<>();
+                for (int t_index = t_mark_limit; t_index != 0; t_index--) //Decreasing
+                    marks.add(t_index + " / " + t_mark_limit);
+
+                CharSequence[] marks_string = marks.toArray(new CharSequence[marks.size()]);
+
+                MaterialDialog mark_dialog = new MaterialDialog.Builder(OneStopActivity.this)
+                        .title(R.string.mark_stop)
+                        .items(marks_string)
+                        .itemsCallback(new MaterialDialog.ListCallback() {
+                            @Override
+                            public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                                //TODO : Send mark to the server
+                                dialog.dismiss();
+                            }
+                        }).build();
+                mark_dialog.show();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
