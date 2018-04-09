@@ -71,7 +71,11 @@ public class OneStopActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
-        getSupportActionBar().setTitle(stop.getName());
+
+        if(stop.getMark() == -1) //Default mark, no one have mark this stop
+            getSupportActionBar().setTitle(stop.getName() + " (NA / 5)");
+        else
+            getSupportActionBar().setTitle(stop.getName() + " (" + stop.getMark() + " / 5)");
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
