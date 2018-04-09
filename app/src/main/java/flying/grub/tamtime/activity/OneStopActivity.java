@@ -73,7 +73,7 @@ public class OneStopActivity extends AppCompatActivity {
         getSupportActionBar().setHomeButtonEnabled(true);
 
         if(stop.getMark() == -1) //Default mark, no one have mark this stop
-            getSupportActionBar().setTitle(stop.getName() + " (NA / 5)");
+            getSupportActionBar().setTitle(stop.getName());
         else
             getSupportActionBar().setTitle(stop.getName() + " (" + stop.getMark() + " / 5)");
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -185,7 +185,8 @@ public class OneStopActivity extends AppCompatActivity {
                         .itemsCallback(new MaterialDialog.ListCallback() {
                             @Override
                             public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
-                                //TODO : Send mark to the server
+                                Data.getData().getMarkEvent().sendMark(getBaseContext(), stop.getID(), which);
+                                Data.getData().update();
                                 dialog.dismiss();
                             }
                         }).build();

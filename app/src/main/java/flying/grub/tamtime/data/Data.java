@@ -3,6 +3,7 @@ package flying.grub.tamtime.data;
 import android.content.Context;
 
 import flying.grub.tamtime.data.dirsruption.DisruptEventHandler;
+import flying.grub.tamtime.data.mark.MarkEvent;
 import flying.grub.tamtime.data.real_time.RealTimeToUpdate;
 import flying.grub.tamtime.data.real_time.RealTimes;
 import flying.grub.tamtime.data.report.ReportEvent;
@@ -18,6 +19,12 @@ public class Data {
     private TamMap map;
     private RealTimeToUpdate toUpdate;
 
+    /*
+    School project
+     */
+
+    private MarkEvent markEvent;
+
     private static Data data;
 
     private Data() {
@@ -29,6 +36,8 @@ public class Data {
         disruptEventHandler = new DisruptEventHandler(context);
         realTimes = new RealTimes(context);
         map = new TamMap(context);
+
+        markEvent = new MarkEvent(context);
     }
 
     public static synchronized Data getData() {
@@ -48,6 +57,7 @@ public class Data {
             }
         }
         reportEvent.getReports();
+        markEvent.getMarks();
         //disruptEventHandler.getReports();
     }
 
@@ -70,5 +80,10 @@ public class Data {
 
     public ReportEvent getReportEvent() {
         return reportEvent;
+    }
+
+    public MarkEvent getMarkEvent()
+    {
+        return markEvent;
     }
 }

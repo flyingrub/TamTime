@@ -12,11 +12,6 @@ public class Stop {
     private Direction direction;
     private ArrayList<Time> times;
 
-    /*
-    School project
-     */
-    private float mark;
-
     public Stop(int _id, int cityway_id, int tam_id, StopZone stopZone, Direction direction) {
         this._id = _id;
         this.cityway_id = cityway_id;
@@ -24,8 +19,6 @@ public class Stop {
         this.stopZone = stopZone;
         this.direction = direction;
         this.times = new ArrayList<>();
-
-        this.mark = mark - 1;
     }
 
     public int get_id() {
@@ -57,16 +50,6 @@ public class Stop {
 
     public void setTimes(ArrayList<Time> times) {
         this.times = times;
-    }
-
-    public float getMark()
-    {
-        return mark;
-    }
-
-    public void setMark(float mark)
-    {
-        this.mark = mark;
     }
 
     @Override
