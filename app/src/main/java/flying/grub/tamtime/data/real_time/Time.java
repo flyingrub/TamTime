@@ -12,6 +12,6 @@ public class Time {
     }
 
     public String getWaitingTime() {
-        return waitingTime + " (" + hour + ":" + minute + ")";
+        return waitingTime;
     }
 }

@@ -21,7 +21,6 @@ public class OneStopAdapter extends RecyclerView.Adapter<OneStopAdapter.ViewHold
     public ArrayList<Stop> stops;
 
     public OneStopAdapter(ArrayList<Stop> stops) {
-        Log.d("stops", stops.toString());
         this.stops = stops;
     }
 

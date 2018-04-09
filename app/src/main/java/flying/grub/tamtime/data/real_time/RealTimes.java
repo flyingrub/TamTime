@@ -75,7 +75,8 @@ public class RealTimes {
                         for (int i = 0; i < response.length(); i++) {
                             try {
                                 JSONObject stop = response.getJSONObject(i);
-                                int id = stop.getInt("cityway_stop_id");
+                                int tam_id = stop.getInt("tam_stop_id");
+                                int cityway_id = stop.getInt("cityway_stop_id");
                                 JSONArray timesJSON = stop.getJSONArray("stop_next_time");
                                 ArrayList<Time> times = new ArrayList<>();
                                 for (int j = 0; j < timesJSON.length(); j++) {
@@ -85,7 +86,7 @@ public class RealTimes {
                                     int min = timeJSON.getInt("passing_minute");
                                     times.add(new Time(waiting_time, hour, min));
                                 }
-                                Data.getData().getMap().addTimeToStop(id, times);
+                                Data.getData().getMap().addTimeToStop(tam_id, cityway_id, times);
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -117,7 +118,8 @@ public class RealTimes {
                         for (int i = 0; i < response.length(); i++) {
                             try {
                                 JSONObject stop = response.getJSONObject(i);
-                                int id = stop.getInt("cityway_stop_id");
+                                int tam_id = stop.getInt("tam_stop_id");
+                                int cityway_id = stop.getInt("cityway_stop_id");
                                 JSONArray timesJSON = stop.getJSONArray("stop_next_time");
                                 ArrayList<Time> times = new ArrayList<>();
                                 for (int j = 0; j < timesJSON.length(); j++) {
@@ -127,7 +129,7 @@ public class RealTimes {
                                     int min = timeJSON.getInt("passing_minute");
                                     times.add(new Time(waiting_time, hour, min));
                                 }
-                                Data.getData().getMap().addTimeToStop(id, times);
+                                Data.getData().getMap().addTimeToStop(tam_id, cityway_id, times);
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }

@@ -107,9 +107,26 @@ public class TamMap {
         return stops;
     }
 
-    public void addTimeToStop(int stop_id, ArrayList<Time> times) {
+    public void addTimeToStop(int tam_id, int cityway_id, ArrayList<Time> times) {
+        if (tam_id == -1) {
+            addTimeToStopByCitywayId(cityway_id, times);
+        } else {
+            addTimeToStopByTamId(tam_id, times);
+        }
+    }
+
+    private void addTimeToStopByTamId(int id, ArrayList<Time> times) {
         for (int i = 0; i < Data.getData().getMap().getStops().size(); i++) {
-            if (stops.get(i).getCityway_id() == stop_id) {
+            if (stops.get(i).getTam_id() == id) {
+                stops.get(i).setTimes(times);
+                return;
+            }
+        }
+    }
+
+    private void addTimeToStopByCitywayId(int id, ArrayList<Time> times) {
+        for (int i = 0; i < Data.getData().getMap().getStops().size(); i++) {
+            if (stops.get(i).getCityway_id() == id) {
                 stops.get(i).setTimes(times);
                 return;
             }
