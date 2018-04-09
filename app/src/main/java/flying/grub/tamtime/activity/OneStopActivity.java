@@ -29,6 +29,7 @@ import flying.grub.tamtime.R;
 import flying.grub.tamtime.adapter.DividerItemDecoration;
 import flying.grub.tamtime.adapter.ReportAdapter;
 import flying.grub.tamtime.data.Data;
+import flying.grub.tamtime.data.mark.MarkEvent;
 import flying.grub.tamtime.data.persistence.FavoriteStopLine;
 import flying.grub.tamtime.data.persistence.FavoriteStops;
 import flying.grub.tamtime.data.map.Line;
@@ -172,10 +173,9 @@ public class OneStopActivity extends AppCompatActivity {
                 return true;
 
             case R.id.action_mark_stop:
-                int t_mark_limit = 5;
                 Collection<CharSequence> marks = new ArrayList<>();
-                for (int t_index = t_mark_limit; t_index != 0; t_index--) //Decreasing
-                    marks.add(t_index + " / " + t_mark_limit);
+                for (int t_index = 0; t_index <= MarkEvent.MARK_LIMIT; t_index++)
+                    marks.add(t_index + " / " + MarkEvent.MARK_LIMIT);
 
                 CharSequence[] marks_string = marks.toArray(new CharSequence[marks.size()]);
 

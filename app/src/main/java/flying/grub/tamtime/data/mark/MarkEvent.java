@@ -15,23 +15,19 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 
-import de.greenrobot.event.EventBus;
 import flying.grub.tamtime.R;
 import flying.grub.tamtime.data.Data;
 import flying.grub.tamtime.data.connection.JsonArrayReq;
 import flying.grub.tamtime.data.connection.NetworkResponseRequest;
-import flying.grub.tamtime.data.map.Stop;
 import flying.grub.tamtime.data.map.StopZone;
-import flying.grub.tamtime.data.report.Report;
-import flying.grub.tamtime.data.update.MessageUpdate;
 import flying.grub.tamtime.data.connection.VolleyApp;
 
 
 public class MarkEvent {
+
+    public static final int MARK_LIMIT = 5;
 
     private static final String TAG = MarkEvent.class.getSimpleName();
     private static final String GET_MARKS = "http://192.168.1.16:5000/marks_average"; //TODO : Use the real server
