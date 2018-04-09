@@ -3,11 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:title="@string/post_report"
-        app:showAsAction ="always"
+        app:showAsAction ="ifRoom"
         android:icon="@drawable/ic_add_report_24dp"
         android:id="@+id/report"/>
     <item
         android:id="@+id/action_favorite"
-        app:showAsAction ="always"
+        app:showAsAction ="ifRoom"
         android:title="Favorites"/>
 </menu>

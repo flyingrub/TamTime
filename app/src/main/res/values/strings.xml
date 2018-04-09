@@ -70,6 +70,9 @@
     <string name="source_code_summary">Accèder au code source</string>
     <string name="version">Version de l\'application</string>
 
+    <string name="add_stop_to_homepage">Ajouter cet arrêt sur l\'acceuil</string>
+    <string name="mark_stop">Noter cet arrêt</string>
+
     <string name="github" translatable="false">https://github.com/flyingrub/TamTime</string>
     <string name="license_type" translatable="false">GNU General Public License 2</string>
     <string name="donate_url" translatable="false">https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=6DE8SFMJKRVK2</string>

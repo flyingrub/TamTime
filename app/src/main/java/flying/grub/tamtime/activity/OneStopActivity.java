@@ -22,12 +22,14 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.gc.materialdesign.widgets.Dialog;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 import de.greenrobot.event.EventBus;
 import flying.grub.tamtime.R;
 import flying.grub.tamtime.adapter.DividerItemDecoration;
 import flying.grub.tamtime.adapter.ReportAdapter;
 import flying.grub.tamtime.data.Data;
+import flying.grub.tamtime.data.mark.MarkEvent;
 import flying.grub.tamtime.data.persistence.FavoriteStopLine;
 import flying.grub.tamtime.data.persistence.FavoriteStops;
 import flying.grub.tamtime.data.map.Line;
@@ -70,7 +72,11 @@ public class OneStopActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
-        getSupportActionBar().setTitle(stop.getName());
+
+        if(stop.getMark() == -1) //Default mark, no one have mark this stop
+            getSupportActionBar().setTitle(stop.getName());
+        else
+            getSupportActionBar().setTitle(stop.getName() + " (" + stop.getMark() + " / 5)");
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -164,6 +170,27 @@ public class OneStopActivity extends AppCompatActivity {
                             }
                         }).build();
                 dialog.show();
+                return true;
+
+            case R.id.action_mark_stop:
+                Collection<CharSequence> marks = new ArrayList<>();
+                for (int t_index = 0; t_index <= MarkEvent.MARK_LIMIT; t_index++)
+                    marks.add(t_index + " / " + MarkEvent.MARK_LIMIT);
+
+                CharSequence[] marks_string = marks.toArray(new CharSequence[marks.size()]);
+
+                MaterialDialog mark_dialog = new MaterialDialog.Builder(OneStopActivity.this)
+                        .title(R.string.mark_stop)
+                        .items(marks_string)
+                        .itemsCallback(new MaterialDialog.ListCallback() {
+                            @Override
+                            public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                                Data.getData().getMarkEvent().sendMark(getBaseContext(), stop.getID(), which);
+                                Data.getData().update();
+                                dialog.dismiss();
+                            }
+                        }).build();
+                mark_dialog.show();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

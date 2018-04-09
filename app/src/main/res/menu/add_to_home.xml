@@ -2,5 +2,9 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/action_add_line_on_home"
-        android:title="Ajouter cet arrêt sur l'acceuil"/>
+        android:title="@string/add_stop_to_homepage"/>
+
+    <item
+        android:id="@+id/action_mark_stop"
+        android:title="@string/mark_stop"/>
 </menu>

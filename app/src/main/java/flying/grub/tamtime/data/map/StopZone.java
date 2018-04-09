@@ -21,6 +21,11 @@ public class StopZone {
     private ArrayList<Report> reportList;
     private float distanceFromUser;
 
+    /*
+    School project
+     */
+    private double mark;
+
     public StopZone(String name, int _id, int tam_id, int cityway_id, String search_name, double lat, double lon){
         this.lines = new ArrayList<>();
         this.reportList = new ArrayList<>();
@@ -33,6 +38,8 @@ public class StopZone {
         this.location.setLongitude(lon);
         this.location.setLatitude(lat);
         this.stops = new ArrayList<>();
+
+        this.mark = -1;
     }
 
     public void addLine(Line line) {
@@ -99,6 +106,16 @@ public class StopZone {
 
     public ArrayList<Stop> getStops() {
         return stops;
+    }
+
+    public double getMark()
+    {
+        return mark;
+    }
+
+    public void setMark(double mark)
+    {
+        this.mark = mark;
     }
 
     @Override
