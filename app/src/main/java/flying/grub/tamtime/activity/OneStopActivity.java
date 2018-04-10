@@ -21,6 +21,7 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.gc.materialdesign.widgets.Dialog;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -75,8 +76,10 @@ public class OneStopActivity extends AppCompatActivity {
 
         if(stop.getMark() == -1) //Default mark, no one have mark this stop
             getSupportActionBar().setTitle(stop.getName());
-        else
-            getSupportActionBar().setTitle(stop.getName() + " (" + stop.getMark() + " / 5)");
+        else {
+            DecimalFormat decimalFormat = new DecimalFormat("#.00");
+            getSupportActionBar().setTitle(stop.getName() + " (" + decimalFormat.format(stop.getMark()) + " / 5)");
+        }
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
