@@ -77,7 +77,7 @@ public class OneStopActivity extends AppCompatActivity {
         if(stop.getMark() == -1) //Default mark, no one have mark this stop
             getSupportActionBar().setTitle(stop.getName());
         else {
-            DecimalFormat decimalFormat = new DecimalFormat("#.00");
+            DecimalFormat decimalFormat = new DecimalFormat("#.0");
             getSupportActionBar().setTitle(stop.getName() + " (" + decimalFormat.format(stop.getMark()) + " / 5)");
         }
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
