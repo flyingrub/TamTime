@@ -16,6 +16,7 @@ public class TamMap {
     private ArrayList<Line> lines;
     private ArrayList<StopZone> stopZones;
     private ArrayList<Stop> stops;
+    private ArrayList<PointOfInterest> pointOfInterests;
     private TamMapDatabaseHelper dbHelper;
 
     private Context context;
@@ -26,6 +27,7 @@ public class TamMap {
         this.context = context;
         dbHelper = TamMapDatabaseHelper.getDB(context);
         this.lines = dbHelper.getLines();
+        this.pointOfInterests = dbHelper.getPOIs();
         setStopZones();
     }
 
@@ -106,6 +108,8 @@ public class TamMap {
     public ArrayList<Stop> getStops() {
         return stops;
     }
+
+    public ArrayList<PointOfInterest> getPointOfInterests(){return pointOfInterests;}
 
     public void addTimeToStop(int tam_id, int cityway_id, ArrayList<Time> times) {
         if (tam_id == -1) {

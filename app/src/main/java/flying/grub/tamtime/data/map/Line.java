@@ -1,5 +1,9 @@
 package flying.grub.tamtime.data.map;
 
+import android.graphics.Color;
+
+import org.osmdroid.util.GeoPoint;
+
 import java.util.ArrayList;
 
 import flying.grub.tamtime.data.dirsruption.DisruptEvent;
@@ -10,7 +14,11 @@ public class Line {
     private int tam_id;
     private int cityway_id;
     private int urbanLine;
+    private int color;
     private ArrayList<Direction> directions;
+
+    private ArrayList<GeoPoint> polyline_A;
+    private ArrayList<GeoPoint> polyline_R;
 
     private ArrayList<DisruptEvent> disruptEventList;
 
@@ -22,6 +30,8 @@ public class Line {
         this.urbanLine = urbanLine;
         this.directions = new ArrayList<>();
         this.disruptEventList = new ArrayList<>();
+        this.polyline_A = new ArrayList<>();
+        this.polyline_R = new ArrayList<>();
     }
 
     // Get
@@ -94,5 +104,29 @@ public class Line {
 
     public void addDisruptEvent(DisruptEvent event) {
         this.disruptEventList.add(event);
+    }
+
+    public ArrayList<GeoPoint> getPolyline_A(){
+        return polyline_A;
+    }
+
+    public void setPolyline_A(ArrayList<GeoPoint> p){
+        polyline_A = p;
+    }
+
+    public ArrayList<GeoPoint> getPolyline_R(){
+        return polyline_R;
+    }
+
+    public void setPolyline_R(ArrayList<GeoPoint> p){
+        polyline_R = p;
+    }
+
+    public int getColor(){
+        return color;
+    }
+
+    public void setColor(int c){
+        color = c;
     }
 }

@@ -104,6 +104,10 @@ public class StopZone {
         return res;
     }
 
+    public Location getLocation(){
+        return location;
+    }
+
     public ArrayList<Stop> getStops() {
         return stops;
     }

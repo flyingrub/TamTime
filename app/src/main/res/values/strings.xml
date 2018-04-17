@@ -76,4 +76,7 @@
     <string name="github" translatable="false">https://github.com/flyingrub/TamTime</string>
     <string name="license_type" translatable="false">GNU General Public License 2</string>
     <string name="donate_url" translatable="false">https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=6DE8SFMJKRVK2</string>
+    <string name="map_print_selection" translatable="false">Selection des lignes à afficher</string>
+    <string name="tram" translatable="false">Tram</string>
+    <string name="bus" translatable="false">Bus</string>
 </resources>
