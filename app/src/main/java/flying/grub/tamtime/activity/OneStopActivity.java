@@ -74,16 +74,19 @@ public class OneStopActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
-        if(stop.getMark() == -1) //Default mark, no one have mark this stop
-            getSupportActionBar().setTitle(stop.getName());
-        else {
+        StringBuilder title = new StringBuilder();
+        title.append(stop.getName());
+
+        if(stop.getMark() != -1) //Default mark, no one have mark this stop
             if(stop.getMark() % 1 == 0)
-                getSupportActionBar().setTitle(stop.getName() + " (" + (int) stop.getMark() + " / 5)");
+                title.append(" (" + (int) stop.getMark() + " / 5)");
             else {
                 DecimalFormat decimalFormat = new DecimalFormat("#.0");
-                getSupportActionBar().setTitle(stop.getName() + " (" + decimalFormat.format(stop.getMark()) + " / 5)");
+                title.append(" (" + decimalFormat.format(stop.getMark()) + " / " + MarkEvent.MARK_LIMIT + ")");
             }
-        }
+
+        getSupportActionBar().setTitle(title.toString());
+
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -103,6 +106,12 @@ public class OneStopActivity extends AppCompatActivity {
         slidingTabLayout.setSelectedIndicatorColors(getResources().getColor(R.color.textClearColor));
         slidingTabLayout.setDividerColors(getResources().getColor(R.color.primaryColor));
         slidingTabLayout.setViewPager(viewPager);
+
+        /*
+        School project - Weather
+        Call weather api only if necessary because of very limited calls permission (free offer : 10/min, 500/day)
+         */
+        Data.getData().getWeatherEvent().getWeather(stop.getID());
     }
 
 
@@ -198,6 +207,38 @@ public class OneStopActivity extends AppCompatActivity {
                             }
                         }).build();
                 mark_dialog.show();
+                return true;
+
+            case R.id.action_check_weather:
+                if(stop.getWeather() == null)
+                    return false;
+
+                /*
+                String indent, semi-colon are aligned
+                 */
+                Collection<CharSequence> weather = new ArrayList<>();
+                weather.add("Température : " + stop.getWeather().getTemperature() + "°");
+                weather.add("Météo             : " + stop.getWeather().getWeatherString()); //TODO : Trace this string
+                weather.add("Humidité        : " + stop.getWeather().getHumidityString());
+                weather.add("Vent                 : " + stop.getWeather().getWind() + " km/h");
+
+
+                CharSequence[] weather_string = weather.toArray(new CharSequence[weather.size()]);
+
+                MaterialDialog weather_dialog = new MaterialDialog.Builder(OneStopActivity.this)
+                        .title(R.string.check_weather)
+                        .items(weather_string)
+                        .itemsCallback(new MaterialDialog.ListCallback() {
+                            @Override
+                            public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+
+                                Data.getData().getMarkEvent().sendMark(getBaseContext(), stop.getID(), which);
+                                Data.getData().update();
+
+                                dialog.dismiss();
+                            }
+                        }).build();
+                weather_dialog.show();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

@@ -3,8 +3,11 @@ package flying.grub.tamtime.data.map;
 import android.content.Context;
 import android.location.Location;
 
+import java.text.DecimalFormat;
 import java.text.Normalizer;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 import flying.grub.tamtime.data.Data;
 import flying.grub.tamtime.data.real_time.Time;
@@ -93,6 +96,30 @@ public class TamMap {
             if (stp.getID() == id) return stp;
         }
         return null;
+    }
+
+    public Collection<StopZone> getStopsByLocation(double p_latitude, double p_longitude) {
+        Collection<StopZone> stopZones = new ArrayList<StopZone>();
+
+        for (StopZone stp : this.stopZones) {
+
+            /*
+            API cut latitude/longitude 2 decimal after ., to compare, we need to cut to.
+             */
+            double latitude = stp.getLocation().getLatitude() * 100;
+            latitude = Math.floor(latitude);
+            latitude /= 100;
+
+            double longitude = stp.getLocation().getLongitude() * 100;
+            longitude = Math.floor(longitude);
+            longitude /= 100;
+
+            if(latitude == p_latitude &&
+                    longitude == p_longitude)
+                stopZones.add(stp);
+        }
+
+        return stopZones;
     }
 
     public ArrayList<StopZone> getAllNearStops() {

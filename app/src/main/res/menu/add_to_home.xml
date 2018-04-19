@@ -7,4 +7,8 @@
     <item
         android:id="@+id/action_mark_stop"
         android:title="@string/mark_stop"/>
+
+    <item
+        android:id="@+id/action_check_weather"
+        android:title="@string/check_weather"/>
 </menu>

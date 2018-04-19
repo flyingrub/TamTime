@@ -7,6 +7,7 @@ import java.util.Calendar;
 import java.util.Collections;
 
 import flying.grub.tamtime.data.report.Report;
+import flying.grub.tamtime.data.weather.Weather;
 
 public class StopZone {
     private int _id;
@@ -25,6 +26,7 @@ public class StopZone {
     School project
      */
     private double mark;
+    private Weather weather;
 
     public StopZone(String name, int _id, int tam_id, int cityway_id, String search_name, double lat, double lon){
         this.lines = new ArrayList<>();
@@ -40,6 +42,7 @@ public class StopZone {
         this.stops = new ArrayList<>();
 
         this.mark = -1;
+        weather = null;
     }
 
     public void addLine(Line line) {
@@ -120,6 +123,21 @@ public class StopZone {
     public void setMark(double mark)
     {
         this.mark = mark;
+    }
+
+    public Location getLocation()
+    {
+        return location;
+    }
+
+    public void setWeather(Weather weather)
+    {
+        this.weather = weather;
+    }
+
+    public Weather getWeather()
+    {
+        return weather;
     }
 
     @Override

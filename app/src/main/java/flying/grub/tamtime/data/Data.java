@@ -8,6 +8,8 @@ import flying.grub.tamtime.data.real_time.RealTimeToUpdate;
 import flying.grub.tamtime.data.real_time.RealTimes;
 import flying.grub.tamtime.data.report.ReportEvent;
 import flying.grub.tamtime.data.map.TamMap;
+import flying.grub.tamtime.data.weather.Weather;
+import flying.grub.tamtime.data.weather.WeatherEvent;
 
 public class Data {
 
@@ -22,8 +24,8 @@ public class Data {
     /*
     School project
      */
-
     private MarkEvent markEvent;
+    private WeatherEvent weatherEvent;
 
     private static Data data;
 
@@ -38,6 +40,7 @@ public class Data {
         map = new TamMap(context);
 
         markEvent = new MarkEvent(context);
+        weatherEvent = new WeatherEvent(context);
     }
 
     public static synchronized Data getData() {
@@ -85,5 +88,9 @@ public class Data {
     public MarkEvent getMarkEvent()
     {
         return markEvent;
+    }
+
+    public WeatherEvent getWeatherEvent() {
+        return weatherEvent;
     }
 }
