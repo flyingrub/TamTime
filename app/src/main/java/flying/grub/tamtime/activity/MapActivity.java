@@ -2,10 +2,13 @@ package flying.grub.tamtime.activity;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
+import android.view.View;
+import android.widget.Button;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
@@ -62,6 +65,18 @@ public class MapActivity extends FragmentActivity {
 
         data = Data.getData();
         data.init(this);
+
+        //Set the Menu button
+
+        Button button = (Button) findViewById(R.id.button_menu);
+        button.setOnClickListener(new Button.OnClickListener(){
+            public void onClick(View view){
+                Intent intent = new Intent(MapActivity.this, MainActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.slide_from_right, R.anim.fade_scale_out);
+            }
+
+        });
 
         //Set POI on the map
         setPOIMarker(data, mapView);

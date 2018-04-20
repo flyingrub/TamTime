@@ -5,40 +5,57 @@
     android:layout_height="fill_parent"
     >
 
-    <RadioGroup
-        android:id="@+id/radioGroup_map"
+    <GridLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/textView3"
-            android:layout_width="match_parent"
+        <Button
+            android:id="@+id/button_menu"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/map_print_selection" />
+            android:text="Menu" />
 
-        <RadioButton
-            android:id="@+id/radioButton_tram"
+        <RadioGroup
+            android:id="@+id/radioGroup_map"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:checked="false"
-            android:text="@string/tram" />
+            android:layout_height="wrap_content">
 
-        <RadioButton
-            android:id="@+id/radioButton_bus"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:checked="false"
-            android:text="@string/bus" />
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/map_print_selection" />
 
-    </RadioGroup>
+            <RadioButton
+                android:id="@+id/radioButton_tram"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:checked="false"
+                android:text="@string/tram" />
 
-    <org.osmdroid.views.MapView xmlns:android="http://schemas.android.com/apk/res/android"
+            <RadioButton
+                android:id="@+id/radioButton_bus"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:checked="false"
+                android:text="@string/bus" />
+
+        </RadioGroup>
+
+    </GridLayout>
+
+    <org.osmdroid.views.MapView
         android:id="@+id/mapview"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
 
-        android:clickable="true" />
+        android:layout_weight="1"
+        android:clickable="true">
+
+    </org.osmdroid.views.MapView>
+
 </LinearLayout>

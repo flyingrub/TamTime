@@ -98,10 +98,19 @@ public class MainActivity extends AppCompatActivity implements DrawerCallback {
                 transaction.commit();
                 break;
             case 5:
+
+                //Notre carte
+                NavigationDrawerFragment.currentSelectedPosition.setI(0);
+                intent = new Intent(this, MapActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.slide_from_right, R.anim.fade_scale_out);
+
+                /* Carte du site de la tam
                 WebFragment webFragment = WebFragment.newInstance(MAP_URL);
                 transaction.replace(R.id.container, webFragment);
                 transaction.addToBackStack(null);
                 transaction.commit();
+                */
                 break;
             case 6:
                 fragment = new AllStopReportFragment();
