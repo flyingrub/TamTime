@@ -1,4 +1,4 @@
-package flying.grub.tamtime.activity;
+package flying.grub.tamtime.fragment;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -6,8 +6,10 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RadioGroup;
 import android.widget.Toast;
@@ -31,7 +33,7 @@ import flying.grub.tamtime.data.map.Line;
 import flying.grub.tamtime.data.map.PointOfInterest;
 import flying.grub.tamtime.data.map.Stop;
 
-public class MapActivity extends FragmentActivity {
+public class MapFragment extends Fragment {
 
     private Data data;
     private IMapController mapController;
@@ -40,18 +42,18 @@ public class MapActivity extends FragmentActivity {
     private ArrayList<Marker> displayed_marker = new ArrayList<>();
     private MapView mapView;
 
-    @SuppressLint("ClickableViewAccessibility")
-    @Override public void onCreate(Bundle savedInstanceState) {
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.activity_map, container, false);
 
         super.onCreate(savedInstanceState);
-        Context ctx = getApplicationContext();
+        Context ctx = getContext();
         Configuration.getInstance().load(ctx, PreferenceManager.getDefaultSharedPreferences(ctx));
-
-        setContentView(R.layout.activity_map);
 
 
         //Map Creation
-        mapView = (MapView) findViewById(R.id.mapview);
+        mapView = (MapView) view.findViewById(R.id.mapview);
 
         mapView.setTileSource(TileSourceFactory.MAPNIK);
         mapView.setBuiltInZoomControls(true);
@@ -64,19 +66,6 @@ public class MapActivity extends FragmentActivity {
         mapController.setCenter(startPoint);
 
         data = Data.getData();
-        data.init(this);
-
-        //Set the Menu button
-
-        Button button = (Button) findViewById(R.id.button_menu);
-        button.setOnClickListener(new Button.OnClickListener(){
-            public void onClick(View view){
-                Intent intent = new Intent(MapActivity.this, MainActivity.class);
-                startActivity(intent);
-                overridePendingTransition(R.anim.slide_from_right, R.anim.fade_scale_out);
-            }
-
-        });
 
         //Set POI on the map
         setPOIMarker(data, mapView);
@@ -102,25 +91,26 @@ public class MapActivity extends FragmentActivity {
         mapView.getOverlays().add(overlayEvents);
 
         // permit to find what the user want to display.
-        radioGroup = (RadioGroup) findViewById(R.id.radioGroup_map);
-        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            public void onCheckedChanged(RadioGroup group, int checkedId){
-                switch (checkedId){
-                    case R.id.radioButton_tram:
-                        removeLinesNetwork(mapView);
-                        removeDisplayedMarker(mapView);
-                        setLinesNetwork(data, mapView, "Tram");
-                        setTramStopMarker(data, mapView);
-                        break;
-                    case R.id.radioButton_bus:
-                        removeLinesNetwork(mapView);
-                        removeDisplayedMarker(mapView);
-                        setLinesNetwork(data, mapView, "Bus");
-                        setBusStopMarker(data, mapView);
-                        break;
-                }
+        radioGroup = (RadioGroup) view.findViewById(R.id.radioGroup_map);
+        radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
+            switch (checkedId){
+                case R.id.radioButton_tram:
+                    removeLinesNetwork();
+                    removeDisplayedMarker();
+                    setTramLinesNetwork();
+                    setTramStopMarker();
+                    break;
+                case R.id.radioButton_bus:
+                    removeLinesNetwork();
+                    removeDisplayedMarker();
+                    setBusLinesNetwork();
+                    setBusStopMarker();
+                    break;
             }
         });
+        getActivity().setTitle(getString(R.string.maps));
+
+        return view;
 
     }
 
@@ -144,26 +134,19 @@ public class MapActivity extends FragmentActivity {
         mapView.onPause();  //needed for compass, my location overlays, v6.0.0 and up
     }
 
-    private void setTramStopMarker(Data data, MapView map){
+    private void setTramStopMarker(){
         ArrayList<Line> lines = data.getMap().getLines();
-        ArrayList<Stop> stops = new ArrayList<>();
-
         for (Line line : lines){
             if(line.getTam_id() <= 4) {
-
                 for(Direction direction : line.getDirections()){
-
-                    stops.addAll(direction.getStops());
-
-                    for(Stop stop : stops){
-                        Marker stopMarker = new Marker(map);
+                    for(Stop stop : direction.getStops()){
+                        Marker stopMarker = new Marker(mapView);
                         GeoPoint stopPoint = stop.getLocalisation();
                         stopMarker.setPosition(stopPoint);
                         stopMarker.setIcon(getResources().getDrawable(R.drawable.ic_action_tram));
                         stopMarker.setTitle(stop.getStopZone().getName());
                         stopMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
-                        map.getOverlays().add(stopMarker);
-
+                        mapView.getOverlays().add(stopMarker);
                         displayed_marker.add(stopMarker);
                     }
                 }
@@ -171,25 +154,19 @@ public class MapActivity extends FragmentActivity {
         }
     }
 
-    private void setBusStopMarker(Data data, MapView map){
+    private void setBusStopMarker(){
         ArrayList<Line> lines = data.getMap().getLines();
-        ArrayList<Stop> stops = new ArrayList<>();
-
         for (Line line : lines){
             if(line.getTam_id() > 4) {
-
                 for(Direction direction : line.getDirections()){
-
-                    stops.addAll(direction.getStops());
-
-                    for(Stop stop : stops){
-                        Marker stopMarker = new Marker(map);
+                    for(Stop stop : direction.getStops()){
+                        Marker stopMarker = new Marker(mapView);
                         GeoPoint stopPoint = stop.getLocalisation();
                         stopMarker.setPosition(stopPoint);
                         stopMarker.setIcon(getResources().getDrawable(R.drawable.ic_action_bus));
                         stopMarker.setTitle(stop.getStopZone().getName());
                         stopMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
-                        map.getOverlays().add(stopMarker);
+                        mapView.getOverlays().add(stopMarker);
                         displayed_marker.add(stopMarker);
                     }
                 }
@@ -210,56 +187,49 @@ public class MapActivity extends FragmentActivity {
         }
     }
 
-    private void removeDisplayedMarker(MapView mapView){
+    private void removeDisplayedMarker(){
         mapView.getOverlays().removeAll(displayed_marker);
         if(!displayed_marker.isEmpty()){
             displayed_marker.clear();
         }
     }
 
-    private void setLinesNetwork(Data data, MapView mapView, String choice){
-        ArrayList<Line> lines = data.getMap().getLines();
 
-        for (Line line : lines) {
-
-            if(choice.equals("Tram")){
-                if(line.getTam_id() <= 4){
-                    Polyline polyline = new Polyline();
-                    polyline.setColor(line.getColor());
-                    polyline.setPoints(line.getPolyline_A());
-                    polyline.setWidth(10);
-                    polyline.setOnClickListener(new Polyline.OnClickListener() {
-                        @Override
-                        public boolean onClick(Polyline polyline, MapView mapView, GeoPoint eventPos) {
-                            Toast.makeText(mapView.getContext(), "ligne " + line.getTam_id(), Toast.LENGTH_LONG).show();
-                            return false;
-                        }
-                    });
-                    displayed_network.add(polyline);
-                    mapView.getOverlayManager().add(polyline);
-                }
-            }
-            else if(choice.equals("Bus")){
-                if(line.getTam_id() > 4){
-                    Polyline polyline = new Polyline();
-                    polyline.setColor(line.getColor());
-                    polyline.setPoints(line.getPolyline_A());
-                    polyline.setWidth(10);
-                    polyline.setOnClickListener(new Polyline.OnClickListener() {
-                        @Override
-                        public boolean onClick(Polyline polyline, MapView mapView, GeoPoint eventPos) {
-                            Toast.makeText(mapView.getContext(), "polyline with " + polyline.getPoints().size() + "pts was tapped", Toast.LENGTH_LONG).show();
-                            return false;
-                        }
-                    });
-                    displayed_network.add(polyline);
-                    mapView.getOverlayManager().add(polyline);
-                }
+    private void setTramLinesNetwork() {
+        for (Line line : data.getMap().getLines()) {
+            if (line.getTam_id() <= 4) {
+                Polyline polyline = new Polyline();
+                polyline.setColor(line.getColor());
+                polyline.setPoints(line.getPolyline_A());
+                polyline.setWidth(10);
+                polyline.setOnClickListener((polyline1, mapView, eventPos) -> {
+                    Toast.makeText(mapView.getContext(), "ligne " + line.getTam_id(), Toast.LENGTH_LONG).show();
+                    return false;
+                });
+                displayed_network.add(polyline);
+                mapView.getOverlayManager().add(polyline);
             }
         }
     }
 
-    private void removeLinesNetwork(MapView mapView){
+    private void setBusLinesNetwork() {
+        for (Line line : data.getMap().getLines()) {
+            if(line.getTam_id() > 4){
+                Polyline polyline = new Polyline();
+                polyline.setColor(line.getColor());
+                polyline.setPoints(line.getPolyline_A());
+                polyline.setWidth(10);
+                polyline.setOnClickListener((polyline1, mapView, eventPos) -> {
+                    Toast.makeText(mapView.getContext(), "polyline with " + polyline1.getPoints().size() + "pts was tapped", Toast.LENGTH_LONG).show();
+                    return false;
+                });
+                displayed_network.add(polyline);
+                mapView.getOverlayManager().add(polyline);
+            }
+        }
+    }
+
+    private void removeLinesNetwork(){
         mapView.getOverlayManager().removeAll(displayed_network);
         if(!displayed_network.isEmpty()){
             displayed_network.clear();
@@ -373,6 +343,5 @@ public class MapActivity extends FragmentActivity {
                 break;
         }
     }
-
 
 }

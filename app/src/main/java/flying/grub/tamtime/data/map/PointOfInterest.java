@@ -1,6 +1,13 @@
 package flying.grub.tamtime.data.map;
 
+import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+
 import org.osmdroid.util.GeoPoint;
+import org.osmdroid.views.overlay.Marker;
+
+import flying.grub.tamtime.R;
 
 public class PointOfInterest {
 

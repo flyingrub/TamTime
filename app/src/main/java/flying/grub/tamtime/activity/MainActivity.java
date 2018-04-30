@@ -14,10 +14,10 @@ import flying.grub.tamtime.fragment.AllStopFragment;
 import flying.grub.tamtime.fragment.AllStopReportFragment;
 import flying.grub.tamtime.fragment.FavoriteStopsFragment;
 import flying.grub.tamtime.fragment.HomeFragment;
+import flying.grub.tamtime.fragment.MapFragment;
 import flying.grub.tamtime.fragment.NavigationDrawerFragment;
 import flying.grub.tamtime.R;
 import flying.grub.tamtime.fragment.NearStopFragment;
-import flying.grub.tamtime.fragment.WebFragment;
 import flying.grub.tamtime.navigation.DrawerCallback;
 import flying.grub.tamtime.navigation.ItemWithDrawable;
 
@@ -100,10 +100,10 @@ public class MainActivity extends AppCompatActivity implements DrawerCallback {
             case 5:
 
                 //Notre carte
-                NavigationDrawerFragment.currentSelectedPosition.setI(0);
-                intent = new Intent(this, MapActivity.class);
-                startActivity(intent);
-                overridePendingTransition(R.anim.slide_from_right, R.anim.fade_scale_out);
+                fragment = new MapFragment();
+                transaction.replace(R.id.container, fragment);
+                transaction.addToBackStack("");
+                transaction.commit();
 
                 /* Carte du site de la tam
                 WebFragment webFragment = WebFragment.newInstance(MAP_URL);
