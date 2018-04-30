@@ -30,8 +30,8 @@ public class MarkEvent {
     public static final int MARK_LIMIT = 5;
 
     private static final String TAG = MarkEvent.class.getSimpleName();
-    private static final String GET_MARKS = "http://tam.pulsr.xyz/marks_average";
-    private static final String POST_MARK = "http://tam.pulsr.xyz/mark";
+    private static final String GET_MARKS = "https://tam.pulsr.xyz/marks_average";
+    private static final String POST_MARK = "https://tam.pulsr.xyz/mark";
 
     private ArrayList<StopZone> markList;
     private Context context;
