@@ -99,12 +99,14 @@ public class MapFragment extends Fragment {
                     removeDisplayedMarker();
                     setTramLinesNetwork();
                     setTramStopMarker();
+                    mapView.invalidate();
                     break;
                 case R.id.radioButton_bus:
                     removeLinesNetwork();
                     removeDisplayedMarker();
                     setBusLinesNetwork();
                     setBusStopMarker();
+                    mapView.invalidate();
                     break;
             }
         });

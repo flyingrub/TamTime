@@ -125,11 +125,6 @@ public class StopZone {
         this.mark = mark;
     }
 
-    public Location getLocation()
-    {
-        return location;
-    }
-
     public void setWeather(Weather weather)
     {
         this.weather = weather;
