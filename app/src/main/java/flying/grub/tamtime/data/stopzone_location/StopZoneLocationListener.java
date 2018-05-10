@@ -19,12 +19,6 @@ import flying.grub.tamtime.data.mark.MarkEvent;
 
 public class StopZoneLocationListener implements LocationListener{
     private static final String TAG = StopZoneLocationListener.class.getSimpleName();
-
-    private static double lat =0.0;
-    private static double lon = 0.0;
-    private static double alt = 0.0;
-    private static double speed = 0.0;
-
     private Context context;
 
     public StopZoneLocationListener(Context context) {
@@ -46,7 +40,7 @@ public class StopZoneLocationListener implements LocationListener{
                 StringBuilder notificationContent = new StringBuilder();
 
                 if(stopZone.getStops().size() > 0) {
-                    //  notificationContent.append(stopZone.getStops().get(0).getDirection().getName());
+                    notificationContent.append(stopZone.getStops().get(0).getDirection().getName());
                     notificationContent.append(" (");
                     notificationContent.append(stopZone.getStops().get(0).getTimes().get(0).getWaitingTime());
                     notificationContent.append(" )");
@@ -54,7 +48,7 @@ public class StopZoneLocationListener implements LocationListener{
 
                 if(stopZone.getStops().size() > 1) {
                     notificationContent.append(" - ");
-                    // notificationContent.append(stopZone.getStops().get(1).getDirection().getName());
+                    notificationContent.append(stopZone.getStops().get(1).getDirection().getName());
                     notificationContent.append(" (");
                     notificationContent.append(stopZone.getStops().get(1).getTimes().get(0).getWaitingTime());
                     notificationContent.append(" )");
@@ -71,7 +65,6 @@ public class StopZoneLocationListener implements LocationListener{
                         PendingIntent.FLAG_UPDATE_CURRENT);
                 builder.setContentIntent(contentIntent);
 
-                // Add as notification
                 NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
                 if(manager != null)
