@@ -76,9 +76,9 @@ public class OneLineActivity extends AppCompatActivity {
         slidingTabLayout.setDividerColors(getResources().getColor(R.color.primaryColor));
         slidingTabLayout.setViewPager(viewPager);
 
-        Log.d(TAG, line.getDisruptEventList() + "");
-        if (line.getDisruptEventList().size() > 0) {
-            showInfo(line.getDisruptEventList().get(0).toString());
+        Log.d(TAG, line.getDisruptList() + "");
+        if (line.getDisruptList().size() > 0) {
+            showInfo(line.getDisruptList().get(0).toString());
         }
         if (linePosition > 19) {
             //createAskDialog();
@@ -179,8 +179,8 @@ public class OneLineActivity extends AppCompatActivity {
 
     public void onEvent(MessageUpdate event) {
         if (event.type == MessageUpdate.Type.EVENT_UPDATE) {
-            if (line.getDisruptEventList().size() > 0) {
-                showInfo(line.getDisruptEventList().get(0).toString());
+            if (line.getDisruptList().size() > 0) {
+                showInfo(line.getDisruptList().get(0).toString());
             }
         }
     }

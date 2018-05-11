@@ -46,17 +46,7 @@ public class ReportEvent {
     public void getReports() {
         JsonArrayReq req = new JsonArrayReq(Request.Method.GET,
                 GET_REPORTS, null,
-                new Response.Listener<JSONArray>() {
-                    @Override
-                    public void onResponse(JSONArray response) {
-                        setReport(response);
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.d(TAG, "Error: " + error.getMessage());
-                    }
-        });
+                this::setReport, error -> Log.d(TAG, "Error: " + error.getMessage()));
         VolleyApp.getInstance(context).addToRequestQueue(req);
     }
 

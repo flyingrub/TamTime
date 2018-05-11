@@ -2,20 +2,19 @@ package flying.grub.tamtime.data;
 
 import android.content.Context;
 
-import flying.grub.tamtime.data.dirsruption.DisruptEventHandler;
+import flying.grub.tamtime.data.dirsruption.DisruptEvent;
 import flying.grub.tamtime.data.mark.MarkEvent;
 import flying.grub.tamtime.data.real_time.RealTimeToUpdate;
 import flying.grub.tamtime.data.real_time.RealTimes;
 import flying.grub.tamtime.data.report.ReportEvent;
 import flying.grub.tamtime.data.map.TamMap;
-import flying.grub.tamtime.data.weather.Weather;
 import flying.grub.tamtime.data.weather.WeatherEvent;
 
 public class Data {
 
     private static final String TAG = Data.class.getSimpleName();
 
-    private DisruptEventHandler disruptEventHandler;
+    private DisruptEvent disruptEvent;
     private ReportEvent reportEvent;
     private RealTimes realTimes;
     private TamMap map;
@@ -35,12 +34,13 @@ public class Data {
 
     public void init(Context context) {
         reportEvent = new ReportEvent(context);
-        disruptEventHandler = new DisruptEventHandler(context);
+        disruptEvent = new DisruptEvent(context);
         realTimes = new RealTimes(context);
         map = new TamMap(context);
 
         markEvent = new MarkEvent(context);
         weatherEvent = new WeatherEvent(context);
+        disruptEvent.getDisrupts();
     }
 
     public static synchronized Data getData() {
@@ -61,11 +61,10 @@ public class Data {
         }
         reportEvent.getReports();
         markEvent.getMarks();
-        //disruptEventHandler.getReports();
     }
 
-    public DisruptEventHandler getDisruptEventHandler() {
-        return disruptEventHandler;
+    public DisruptEvent getDisruptEvent() {
+        return disruptEvent;
     }
 
     public TamMap getMap() {
