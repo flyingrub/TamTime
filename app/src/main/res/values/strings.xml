@@ -43,6 +43,8 @@
         <item quantity="one">Evenement</item>
         <item quantity="other">Evenements</item>
     </plurals>
+    <string name="disrupt">Incidents</string>
+    <string name="show_disrupt">Afficher les incidents</string>
     <string name="none"></string>
     <string name="yes">OUI</string>
     <string name="no">NON</string>

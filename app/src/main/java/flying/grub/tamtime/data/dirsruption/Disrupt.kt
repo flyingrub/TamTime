@@ -8,7 +8,8 @@ import flying.grub.tamtime.data.map.Line
 data class Disrupt(val line: Line, val startDate: Calendar,
                    val endDate: Calendar, val description: String,
                    val title : String) {
+
     override fun toString() : String {
-        return title
+        return title + " " +  line.id
     }
 }

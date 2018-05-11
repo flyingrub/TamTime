@@ -1,5 +1,6 @@
 package flying.grub.tamtime.activity;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -9,6 +10,9 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -21,6 +25,9 @@ import com.nispok.snackbar.Snackbar;
 import com.nispok.snackbar.listeners.ActionClickListener;
 
 import de.greenrobot.event.EventBus;
+import flying.grub.tamtime.adapter.DisruptAdapter;
+import flying.grub.tamtime.adapter.DividerItemDecoration;
+import flying.grub.tamtime.adapter.ReportAdapter;
 import flying.grub.tamtime.data.Data;
 import flying.grub.tamtime.data.map.Line;
 import flying.grub.tamtime.data.real_time.RealTimeToUpdate;
@@ -105,6 +112,9 @@ public class OneLineActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.line_menu, menu);
+        if (line.getDisruptList().size() > 0) {
+            getMenuInflater().inflate(R.menu.disrupt, menu);
+        }
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -119,6 +129,8 @@ public class OneLineActivity extends AppCompatActivity {
                 startActivity(intent);
                 overridePendingTransition(R.anim.slide_from_right, R.anim.fade_scale_out);
                 return true;
+            case R.id.show_disrupt:
+                createDisruptDialog();
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -137,6 +149,31 @@ public class OneLineActivity extends AppCompatActivity {
                 })
                 .actionColor(getResources().getColor(R.color.accentColor))
                 .show(this);
+    }
+
+    public  void createDisruptDialog() {
+        String title = getString(R.string.disrupt);
+        MaterialDialog dialog = new MaterialDialog.Builder(this)
+                .title(title)
+                .customView(R.layout.view_recycler, false)
+                .positiveText(R.string.OK)
+                .build();
+
+        View view = dialog.getCustomView();
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
+
+        recyclerView.setHasFixedSize(true);
+
+        LinearLayoutManager layoutManager = new org.solovyev.android.views.llm.LinearLayoutManager(getBaseContext(), LinearLayoutManager.VERTICAL, false);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+
+        RecyclerView.ItemDecoration itemDecoration = new DividerItemDecoration(getBaseContext());
+        recyclerView.addItemDecoration(itemDecoration);
+
+        DisruptAdapter adapter = new DisruptAdapter(line.getDisruptList());
+        recyclerView.setAdapter(adapter);
+        dialog.show();
     }
 
     public void createAskDialog() { // TODO

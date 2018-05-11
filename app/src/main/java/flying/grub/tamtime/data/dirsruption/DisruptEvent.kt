@@ -61,7 +61,7 @@ class DisruptEvent(private val context: Context) {
                     end_date.setTime(sdf.parse(disrupt.getString("end_date")))
                     val title = disrupt.getString("title")
                     val description = stripHtml(disrupt.getString("description"))
-                    val line = Data.getData().map.getLine(lineNumber.toInt())
+                    val line = Data.getData().map.getLineByCitiwayId(lineNumber.toInt())
                     addDisrupt(Disrupt(line, start_date, end_date, description, title))
                 }
             }
@@ -71,7 +71,6 @@ class DisruptEvent(private val context: Context) {
     }
 
     fun addDisrupt(disrupt: Disrupt) {
-        Log.d(TAG, disrupt.toString())
         disruptList.add(disrupt)
         disrupt.line.addDisruptEvent(disrupt)
     }
