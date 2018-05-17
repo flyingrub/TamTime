@@ -30,8 +30,8 @@ public class MarkEvent {
     public static final int MARK_LIMIT = 5;
 
     private static final String TAG = MarkEvent.class.getSimpleName();
-    private static final String GET_MARKS = "https://tam.pulsr.xyz/marks_average";
-    private static final String POST_MARK = "https://tam.pulsr.xyz/mark";
+    private static final String GET_MARKS =  "http://192.168.1.16:5000/marks_average"; //"https://tam.pulsr.xyz/marks_average";
+    private static final String POST_MARK = "http://192.168.1.16:5000/mark"; //"https://tam.pulsr.xyz/mark";
 
     private ArrayList<StopZone> markList;
     private Context context;
@@ -90,11 +90,15 @@ public class MarkEvent {
 
             for (int i=0; i< reportJson.length(); i++) {
                 JSONObject reportObjectJson = reportJson.getJSONObject(i);
-                Double mark = reportObjectJson.getDouble("mark_average");
+
+
+
+                double mark_average = reportObjectJson.getDouble("mark_average");
+                int count_marks = reportObjectJson.getInt("count_marks");
 
                 StopZone stop = Data.getData().getMap().getStopZoneById(reportObjectJson.getInt("stop_id"));
 
-                stop.setMark(mark);
+                stop.setMarkAverage(new MarkAverage(count_marks, count_marks));
             }
         } catch (JSONException e) {
             e.printStackTrace();
