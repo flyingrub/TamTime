@@ -74,6 +74,7 @@
 
     <string name="add_stop_to_homepage">Ajouter cet arrêt sur l\'acceuil</string>
     <string name="mark_stop">Noter cet arrêt</string>
+    <string name="check_mark_stop">Note de cet arrêt</string>
     <string name="check_weather">La méteo de cet arrêt</string>
 
 

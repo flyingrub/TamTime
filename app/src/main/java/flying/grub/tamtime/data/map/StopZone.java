@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 
+import flying.grub.tamtime.data.mark.MarkAverage;
 import flying.grub.tamtime.data.report.Report;
 import flying.grub.tamtime.data.weather.Weather;
 
@@ -25,7 +26,7 @@ public class StopZone {
     /*
     School project
      */
-    private double mark;
+    private MarkAverage markAverage;
     private Weather weather;
 
     public StopZone(String name, int _id, int tam_id, int cityway_id, String search_name, double lat, double lon){
@@ -41,7 +42,7 @@ public class StopZone {
         this.location.setLatitude(lat);
         this.stops = new ArrayList<>();
 
-        this.mark = -1;
+        markAverage = null;
         weather = null;
     }
 
@@ -115,14 +116,14 @@ public class StopZone {
         return stops;
     }
 
-    public double getMark()
+    public MarkAverage getMarkAverage()
     {
-        return mark;
+        return markAverage;
     }
 
-    public void setMark(double mark)
+    public void setMarkAverage(MarkAverage markAverage)
     {
-        this.mark = mark;
+        this.markAverage = markAverage;
     }
 
     public void setWeather(Weather weather)
