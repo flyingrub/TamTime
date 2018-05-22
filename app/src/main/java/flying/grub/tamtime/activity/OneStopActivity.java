@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -199,8 +200,12 @@ public class OneStopActivity extends AppCompatActivity {
                 return true;
 
             case R.id.action_check_mark_stop:
-                if(stop.getMarkAverage() == null)
+                if(stop.getMarkAverage() == null) {
+                    Toast.makeText(this, "Pas de notes disponibles",
+                            Toast.LENGTH_LONG).show();
+
                     return false;
+                }
 
                 Collection<CharSequence> check_mark = new ArrayList<>();
 
