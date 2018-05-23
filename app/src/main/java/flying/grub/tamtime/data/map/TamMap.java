@@ -91,6 +91,13 @@ public class TamMap {
         return stopZones;
     }
 
+    public Line getLineByCitiwayId(int id) {
+        for (Line l : this.lines) {
+            if (l.getCityway_id() == id) return l;
+        }
+        return null;
+    }
+
     public StopZone getStopZoneById(int id) {
         for (StopZone stp : this.stopZones) {
             if (stp.getID() == id) return stp;

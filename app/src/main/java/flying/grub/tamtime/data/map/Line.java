@@ -1,12 +1,10 @@
 package flying.grub.tamtime.data.map;
 
-import android.graphics.Color;
-
 import org.osmdroid.util.GeoPoint;
 
 import java.util.ArrayList;
 
-import flying.grub.tamtime.data.dirsruption.DisruptEvent;
+import flying.grub.tamtime.data.dirsruption.Disrupt;
 
 public class Line {
     private String shortName;
@@ -20,7 +18,7 @@ public class Line {
     private ArrayList<GeoPoint> polyline_A;
     private ArrayList<GeoPoint> polyline_R;
 
-    private ArrayList<DisruptEvent> disruptEventList;
+    private ArrayList<Disrupt> disruptList;
 
     public Line(String shortName, int id, int tamID, int citywayID, int urbanLine) {
         this.shortName = shortName;
@@ -29,7 +27,7 @@ public class Line {
         this.cityway_id = citywayID;
         this.urbanLine = urbanLine;
         this.directions = new ArrayList<>();
-        this.disruptEventList = new ArrayList<>();
+        this.disruptList = new ArrayList<>();
         this.polyline_A = new ArrayList<>();
         this.polyline_R = new ArrayList<>();
     }
@@ -66,7 +64,7 @@ public class Line {
                 ", tam_id=" + tam_id +
                 ", cityway_id=" + cityway_id +
                 ", directions=" + directions +
-                ", disruptEventList=" + disruptEventList +
+                ", disruptList=" + disruptList +
                 '}';
     }
 
@@ -94,16 +92,16 @@ public class Line {
         return this.id;
     }
 
-    public ArrayList<DisruptEvent> getDisruptEventList() {
-        return disruptEventList;
+    public ArrayList<Disrupt> getDisruptList() {
+        return disruptList;
     }
 
-    public void removeDisruptEvent(DisruptEvent event) {
-        this.disruptEventList.remove(event);
+    public void removeDisruptEvent(Disrupt event) {
+        this.disruptList.remove(event);
     }
 
-    public void addDisruptEvent(DisruptEvent event) {
-        this.disruptEventList.add(event);
+    public void addDisruptEvent(Disrupt event) {
+        this.disruptList.add(event);
     }
 
     public ArrayList<GeoPoint> getPolyline_A(){

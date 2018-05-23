@@ -8,6 +8,6 @@
         android:id="@+id/report"/>
     <item
         android:id="@+id/action_favorite"
-        app:showAsAction ="ifRoom"
+        app:showAsAction ="always"
         android:title="Favorites"/>
 </menu>

@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -74,18 +75,7 @@ public class OneStopActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
-        StringBuilder title = new StringBuilder();
-        title.append(stop.getName());
-
-        if(stop.getMark() != -1) //Default mark, no one have mark this stop
-            if(stop.getMark() % 1 == 0)
-                title.append(" (" + (int) stop.getMark() + " / 5)");
-            else {
-                DecimalFormat decimalFormat = new DecimalFormat("#.0");
-                title.append(" (" + decimalFormat.format(stop.getMark()) + " / " + MarkEvent.MARK_LIMIT + ")");
-            }
-
-        getSupportActionBar().setTitle(title.toString());
+        getSupportActionBar().setTitle(stop.getName());
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -207,6 +197,47 @@ public class OneStopActivity extends AppCompatActivity {
                             }
                         }).build();
                 mark_dialog.show();
+                return true;
+
+            case R.id.action_check_mark_stop:
+                if(stop.getMarkAverage() == null) {
+                    Toast.makeText(this, "Pas de notes disponibles",
+                            Toast.LENGTH_LONG).show();
+
+                    return false;
+                }
+
+                Collection<CharSequence> check_mark = new ArrayList<>();
+
+                StringBuilder markAverage = new StringBuilder();
+                markAverage.append("Note moyenne    : ");
+
+                if(stop.getMarkAverage() != null) //Default mark, no one have mark this stop
+                    if(stop.getMarkAverage().getValue() % 1 == 0)
+                        markAverage.append((int) stop.getMarkAverage().getValue());
+                    else {
+                        DecimalFormat decimalFormat = new DecimalFormat("#.0");
+                        markAverage.append(decimalFormat.format(stop.getMarkAverage().getValue()));
+                    }
+
+
+                markAverage.append(" / ");
+                markAverage.append(MarkEvent.MARK_LIMIT);
+
+                check_mark.add(markAverage.toString());
+                check_mark.add("Nombre de note : " + stop.getMarkAverage().getCountMarks());
+
+                CharSequence[] check_mark_strings = check_mark.toArray(new CharSequence[check_mark.size()]);
+
+                MaterialDialog check_mark_dialog = new MaterialDialog.Builder(OneStopActivity.this)
+                        .title(R.string.check_mark_stop)
+                        .items(check_mark_strings)
+                        .itemsCallback((dialog1, view, which, text) -> {
+                            Data.getData().getMarkEvent().sendMark(getBaseContext(), stop.getID(), which);
+                            Data.getData().update();
+                            dialog1.dismiss();
+                        }).build();
+                check_mark_dialog.show();
                 return true;
 
             case R.id.action_check_weather:

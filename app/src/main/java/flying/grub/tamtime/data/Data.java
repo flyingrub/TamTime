@@ -7,7 +7,7 @@ import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.support.v4.app.ActivityCompat;
 
-import flying.grub.tamtime.data.dirsruption.DisruptEventHandler;
+import flying.grub.tamtime.data.dirsruption.DisruptEvent;
 import flying.grub.tamtime.data.mark.MarkEvent;
 import flying.grub.tamtime.data.real_time.RealTimeToUpdate;
 import flying.grub.tamtime.data.real_time.RealTimes;
@@ -21,7 +21,7 @@ public class Data {
 
     private static final String TAG = Data.class.getSimpleName();
 
-    private DisruptEventHandler disruptEventHandler;
+    private DisruptEvent disruptEvent;
     private ReportEvent reportEvent;
     private RealTimes realTimes;
     private TamMap map;
@@ -48,7 +48,7 @@ public class Data {
     @SuppressLint("MissingPermission")
     public void init(Context context) {
         reportEvent = new ReportEvent(context);
-        disruptEventHandler = new DisruptEventHandler(context);
+        disruptEvent = new DisruptEvent(context);
         realTimes = new RealTimes(context);
         map = new TamMap(context);
 
@@ -59,6 +59,8 @@ public class Data {
         stopZoneLocationListener = new StopZoneLocationListener(context);
 
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, LOCATION_INTERVAL, LOCATION_DISTANCE, stopZoneLocationListener);
+
+        disruptEvent.getDisrupts();
     }
 
     public static synchronized Data getData() {
@@ -79,11 +81,10 @@ public class Data {
         }
         reportEvent.getReports();
         markEvent.getMarks();
-        //disruptEventHandler.getReports();
     }
 
-    public DisruptEventHandler getDisruptEventHandler() {
-        return disruptEventHandler;
+    public DisruptEvent getDisruptEvent() {
+        return disruptEvent;
     }
 
     public TamMap getMap() {
