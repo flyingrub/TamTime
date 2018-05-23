@@ -1,6 +1,11 @@
 package flying.grub.tamtime.data;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.pm.PackageManager;
+import android.location.LocationManager;
+import android.support.v4.app.ActivityCompat;
 
 import flying.grub.tamtime.data.dirsruption.DisruptEvent;
 import flying.grub.tamtime.data.mark.MarkEvent;
@@ -8,6 +13,8 @@ import flying.grub.tamtime.data.real_time.RealTimeToUpdate;
 import flying.grub.tamtime.data.real_time.RealTimes;
 import flying.grub.tamtime.data.report.ReportEvent;
 import flying.grub.tamtime.data.map.TamMap;
+import flying.grub.tamtime.data.stopzone_location.StopZoneLocationListener;
+import flying.grub.tamtime.data.weather.Weather;
 import flying.grub.tamtime.data.weather.WeatherEvent;
 
 public class Data {
@@ -26,12 +33,19 @@ public class Data {
     private MarkEvent markEvent;
     private WeatherEvent weatherEvent;
 
+    private LocationManager locationManager;
+    private StopZoneLocationListener stopZoneLocationListener;
+
+    private static final int LOCATION_INTERVAL = 10000;
+    private static final float LOCATION_DISTANCE = 10f;
+
     private static Data data;
 
     private Data() {
         data = this;
     }
 
+    @SuppressLint("MissingPermission")
     public void init(Context context) {
         reportEvent = new ReportEvent(context);
         disruptEvent = new DisruptEvent(context);
@@ -40,6 +54,12 @@ public class Data {
 
         markEvent = new MarkEvent(context);
         weatherEvent = new WeatherEvent(context);
+
+        locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+        stopZoneLocationListener = new StopZoneLocationListener(context);
+
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, LOCATION_INTERVAL, LOCATION_DISTANCE, stopZoneLocationListener);
+
         disruptEvent.getDisrupts();
     }
 
