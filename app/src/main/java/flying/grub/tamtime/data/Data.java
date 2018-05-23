@@ -1,7 +1,11 @@
 package flying.grub.tamtime.data;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.location.LocationManager;
+import android.support.v4.app.ActivityCompat;
 
 import flying.grub.tamtime.data.dirsruption.DisruptEventHandler;
 import flying.grub.tamtime.data.mark.MarkEvent;
@@ -41,6 +45,7 @@ public class Data {
         data = this;
     }
 
+    @SuppressLint("MissingPermission")
     public void init(Context context) {
         reportEvent = new ReportEvent(context);
         disruptEventHandler = new DisruptEventHandler(context);
@@ -51,10 +56,9 @@ public class Data {
         weatherEvent = new WeatherEvent(context);
 
         locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-        stopZoneLocationListener =  new StopZoneLocationListener(context);
+        stopZoneLocationListener = new StopZoneLocationListener(context);
 
-        if(locationManager != null)
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, LOCATION_INTERVAL, LOCATION_DISTANCE, stopZoneLocationListener);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, LOCATION_INTERVAL, LOCATION_DISTANCE, stopZoneLocationListener);
     }
 
     public static synchronized Data getData() {
